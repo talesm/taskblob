@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Task Blob</title>
+<script src="jquery-1.11.1.min.js"></script>
+<script src="taskBlob.js"></script>
+<style type="text/css">
+.taskName{
+	display: inline-block;
+	width: 10em;
+	vertical-align: top;
+}
+.meter{
+	display: inline-block;
+	height: 1.2em;
+	width: 2em;
+}
+
+.start{
+	background-color: transparent;
+}
+
+.spentReg{
+	background-color: #0f5;
+}
+
+.remaining{
+	background-color: #fea;
+}
+
+.leftover{
+	background-color: #2af;
+}
+
+.overdue{
+	background-color: #f87;
+}
+</style>
+</head>
+<body>
+<header>
+	<h1>Task Blob</h1>
+	<h2>Sua forma rápida e sujismunda de gerenciar tarefas.</h2>
+</header>
+
+<main>
+	<section class="viewSection">
+		<h1>Cronograma</h1>
+		<div class="viewGroup">
+		</div>
+		<button class="refreshView">Refresh</button>
+		
+		<section class="addTask">
+			Pai 
+			<select class="parent"><option value='none'><em>Nenhum</em></option></select><br />
+			Nome 
+			<input class="taskName" value="Nova Tarefa"><br />
+			Descrição 
+			<input class="description" value="..."><br />
+			Duração Estimada 
+			<input class="duration" value='3' type="number">h<br />
+			Tempo Utilizado 
+			<input class="spent" value='1' type="number">h<br />
+			Status:
+			<select class="status">
+				<option value="proposed">Proposta</option>
+				<option value="open">Aberta</option>
+				<option value="overtime">Atrasada</option>
+				<option value="closed">Fechada</option>
+			</select><br/>
+			<button class="add">Adicionar</button>
+		</section>
+	</section>
+</main>
+
+<footer> Copyright TalesM </footer>
+</body>
+</html>
