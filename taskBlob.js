@@ -8,18 +8,46 @@ $(function(){
 		var description = $(this).siblings('.description').val();
 		var duration 	= $(this).siblings('.duration').val();
 		var spent 		= $(this).siblings('.spent').val();
+		var parentPath  = $(this).siblings('.parent').val();
+		var path = [];
+		
+		var container;
+		if(parentPath === '')
+			container = tasks;
+		else {
+			path = parentPath.split('.');
+			var p = getTask(path);
+			container = p.subTasks;
+		}
 		
 		//Adding; Fix it to find parent-child relationship.
 		var newTask =  new Task(name, description, duration, spent);
-		tasks.push(newTask);
-		var newId = tasks.length;
+		container.push(newTask);
 		
 		//Showing
-		var chronoGroup = $('.viewGroup');
-		addTaskChrono(chronoGroup, newId, newTask);
+		var chronoGroup;
+		if(container === tasks)
+			chronoGroup = $('.viewSection > .viewGroup');
+		else
+			chronoGroup = $('#'+makeTaskName(path));
+
+		path.push(container.length);
+		addTaskChrono(chronoGroup, path, newTask);
+		var taskCode = path.join('.');
+		var newOption = '<option value="' +taskCode+ '">' + taskCode + '. ' + name + "</option>";
+		$('.addTask .parent').append(newOption);
 	});
 	
 });
+
+function getTask(path) {
+	var container = tasks[path[0]-1];
+	for (var i = 1; i < path.length; i++) {
+		var index = path[i]-1;
+		container = container.subTasks[index];
+	}
+	return container;
+}
 
 function makeTaskName(path) {
 	var str = 'task';
@@ -32,14 +60,15 @@ function makeTaskName(path) {
 var startPos = 0;
 var scale = 2;
 
-function addTaskChrono(viewGroup, newId, newTask){
-	var viewItem = '<div class="task"'+ 'id="' + makeTaskName([newId]) +'" >';
-	viewItem += '<span class="taskName">'+newId+ ". "+newTask.name + '</span>';
+function addTaskChrono(viewGroup, path, newTask){
+	var viewItem = '<div class="task"'+ 'id="' + makeTaskName(path) +'" >';
+	viewItem += '<span class="taskName">'+path.join('.')+ ". "+newTask.name + '</span>';
 	viewItem += '<span class="meter start" style = "width:'+(newTask.start()*scale)+'em"></span>';
 	viewItem += '<span class="meter spentReg" style = "width:'+(newTask.spentReg()*scale)+'em"></span>';
 	viewItem += '<span class="meter remaining" style = "width:'+(newTask.remaining()*scale)+'em"></span>';
 	viewItem += '<span class="meter leftover" style = "width:'+(newTask.leftover()*scale)+'em"></span>';
 	viewItem += '<span class="meter overdue" style = "width:'+(newTask.overdue()*scale)+'em"></span>';
+//	viewItem += '<div class="viewGroup"></div>';
 	viewItem += '</div>';
 	viewGroup.append(viewItem);
 }
