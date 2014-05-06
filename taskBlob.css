@@ -108,6 +108,7 @@ header h2 {
 /*Insertion*/
 /***********/
 .addTask{
+	min-height: 4em;
 	border: 1px solid black;
 	border-radius: 0.25em;
 	padding: 0.25em;
@@ -116,6 +117,11 @@ header h2 {
 .addTask > span{
 	display: inline-block;
 	white-space: nowrap;
+}
+.addTask > button{
+	float: right;
+	width: 4em;
+	height: 4em;
 }
 /********/
 /*FOOTER*/

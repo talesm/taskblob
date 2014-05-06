@@ -10,6 +10,9 @@ $(function(){
 		var duration 	= viewSection.find('.duration').val();
 		var spent 		= viewSection.find('.spent').val();
 		var parentPath  = viewSection.find('.parent').val();
+		var dependStr  	= viewSection.find('.dependencies').val();
+		/*TODO split dependStr, find the tasks, remove duplicates
+		 * eliminate cycle through parent (b > a >p(a)) and normal ones*/
 		var path = [];
 		
 		var container;
