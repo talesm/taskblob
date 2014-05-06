@@ -38,6 +38,10 @@ $(function(){
 		$('.addTask .parent').append(newOption);
 	});
 	
+	$('.textExport').click(function() {
+		$('textarea.textExport').val(JSON.stringify(tasks));
+	});
+	
 });
 
 function getTask(path) {
