@@ -4,11 +4,12 @@
 tasks = [];
 $(function(){
 	$('.viewSection').on('click', '.add', function(){
-		var name 		= $(this).siblings('.taskName').val();
-		var description = $(this).siblings('.description').val();
-		var duration 	= $(this).siblings('.duration').val();
-		var spent 		= $(this).siblings('.spent').val();
-		var parentPath  = $(this).siblings('.parent').val();
+		var viewSection = $(this).parent();
+		var name 		= viewSection.find('.taskName').val();
+		var description = viewSection.find('.description').val();
+		var duration 	= viewSection.find('.duration').val();
+		var spent 		= viewSection.find('.spent').val();
+		var parentPath  = viewSection.find('.parent').val();
 		var path = [];
 		
 		var container;
@@ -39,9 +40,13 @@ $(function(){
 	});
 	
 	$('.textExport').click(function() {
-		$('textarea.textExport').val(JSON.stringify(tasks));
+		$('a.textExport').attr('href', 'data:application/octet-stream,'+JSON.stringify(tasks));
 	});
 	
+	$( '.viewGroup' ).on( "scroll", function( event ) {
+		$( ".viewGroup .taskName").css('left', $(this).scrollLeft());
+	});
+		
 });
 
 function getTask(path) {

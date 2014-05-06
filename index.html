@@ -16,27 +16,30 @@
 	<main>
 	<section class="viewSection">
 		<h1>Cronograma</h1>
-		<div class="viewGroup"></div>
-		<button class="refreshView">Refresh</button>
+		<div class="message"></div>
+		<div class="viewGroup">
+		<div class="timeLabel"><span>5</span><span>10</span><span>15</span></div>
+		</div>
+<!-- 		<button class="refreshView">Refresh</button> -->
 
 		<section class="addTask">
-			Pai <select class="parent"><option value=''>Nenhum</option></select><br />
-			Nome <input class="taskName" value="Nova Tarefa"><br />
-			Descrição <input class="description" value="..."><br />
-			Duração Estimada <input class="duration" value='3' type="number">h<br />
-			Tempo Utilizado <input class="spent" value='1' type="number">h<br />
-			Status: <select class="status">
+			<span>Pai <select class="parent"><option value=''>Nenhum</option></select></span>
+			<span>Nome <input class="taskName" value="Nova Tarefa"></span>
+			<span>Descrição <input class="description" value="..."></span>
+			<span>Duração Estimada <input class="duration" value='3' type="number"></span>
+			<span>Tempo Utilizado <input class="spent" value='1' type="number"></span>
+			<span>Status: <select class="status">
 				<option value="proposed">Proposta</option>
 				<option value="open">Aberta</option>
 				<option value="overtime">Atrasada</option>
 				<option value="closed">Fechada</option>
-			</select><br />
+			</select></span>
 			<button class="add">Adicionar</button>
 		</section>
 	</section>
 	<section class="exportSection">
 		<h1>Exportar</h1>
-		<textarea rows="4" cols="80" class="textExport" placeholder="Texto será exportado aqui"></textarea>
+		<a href="data:application/octet-stream,Test" download="tasks.json" class="textExport">Exportar Arquivo</a>
 	</section>
 	</main>
 
