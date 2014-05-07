@@ -85,6 +85,7 @@ header h2 {
 .start{
 	background-color: transparent;
 	margin-left: 10em;
+	border-color: transparent;
 }
 
 .spentReg{

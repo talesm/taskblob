@@ -10,9 +10,7 @@ $(function(){
 		var duration 	= viewSection.find('.duration').val();
 		var spent 		= viewSection.find('.spent').val();
 		var parentPath  = viewSection.find('.parent').val();
-		var dependStr  	= viewSection.find('.dependencies').val();
-		/*TODO split dependStr, find the tasks, remove duplicates
-		 * eliminate cycle through parent (b > a >p(a)) and normal ones*/
+		var dependStr  	= viewSection.find('.dependencies').val().trim();
 		var path = [];
 		
 		var container;
@@ -24,18 +22,26 @@ $(function(){
 			container = p.subTasks;
 		}
 		
-		//Adding; Fix it to find parent-child relationship.
-		var newTask =  new Task(name, description, duration, spent);
-		container.push(newTask);
-		
+		var dependenciesRefs = [];
+		if(dependStr !== ''){
+			dependStr.split(',').forEach(function(value, index){
+				var dependecy = value.trim().split('.');
+				dependecy.forEach(function(value, index, arr) {
+					arr[index] = +value;
+				});
+				dependenciesRefs[index] = dependecy;
+			});
+		}
 		//Showing
 		var chronoGroup;
 		if(container === tasks)
 			chronoGroup = $('.viewSection > .viewGroup');
 		else
 			chronoGroup = $('#'+makeTaskName(path));
-
-		path.push(container.length);
+		//WHATH
+		path.push(container.length+1);
+		var newTask =  new Task(path, name, description, duration, spent, null, dependenciesRefs);
+		container.push(newTask);
 		addTaskChrono(chronoGroup, path, newTask);
 		var taskCode = path.join('.');
 		var newOption = '<option value="' +taskCode+ '">' + taskCode + '. ' + name + "</option>";
@@ -43,7 +49,8 @@ $(function(){
 	});
 	
 	$('.textExport').click(function() {
-		$('a.textExport').attr('href', 'data:application/octet-stream,'+JSON.stringify(tasks));
+        var blob = new Blob([JSON.stringify(tasks)], {'type':'application/json'});
+		$('a.textExport').attr('href', window.URL.createObjectURL(blob));
 	});
 	
 	$( '.viewGroup' ).on( "scroll", function( event ) {
@@ -53,9 +60,14 @@ $(function(){
 });
 
 function getTask(path) {
+	var index = path[0]-1;
+	if(index >= tasks.length)
+		return null;
 	var container = tasks[path[0]-1];
 	for (var i = 1; i < path.length; i++) {
-		var index = path[i]-1;
+		index = path[i]-1;
+		if(index >= container.subTaskslength)
+			return null;
 		container = container.subTasks[index];
 	}
 	return container;
@@ -85,20 +97,28 @@ function addTaskChrono(viewGroup, path, newTask){
 	viewGroup.append(viewItem);
 }
 
-function Task(name, description, duration, spent, status, dependencies){
+function Task(id, name, description, duration, spent, status, dependencies){
+	this.id = id;
 	this.name = name;
 	this.description = description;
 	this.duration = duration;
 	this.spent = spent;
-	if(typeof status === 'undefined')
+	if(!status)
 		this.status = 'proposed';
 	else
 		this.status = status;
-	if(typeof dependencies === 'array')
-		this.dependencies = dependencies;
-	else 
+	if(!dependencies)
 		this.dependencies = [];
-	this.dependendsMe = [];
+	else 
+		this.dependencies = dependencies;
+	this.dependsMe = [];
+	this.dependencies.forEach(function(value, index, deps) {
+		var otherTask = getTask(value);
+		if(otherTask != null)
+			otherTask.dependsMe.push(id);
+		else
+			deps.splice(index, 1);
+	});
 	this.subTasks = [];
 }
 
@@ -119,10 +139,15 @@ Task.prototype.leftover = function() {
 };
 
 Task.prototype.start = function() {
-	return 0;
+	var start = 0;
+	this.dependencies.forEach(function(path) {
+		var task = getTask(path);
+		start = Math.max(start, task.end());
+	});
+	return start;
 };
 
 Task.prototype.end = function() {
-	return Math.max(this.duration, this.spent);
+	return this.start() + Math.max(this.duration, this.spent);
 };
 
