@@ -23,6 +23,36 @@ header h2 {
 /**********/
 /***MAIN***/
 /**********/
+/*******/
+/*Modal*/
+/*******/
+
+.modal{
+	position: absolute;
+	background: rgba(170, 170, 170, .75);
+	top: 0;
+	left: 0;
+	width:100%;
+	height: 100%;
+	z-index: 100;
+	-webkit-user-select: none; /* Safari, Chrome */
+    -khtml-user-select: none; /* Konqueror */
+    -moz-user-select: none; /* Firefox */
+    user-select: none; /* CSS3 */
+}
+
+.modal div{
+	background: white;
+	margin: auto;
+	margin-top: 2em;
+	max-width: 20cm; 
+	height: 90%;
+	border-radius : 1em;
+}
+
+.modal:empty{
+	display: none;
+}
 
 /******/
 /*View*/

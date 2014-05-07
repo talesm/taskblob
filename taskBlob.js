@@ -56,6 +56,10 @@ $(function(){
 	$( '.viewGroup' ).on( "scroll", function( event ) {
 		$( ".viewGroup .taskName").css('left', $(this).scrollLeft());
 	});
+	
+	$('.modal').on('click', '.close', function() {
+		$('.modal').html('');
+	});
 		
 });
 
