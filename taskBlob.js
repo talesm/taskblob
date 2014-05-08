@@ -52,34 +52,6 @@ $(function(){
 		$( ".viewGroup .taskName").css('left', $(this).scrollLeft());
 	});
 	
-	/****************************
-	 * Export Mechanism			*
-	 ****************************/
-	
-	$('.showExport').click(function(){
-		createModal('.exportDialog', {closeButton: true});
-	});
-	
-	$('.textExport').click(function() {
-        var blob = new Blob([JSON.stringify(tasks)], {'type':'application/json'});
-		$('a.textExport').attr('href', window.URL.createObjectURL(blob));
-	});
-	
-	$('.textExport').click(function() {
-        var blob = new Blob([JSON.stringify(tasks)], {'type':'application/json'});
-		$('a.textExport').attr('href', window.URL.createObjectURL(blob));
-	});
-	
-	/****************************
-	 * Modals					*
-	 ****************************/
-	$('.modal').on('click', '.close', closeDialog);
-	$('.modal').on('focusout', closeDialog);
-	$('.modal').on('click', closeDialog);
-
-	$('.modal').on('click', 'section', function(event) {
-		event.stopPropagation();
-	});
 });
 
 function getTask(path) {
@@ -173,30 +145,3 @@ Task.prototype.start = function() {
 Task.prototype.end = function() {
 	return this.start() + Math.max(this.duration, this.spent);
 };
-
-/***********************
- * Modal
- ***********************/
-function createModal(elementName, options) {
-	if(!options){
-		options = {};
-	}
-	var modal = $('.modal');
-	modal.html('');
-	modal.html($(elementName).clone());
-	modal.find(':not(:disabled)').focus();
-	
-	for(var option in options){
-		switch (option) {
-		case 'closeButton':
-			modal.find('header').append('<button class="close">Fechar</button>');
-			break;
-		default:
-			break;
-		}
-	}
-}
-
-function closeDialog() {
-	$('.modal').html('');
-}
