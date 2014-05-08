@@ -3,12 +3,20 @@
  */
 $(function() {
 	$('.modal').on('click', '.close', closeDialog);
-	$('.modal').on('focusout', closeDialog);
 	$('.modal').on('click', closeDialog);
+	$('.modal').on('focusout', function(ev) {
+		if($('.modal:focus').size() <= 0 && $(':focus').size() > 0)
+			closeDialog();
+	});
 
 	$('.modal').on('click', 'section', function(event) {
 		event.stopPropagation();
 	});
+	
+	document.onkeypress = function(ev) {
+		if(ev.keyCode == 0x1B)
+			closeDialog();
+	};
 });
 
 function createModal(elementName, options) {
