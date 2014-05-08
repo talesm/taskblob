@@ -6,7 +6,7 @@ body{
 }
 
 /*HEADER*/
-body > header {
+body > header, body > footer {
 	background: #eee;
 	border: #aaa 0.25em solid;
 	border-radius: 0.5em;
