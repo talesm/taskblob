@@ -12,45 +12,48 @@
 		<h1>Task Blob</h1>
 		<h2>Sua forma rápida e sujismunda de gerenciar tarefas.</h2>
 	</header>
-
+	
+	<!-- A nav would be nice here. -->
+	<nav class="mainNav">
+		<button class="showExport">Exportar</button>
+	</nav>
 	<main>
-	<aside class="modal">
-		<div>
-			ffff<input>
-			<button class="close">Fechar</button>
-		</div>
-	</aside>
-	<section class="viewSection">
-		<h1>Cronograma</h1>
-		<div class="message"></div>
-		<div class="viewGroup">
-		<div class="timeLabel"><span>5</span><span>10</span><span>15</span></div>
-		</div>
-<!-- 		<button class="refreshView">Refresh</button> -->
-
-		<section class="addTask">
-			<button class="add">+</button>
-			<span>Pai <select class="parent"><option value=''>Nenhum</option></select></span>
-			<span>Nome <input class="taskName" value="Nova Tarefa"></span>
-			<span>Descrição <input class="description" value="..."></span>
-			<span>Duração Estimada <input class="duration" value='3' type="number"></span>
-			<span>Tempo Utilizado <input class="spent" value='1' type="number"></span>
-			<span>Status: <select class="status">
-				<option value="proposed">Proposta</option>
-				<option value="open">Aberta</option>
-				<option value="overtime">Atrasada</option>
-				<option value="closed">Fechada</option>
-			</select></span>
-			<span>Dependências: <input class="dependencies"></span>
+		<!-- A nice Modal! Put content to show, clear content to hide! -->
+		<aside class="modal"></aside>
+		<section class="viewSection">
+			<div class="message"></div>
+			<div class="viewGroup">
+				<div class="timeLabel">
+					<span>5</span><span>10</span><span>15</span>
+				</div>
+			</div>
+			<section class="addTask">
+				<button class="add">+</button>
+				<span>Pai <select class="parent"><option value=''>Nenhum</option></select></span>
+				<span>Nome <input class="taskName" value="Nova Tarefa"></span>
+				<span>Descrição <input class="description" value="..."></span>
+				<span>Duração Estimada <input class="duration" value='3'
+					type="number"></span> <span>Tempo Utilizado <input
+					class="spent" value='1' type="number"></span> <span>Status:
+					<select class="status">
+						<option value="proposed">Proposta</option>
+						<option value="open">Aberta</option>
+						<option value="overtime">Atrasada</option>
+						<option value="closed">Fechada</option>
+				</select>
+				</span> <span>Dependências: <input class="dependencies"></span>
+			</section>
 		</section>
-	</section>
-	<section class="exportSection">
-		<h1>Exportar</h1>
-		<a href="" download="tasks.json" class="textExport">Exportar Arquivo</a>
-	</section>
+		<section class="exportDialog">
+			<header>
+				<h1>Exportar</h1>
+			</header>
+			Exportar para seu computador:<br/>
+			<a href="" download="tasks.json" class="textExport">Aqui</a>
+		</section>
 	</main>
 
 	<footer> Copyright TalesM </footer>
-	
+
 </body>
 </html>
