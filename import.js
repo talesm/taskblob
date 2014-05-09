@@ -7,8 +7,11 @@ $(function() {
 	});
 	$('.modal').on('click', '.textImport', function () {
 		var selectedFile = $('.importFile').get(0).files[0];
-		var reader = new FileReader();
 		alert(selectedFile.name);
-		alert(reader.readAsText(selectedFile));
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			alert(e.target.result);
+		};
+		reader.readAsText(selectedFile);
 	});
 });
