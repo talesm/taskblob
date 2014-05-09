@@ -3,55 +3,48 @@
  */
 tasks = [];
 $(function(){
-	$('.addTask').on('click', '.add', function(){
-		var viewSection = $(this).parent();
-		var name 		= viewSection.find('.taskName').val();
-		var description = viewSection.find('.description').val();
-		var duration 	= viewSection.find('.duration').val();
-		var spent 		= viewSection.find('.spent').val();
-		var parentPath  = viewSection.find('.parent').val();
-		var dependStr  	= viewSection.find('.dependencies').val().trim();
-		var path = [];
-		
-		var container;
-		if(parentPath === '')
-			container = tasks;
-		else {
-			path = parentPath.split('.');
-			var p = getTask(path);
-			container = p.subTasks;
-		}
-		
-		var dependenciesRefs = [];
-		if(dependStr !== ''){
-			dependStr.split(',').forEach(function(value, index){
-				var dependecy = value.trim().split('.');
-				dependecy.forEach(function(value, index, arr) {
-					arr[index] = +value;
+	//Cool effect
+	$( '.viewGroup' ).on( 'scroll', function( event ) {
+		$( '.viewGroup .taskName').css('left', $(this).scrollLeft());
+	});
+	
+	$( '.viewSection .add').on('click', function() {
+		createModal($('.editTask'), {closeButton:true});
+		$('.modal header > h1').html('Adicionar Tarefa');
+		$('.modal .taskPath').val('0');
+	});
+	
+	$( '.modal').on('click', '.save', function() {
+		var modal = $('.modal');
+		var path = modal.find('.taskPath').val().split('.');
+		var ord = path[path.length-1];
+		if(ord === '0'){//Adicionando
+			if(path.length > 1)
+				throw "Not supported yet";
+			var name 		= modal.find('.taskName').val();
+			var description = modal.find('.description').val();
+			var duration 	=+modal.find('.duration').val();
+			var spent 		=+modal.find('.spent').val();
+			var status 		= modal.find('.status').val();
+			var dependStr  	= modal.find('.dependencies').val().trim();
+			var dependencies = [];
+			if(dependStr !== ''){
+				dependStr.split(',').forEach(function(value, index){
+					var dependecy = value.trim().split('.');
+					dependecy.forEach(function(value, index, arr) {
+						arr[index] = +value;
+					});
+					dependencies[index] = dependecy;
 				});
-				dependenciesRefs[index] = dependecy;
-			});
+			}
+			var task = new Task([tasks.length+1], name, description, duration, spent, status, dependencies);
+			tasks.push(task);
+			addTaskChrono($(".viewGroup"), task);
+			closeModal();
 		}
-		//Showing
-		var chronoGroup;
-		if(container === tasks)
-			chronoGroup = $('.viewSection > .viewGroup');
 		else
-			chronoGroup = $('#'+makeTaskName(path));
-		//WHATH
-		path.push(container.length+1);
-		var newTask =  new Task(path, name, description, duration, spent, null, dependenciesRefs);
-		container.push(newTask);
-		addTaskChrono(chronoGroup, path, newTask);
-		var taskCode = path.join('.');
-		var newOption = '<option value="' +taskCode+ '">' + taskCode + '. ' + name + "</option>";
-		$('.addTask .parent').append(newOption);
+			throw "Not supported yet";
 	});
-	
-	$( '.viewGroup' ).on( "scroll", function( event ) {
-		$( ".viewGroup .taskName").css('left', $(this).scrollLeft());
-	});
-	
 });
 
 function getTask(path) {
@@ -79,7 +72,8 @@ function makeTaskName(path) {
 var startPos = 0;
 var scale = 2;
 
-function addTaskChrono(viewGroup, path, newTask){
+function addTaskChrono(viewGroup, newTask){
+	var path = newTask.id;
 	var viewItem = '<div class="task"'+ 'id="' + makeTaskName(path) +'" >';
 	viewItem += '<span class="taskName">'+path.join('.')+ ". "+newTask.name + '</span>';
 	viewItem += '<span class="meter start" style = "width:'+(newTask.start()*scale)+'em"></span>';
@@ -87,7 +81,6 @@ function addTaskChrono(viewGroup, path, newTask){
 	viewItem += '<span class="meter remaining" style = "width:'+(newTask.remaining()*scale)+'em"></span>';
 	viewItem += '<span class="meter leftover" style = "width:'+(newTask.leftover()*scale)+'em"></span>';
 	viewItem += '<span class="meter overdue" style = "width:'+(newTask.overdue()*scale)+'em"></span>';
-//	viewItem += '<div class="viewGroup"></div>';
 	viewItem += '</div>';
 	viewGroup.append(viewItem);
 }

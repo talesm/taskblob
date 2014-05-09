@@ -32,22 +32,46 @@
 					<span>5</span><span>10</span><span>15</span>
 				</div>
 			</div>
-			<section class="addTask">
-				<button class="add">+</button>
-				<span>Pai <select class="parent"><option value=''>Nenhum</option></select></span>
-				<span>Nome <input class="taskName" value="Nova Tarefa"></span>
-				<span>Descrição <input class="description" value="..."></span>
-				<span>Duração Estimada <input class="duration" value='3'
-					type="number"></span> <span>Tempo Utilizado <input
-					class="spent" value='1' type="number"></span> <span>Status:
+<!-- 			<section class="addTask"> -->
+<!-- 				<button class="add">+</button> -->
+<!-- 				<span>Pai <select class="parent"><option value=''>Nenhum</option></select></span> -->
+<!-- 				<span>Nome <input class="taskName" value="Nova Tarefa"></span> -->
+<!-- 				<span>Descrição <input class="description" value="..."></span> -->
+<!-- 				<span>Duração Estimada <input class="duration" value='3' -->
+<!-- 					type="number"></span> <span>Tempo Utilizado <input -->
+<!-- 					class="spent" value='1' type="number"></span> <span>Status: -->
+<!-- 					<select class="status"> -->
+<!-- 						<option value="proposed">Proposta</option> -->
+<!-- 						<option value="open">Aberta</option> -->
+<!-- 						<option value="overtime">Atrasada</option> -->
+<!-- 						<option value="closed">Fechada</option> -->
+<!-- 				</select> -->
+<!-- 				</span> <span>Dependências: <input class="dependencies"></span> -->
+<!-- 			</section> -->
+			<button class="add">+</button>
+		</section>
+		<section class="editTask dialog">
+			<header>
+				<h1>Titulo</h1>
+			</header>
+			<form>
+				<input class="taskPath" type="hidden">
+				<label>Nome <input class="taskName" value="Nova Tarefa"></label>
+				<label>Descrição <input class="description" value="..."></label>
+				<label>Duração Estimada <input class="duration" value="3" type="number"></label> 
+				<label>Tempo Utilizado <input
+					class="spent" value='1' type="number"></label> 
+				<label>Status:
 					<select class="status">
 						<option value="proposed">Proposta</option>
 						<option value="open">Aberta</option>
 						<option value="overtime">Atrasada</option>
 						<option value="closed">Fechada</option>
-				</select>
-				</span> <span>Dependências: <input class="dependencies"></span>
-			</section>
+					</select>
+				</label> 
+			<label>Dependências: <input class="dependencies"></label>
+			</form>
+			<button class="save">Salvar</button>
 		</section>
 		<section class="exportDialog dialog">
 			<header>

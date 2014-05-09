@@ -2,11 +2,11 @@
  * 
  */
 $(function() {
-	$('.modal').on('click', '.close', closeDialog);
-	$('.modal').on('click', closeDialog);
+	$('.modal').on('click', '.close', closeModal);
+	$('.modal').on('click', closeModal);
 	$('.modal').on('focusout', function(ev) {
 		if($('.modal:focus').size() <= 0 && $(':focus').size() > 0)
-			closeDialog();
+			closeModal();
 	});
 
 	$('.modal').on('click', 'section', function(event) {
@@ -15,7 +15,7 @@ $(function() {
 	
 	document.onkeypress = function(ev) {
 		if(ev.keyCode == 0x1B)
-			closeDialog();
+			closeModal();
 	};
 });
 
@@ -39,6 +39,6 @@ function createModal(elementName, options) {
 	}
 }
 
-function closeDialog() {
+function closeModal() {
 	$('.modal').html('');
 }
