@@ -8,42 +8,61 @@ $(function(){
 		$( '.viewGroup .taskName').css('left', $(this).scrollLeft());
 	});
 	
+	//Add new task
 	$( '.viewSection .add').on('click', function() {
 		createModal($('.editTask'), {closeButton:true});
 		$('.modal header > h1').html('Adicionar Tarefa');
 		$('.modal .taskPath').val('0');
 	});
 	
+	//Quick edit task.
+	
+	//Edit
+	$( '.viewSection').on('click', '.task', function() {
+		createModal($('.editTask'), {closeButton:true});
+		var sid = $(this).attr('id').substr(5);
+		$('.modal header > h1').html('Editar Tarefa [' + sid.replace('_', '.') + ']');
+		$('.modal .taskPath').val(sid.split('_'));
+	});
+	
 	$( '.modal').on('click', '.save', function() {
 		var modal = $('.modal');
 		var path = modal.find('.taskPath').val().split('.');
 		var ord = path[path.length-1];
+		var name 		= modal.find('.taskName').val();
+		var description = modal.find('.description').val();
+		var duration 	=+modal.find('.duration').val();
+		var spent 		=+modal.find('.spent').val();
+		var status 		= modal.find('.status').val();
+		var dependStr  	= modal.find('.dependencies').val().trim();
+		var dependencies = [];
+		if(dependStr !== ''){
+			dependStr.split(',').forEach(function(value, index){
+				var dependecy = value.trim().split('.');
+				dependecy.forEach(function(value, index, arr) {
+					arr[index] = +value;
+				});
+				dependencies[index] = dependecy;
+			});
+		}
 		if(ord === '0'){//Adicionando
 			if(path.length > 1)
 				throw "Not supported yet";
-			var name 		= modal.find('.taskName').val();
-			var description = modal.find('.description').val();
-			var duration 	=+modal.find('.duration').val();
-			var spent 		=+modal.find('.spent').val();
-			var status 		= modal.find('.status').val();
-			var dependStr  	= modal.find('.dependencies').val().trim();
-			var dependencies = [];
-			if(dependStr !== ''){
-				dependStr.split(',').forEach(function(value, index){
-					var dependecy = value.trim().split('.');
-					dependecy.forEach(function(value, index, arr) {
-						arr[index] = +value;
-					});
-					dependencies[index] = dependecy;
-				});
-			}
 			var task = new Task([tasks.length+1], name, description, duration, spent, status, dependencies);
 			tasks.push(task);
 			addTaskChrono($(".viewGroup"), task);
 			closeModal();
+		} else {
+			var task = getTask(path);
+			task.name = name;
+			task.description = description;
+			task.duration = duration;
+			task.spent = spent;
+			task.status = status;
+			//TODO: Check for circular dependecies
+			task.dependencies = dependencies;
+			editTaskChrono($(".viewGroup"), task);
 		}
-		else
-			throw "Not supported yet";
 	});
 });
 
