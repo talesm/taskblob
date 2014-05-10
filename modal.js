@@ -2,14 +2,15 @@
  * 
  */
 $(function() {
-	$('.modal').on('click', '.close', closeModal);
-	$('.modal').on('click', closeModal);
-	$('.modal').on('focusout', function(ev) {
+	$modal = $('.modal');
+	$modal.on('click', '.close', closeModal);
+	$modal.on('click', closeModal);
+	$modal.on('focusout', function(ev) {
 		if($('.modal:focus').size() <= 0 && $(':focus').size() > 0)
 			closeModal();
 	});
 
-	$('.modal').on('click', 'section', function(event) {
+	$modal.on('click', 'section', function(event) {
 		event.stopPropagation();
 	});
 	
@@ -23,15 +24,16 @@ function createModal(elementName, options) {
 	if(!options){
 		options = {};
 	}
-	var modal = $('.modal');
-	modal.html('');
-	modal.html($(elementName).clone());
-	modal.find(':not(:disabled)').focus();
+	var $modal = $('.modal');
+	$modal.html('');
+	$modal.html($(elementName).clone());
+	$modal.find(':not(:disabled)').focus();
+	$modal.siblings().addClass('unmodal');
 	
 	for(var option in options){
 		switch (option) {
 		case 'closeButton':
-			modal.find('header').append('<button class="close">Fechar</button>');
+			$modal.find('header').append('<button class="close">Fechar</button>');
 			break;
 		default:
 			break;

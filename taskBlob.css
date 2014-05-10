@@ -36,10 +36,6 @@ header h2 {
 	width:100%;
 	height: 100%;
 	z-index: 100;
-/* 	-webkit-user-select: none; Safari, Chrome */
-/*     -khtml-user-select: none; Konqueror */
-/*     -moz-user-select: none; Firefox */
-    user-select: none; /* CSS3 */
 }
 
 .modal:empty{
@@ -64,6 +60,14 @@ header h2 {
 	border-bottom: 1px gray solid;
 	padding-left: 0.5em;
 	padding-right: 0.5em;
+}
+
+//What is not on a modal;
+.unmodal{
+	-webkit-user-select: none; /*Safari, Chrome*/
+    -khtml-user-select: none; /*Konqueror*/
+    -moz-user-select: none; /*Firefox*/
+    user-select: none; /* CSS3 */
 }
 /******/
 /*View*/
