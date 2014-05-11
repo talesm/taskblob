@@ -48,6 +48,9 @@ $(function(){
 					editTaskChrono($(".viewGroup"), task);
 				}
 				$this.dialog("close");
+			},
+			'Cancelar': function() {
+				$(this).dialog("close");
 			}
 		},
 		close : function() {
@@ -65,12 +68,12 @@ $(function(){
 		$editTask.dialog("open");
 	});
 	
-	//Quick edit task.
+	
 	
 	//Edit
-	$( '.viewSection').on('click', '.task', function() {
+	$( '.viewSection').on('click', '.taskName .edit', function() {
 		var $editTask = $('.editTask');
-		var sid = $(this).attr('id').substr(5).replace('_', '.');
+		var sid = $(this).parent().parent().attr('id').substr(5).replace('_', '.');
 		var task = getTask(id2path(sid));
 		$editTask.find('#taskPath').val(sid);
 		$editTask.find('#taskName').val(task.name);
@@ -79,6 +82,7 @@ $(function(){
 		$editTask.find('#spent').val(task.spent);
 		$editTask.find('#status').val(task.status);
 		$editTask.find('#dependencies').val(task.dependencies);
+		$editTask.find('#dependsMe').val(task.dependsMe);
 		$editTask.dialog('option', 'title', 'Editar Tarefa');
 		$editTask.dialog("open");
 	});
@@ -111,6 +115,38 @@ function makeTaskName(path) {
 	return str;
 }
 
+function makePlayTaskName(path) {
+	var str = 'playTask';
+	path.forEach(function(element) {
+		str += '_' + element;
+	});
+	return str;
+}
+
+function makeEditTaskName(path) {
+	var str = 'editTask';
+	path.forEach(function(element) {
+		str += '_' + element;
+	});
+	return str;
+}
+
+function makeDeleteTaskName(path) {
+	var str = 'deleteTask';
+	path.forEach(function(element) {
+		str += '_' + element;
+	});
+	return str;
+}
+
+function makeAddTaskName(path) {
+	var str = 'addTask';
+	path.forEach(function(element) {
+		str += '_' + element;
+	});
+	return str;
+}
+
 var startPos = 0;
 var scale = 2;
 //
@@ -131,10 +167,18 @@ function editTaskChrono(viewGroup, task){
 	$element.html(viewItem);
 }
 
+function generateOptions(task){
+	var path = task.id;
+	var optionItem = '<span class="play ui-icon ui-icon-play" id="'+ makePlayTaskName(path) + '"></span>';
+	optionItem 	  += '<span class="edit ui-icon ui-icon-pencil" id="'+ makeEditTaskName(path) + '"></span>';
+	optionItem 	  += '<span class="add ui-icon ui-icon-plus" id="'+ makeAddTaskName(path) + '"></span>';
+	optionItem 	  += '<span class="delete ui-icon ui-icon-trash" id="'+ makeDeleteTaskName(path) + '"></span>';
+	return optionItem;
+}
 
 function generateTaskView(task) {
 	var path = task.id;
-	var viewItem = '<span class="taskName">'+path.join('.')+ ". "+task.name + '</span>';
+	var viewItem = '<span class="taskName">'+generateOptions(task)+path.join('.')+ ". "+task.name + '</span>';
 	viewItem += '<span class="meter start" style = "width:'+(task.start()*scale)+'em"></span>';
 	viewItem += '<span class="meter spentReg" style = "width:'+(task.spentReg()*scale)+'em"></span>';
 	viewItem += '<span class="meter remaining" style = "width:'+(task.remaining()*scale)+'em"></span>';

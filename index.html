@@ -8,6 +8,7 @@
 <script src="js/jquery-1.10.2.js"></script>
 <script src="js/jquery-ui-1.10.4.custom.js"></script>
 <script src="taskBlob.js"></script>
+<script src="view.js"></script>
 <script src="export.js"></script>
 <script src="import.js"></script>
 <script src="settings.js"></script>
@@ -25,6 +26,21 @@
 				<div class="timeLabel"><span>Tarefas</span><span>5h</span><span>10h</span><span>15h</span></div>
 					<span class="add"><span class="ui-icon ui-icon-plus" style="display: inline-block"></span>Nova Tarefa</span>
 			</div>
+		</section>
+		<!-- Play dialog -->
+		<section class="playTask dialog" title="Ver Tarefa">
+			<form>
+				<label for="playPath">Id:</label>
+				<input id="playPath" disabled><br/>
+				<label for="playName">Nome:</label>
+				<input id="playName" disabled><br/>
+				<label for="playDescription">Descrição:</label>
+				<input id="playDescription" disabled><br/>
+				<label for="playStatus">Status:</label> 
+				<input id="playStatus" disabled><br/>
+				<label for="playRemaining">Tempo Restante:</label> 
+				<input id="playRemaining" disabled><br/>
+			</form>
 		</section>
 		
 		<!-- Edit dialog -->
@@ -49,6 +65,9 @@
 				</select><br/>
 				<label for="dependencies">Dependências:</label>
 				<input id="dependencies"><br/>
+				
+				<label for="dependsMe">Dependência para:</label>
+				<input id=dependsMe disabled><br/>
 			</form>
 		</section>
 		

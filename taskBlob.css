@@ -69,7 +69,7 @@ header h2 {
 }
 
 /* Tasks */
-.viewGroup .taskName, .viewGroup .add{
+.viewGroup .taskName, .viewGroup > .add{
 	display: inline-block;
 	width: 10em;
 	height: 1.5em;
@@ -83,12 +83,33 @@ header h2 {
 	cursor: pointer;
 	z-index: 10;
 }
-.viewGroup .add{
+.viewGroup > .add{
 	border-width: 2px;
 	font-weight: bold;
 	bottom: 0
 }
 
+.viewGroup .taskName span{
+	display:none;
+}
+
+.viewGroup .taskName:hover{
+	width: 15em;
+}
+
+.viewGroup .taskName:hover span{
+	display:inline-block;
+	background-color: #eee;
+	vertical-align: middle;
+	width: 16px;
+	outline: 1px solid black;
+}
+
+.viewGroup .taskName:hover span.delete{
+	background-color: #fab;
+}
+
+/*Meters*/
 .meter{
 	display: inline-block;
 	height: 1.2em;
