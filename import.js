@@ -2,15 +2,29 @@
  * 
  */
 $(function() {
-	$('.showImport').click(function(){
-		createModal('.importDialog', {closeButton: true});
+	$('.showImport')
+	.button({icons:{primary:'ui-icon-arrowthick-1-n'}})
+	.click(function(){
+		$('.importDialog').dialog('open');
 	});
-	$('.modal').on('click', '.textImport', function () {
-		var selectedFile = $('.importFile').get(0).files[0];
-		alert(selectedFile.name);
+	
+	$('.importDialog').dialog({
+		autoOpen: false,
+		modal:true,
+	});
+	
+	$('.importDialog').on('click', '.textImport', function () {
+		$('.importDialog .importFile').click();
+	});
+	
+	$('.importDialog').on('change', '.importFile', function () {
+		var selectedFile = $(this).get(0).files[0];
+		console.log('Importing: ' + selectedFile.name);
 		var reader = new FileReader();
 		reader.onload = function(e) {
-			alert(e.target.result);
+			console.log(e.target.result);
+			$('.importDialog').dialog('close');
+//			alert('Arquivo Importado com sucesso');
 		};
 		reader.readAsText(selectedFile);
 	});

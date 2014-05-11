@@ -10,12 +10,6 @@
 <script src="taskBlob.js"></script>
 <script src="export.js"></script>
 <script src="import.js"></script>
-<script type="text/javascript">
-$(function() {
-	$('.mainNav').buttonset();
-	$('.mainNav button').button();
-})
-</script>
 </head>
 <body>
 	<header>
@@ -62,21 +56,13 @@ $(function() {
 				<input id="dependencies"><br/>
 			</form>
 		</section>
-		<section class="exportDialog dialog">
-			<header>
-				<h1>Exportar</h1>
-			</header>
-			Exportar para seu computador:<br/>
-			<a href="" download="tasks.json" class="textExport">Aqui</a>
+		<section class="exportDialog dialog" title="Exportar">
+			<a href="" download="tasks.json" class="textExport">Exportar para seu computador.</a>
 		</section>
-		<section class="importDialog dialog">
-			<header>
-				<h1>Importar</h1>
-			</header>
-			<div>
-			Importar de seu computador: <input type="file" class="importFile" /><br/>
-			<button class="textImport">Importar</button>
-			</div>
+		<section class="importDialog dialog" title="Importar">
+<!-- 			Importar de seu computador:  -->
+			<input type="file" class="importFile" accept="application/json" style="display:none"/>
+			<a href="#" class="textImport">Importar de seu Computador.</a>
 		</section>
 	</main>
 

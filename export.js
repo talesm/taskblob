@@ -2,12 +2,20 @@
  * 
  */
 $(function() {
-	$('.showExport').click(function(){
-		createModal('.exportDialog', {closeButton: true});
+	$('.showExport')
+	.button({icons:{primary:'ui-icon-arrowthick-1-s'}})
+	.click(function(){
+		$('.exportDialog').dialog('open');
 	});
 	
-	$('.modal').on('click', '.textExport', function() {
+	$('.exportDialog').dialog({
+		autoOpen: false,
+		modal:true,
+	});
+	
+	$('.exportDialog').on('click', '.textExport', function() {
         var blob = new Blob([JSON.stringify(tasks)], {'type':'application/json'});
-		$('a.textExport').attr('href', window.URL.createObjectURL(blob));
+		$(this).attr('href', window.URL.createObjectURL(blob));
+		$('.exportDialog').dialog('close');
 	});
 });

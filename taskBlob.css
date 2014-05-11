@@ -70,6 +70,7 @@ header h2 {
 	border: black 1px solid;
 	border-top-right-radius: 0.75em;
 	border-bottom-right-radius: 0.75em;
+	cursor: pointer;
 }
 .viewGroup .add{
 	font-weight: bold;

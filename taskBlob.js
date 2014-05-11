@@ -3,6 +3,8 @@
  */
 tasks = [];
 $(function(){
+	$('.mainNav').buttonset();
+//	$('.mainNav button').button();
 	//Cool effect
 	$( '.viewGroup' ).on( 'scroll', function( event ) {
 		$( '.viewGroup .taskName').css('left', $(this).scrollLeft());
@@ -36,10 +38,10 @@ $(function(){
 				addTaskChrono($(".viewGroup"), task);
 				$this.dialog( "close" );
 			}
+		},
+		close: function() {
+			console.log('Goodbye');
 		}
-//		close: function() {
-//			console.log('Goodbye');
-//		}
 	});
 	
 	//Add new task
