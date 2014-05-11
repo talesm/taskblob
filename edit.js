@@ -46,6 +46,8 @@ $(function() {
 				dependStr.split(',').forEach(function(value, index) {
 					dependencies[index] = id2path(value);
 				});
+				if(id.length > 1)
+					throw 'Unsupported';
 				if (id[0] > tasks.length) {							//Adding
 					var task = new Task([ tasks.length + 1 ], name,
 							description, duration, spent, status,

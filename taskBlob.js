@@ -52,36 +52,8 @@ function makeTaskName(path) {
 	return str;
 }
 
-function makePlayTaskName(path) {
-	var str = 'playTask';
-	path.forEach(function(element) {
-		str += '_' + element;
-	});
-	return str;
-}
-
-function makeEditTaskName(path) {
-	var str = 'editTask';
-	path.forEach(function(element) {
-		str += '_' + element;
-	});
-	return str;
-}
-
-function makeDeleteTaskName(path) {
-	var str = 'deleteTask';
-	path.forEach(function(element) {
-		str += '_' + element;
-	});
-	return str;
-}
-
-function makeAddTaskName(path) {
-	var str = 'addTask';
-	path.forEach(function(element) {
-		str += '_' + element;
-	});
-	return str;
+function makeTaskPath(name){
+	return name.substr(5).split('_');
 }
 
 /**
@@ -121,12 +93,11 @@ function editTaskChrono(viewGroup, task){
  * @param task
  * @returns {String}
  */
-function generateOptions(task){
-	var path = task.id;
-	var optionItem = '<span class="play ui-icon ui-icon-play" id="'+ makePlayTaskName(path) + '"></span>';
-	optionItem 	  += '<span class="edit ui-icon ui-icon-pencil" id="'+ makeEditTaskName(path) + '"></span>';
-	optionItem 	  += '<span class="add ui-icon ui-icon-plus" id="'+ makeAddTaskName(path) + '"></span>';
-	optionItem 	  += '<span class="delete ui-icon ui-icon-trash" id="'+ makeDeleteTaskName(path) + '"></span>';
+function generateOptions(){
+	var optionItem = '<span class="play ui-icon ui-icon-play"></span>';
+	optionItem 	  += '<span class="edit ui-icon ui-icon-pencil"></span>';
+	optionItem 	  += '<span class="add ui-icon ui-icon-plus"></span>';
+	optionItem 	  += '<span class="delete ui-icon ui-icon-trash"></span>';
 	return optionItem;
 }
 
@@ -137,7 +108,7 @@ function generateOptions(task){
  */
 function generateTaskView(task) {
 	var path = task.id;
-	var viewItem = '<span class="taskName">'+generateOptions(task)+path.join('.')+ ". "+task.name + '</span>';
+	var viewItem = '<span class="taskName">'+generateOptions()+path.join('.')+ ". "+task.name + '</span>';
 	viewItem += '<span class="meter start" style = "width:'+(task.start()*scale)+'em"></span>';
 	viewItem += '<span class="meter spentReg" style = "width:'+(task.spentReg()*scale)+'em"></span>';
 	viewItem += '<span class="meter remaining" style = "width:'+(task.remaining()*scale)+'em"></span>';
@@ -223,4 +194,53 @@ Task.prototype.start = function() {
 
 Task.prototype.end = function() {
 	return this.start() + Math.max(this.duration, this.spent);
+};
+
+function compareIndices(index1, index2){
+	if(index1.length !== index2.length)
+		return false;
+	var i, l=index1.length;
+	for(i=0; i < l; ++i)
+		if(index1[i] !== index2[i])
+			return false;
+	return true;
+}
+
+Task.prototype.erase = function() {
+	if(this.id.length > 1)
+		throw 'Not supported yet!';
+	var id = this.id;
+	//Eliminate dependencies:
+	this.dependencies.forEach(function(value, key) {
+		var dependTo = getTask(value).dependsMe;
+		var i, l = dependTo.length;
+		for(i=0; i < l; ++i){
+			if(compareIndices(id, dependTo[i])){
+				dependTo.splice(i, 1);
+				break;
+			}
+		}
+	});
+	this.dependsMe.forEach(function(value, key) {
+		var dependTo = getTask(value).dependencies;
+		var i, l = dependTo.length;
+		for(i=0; i < l; ++i){
+			if(compareIndices(id, dependTo[i])){
+				dependTo.splice(i, 1);
+				break;
+			}
+		}
+	});
+	//Removing
+	delete tasks[id[0]-1];
+	//Cleaning
+	var l = tasks.length -1;
+	for(var i = l; i >= 0; --i){
+		if(tasks[i]){
+			var deadCount = l - i;
+			if(deadCount)
+				tasks.splice(i+1, deadCount);
+			break;
+		}
+	}
 };

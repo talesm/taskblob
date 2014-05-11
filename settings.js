@@ -51,7 +51,7 @@ $(function(){
 function loadFromStorage(storage) {
 	if(storage.hasOwnProperty('tasksRepository')){
 		tasks = JSON.parse(storage.getItem('tasksRepository'), function(k, v) {
-			if(v.id !== undefined){
+			if(v && v.id !== undefined){
 				return $.extend(new Task(), v);
 			}
 			return v;
@@ -59,7 +59,8 @@ function loadFromStorage(storage) {
 		$viewGroup = $('.viewGroup'); 
 		$viewGroup.children('.task').detach();
 		tasks.forEach(function(value) {
-			addTaskChrono($viewGroup, value);
+			if(value)
+				addTaskChrono($viewGroup, value);
 		});
 	}
 }
