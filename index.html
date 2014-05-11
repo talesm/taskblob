@@ -10,14 +10,15 @@
 <script src="taskBlob.js"></script>
 <script src="export.js"></script>
 <script src="import.js"></script>
+<script src="settings.js"></script>
 </head>
 <body>
 	<header>
 		<h1>Task Blob</h1>
-		<h2>Sua forma rápida e sujismunda de gerenciar tarefas.</h2>
+		<h2>Sua forma rápida e prática de gerenciar tarefas.</h2>
 	</header>
 	<main>
-		<!-- A nice Modal! Put content to show, clear content to hide! -->
+		<!-- The View zone -->
 		<section class="viewSection">
 			<div class="message"></div>
 			<div class="viewGroup">
@@ -25,6 +26,8 @@
 					<span class="add"><span class="ui-icon ui-icon-plus" style="display: inline-block"></span>Nova Tarefa</span>
 			</div>
 		</section>
+		
+		<!-- Edit dialog -->
 		<section class="editTask dialog" title="Adicionar">
 			<form>
 				<label for="taskPath">Id:</label>
@@ -48,13 +51,26 @@
 				<input id="dependencies"><br/>
 			</form>
 		</section>
+		
+		<!-- Export dialog -->
 		<section class="exportDialog dialog" title="Exportar">
 			<a href="" download="tasks.json" class="textExport">Exportar para seu computador.</a>
 		</section>
+		
+		<!-- Import dialog -->
 		<section class="importDialog dialog" title="Importar">
-<!-- 			Importar de seu computador:  -->
 			<input type="file" class="importFile" accept="application/json" style="display:none"/>
 			<a href="#" class="textImport">Importar de seu Computador.</a>
+		</section>
+		
+		<!-- Settings Dialog -->
+		<section class="settingsDialog dialog" title="Configurações">
+			<fieldset><legend>HTML5 Storage</legend>
+				<label for="html5Storage">Ativo:</label>
+				<input type="checkbox" id="html5Storage"><br/>
+				<label for="html5StorageWait">Intervalo entre salvamentos:</label>
+				<input type="number" id="html5StorageWait" min="1" max="10000" value="500" title="Milissegundos (ms)"><br/>
+			</fieldset>
 		</section>
 	</main>
 	
