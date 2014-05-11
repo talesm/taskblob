@@ -3,7 +3,6 @@
  */
 $(function(){
 	startCookieStorage();
-	$( document ).tooltip();
 	var settings = {
 			localStorage :{
 				available : !!window.localStorage,
