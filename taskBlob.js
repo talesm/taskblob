@@ -7,7 +7,10 @@ $(function(){
 //	$('.mainNav button').button();
 	//Cool effect
 	$( '.viewGroup' ).on( 'scroll', function( event ) {
-		$( '.viewGroup .taskName').css('left', $(this).scrollLeft());
+		var $viewGroup=$( '.viewGroup');
+		var scrollLeft=$(this).scrollLeft();
+		$viewGroup.find('.taskName').css('left', scrollLeft);
+		$viewGroup.find('.add').css('left', scrollLeft);
 	});
 	
 	$('.editTask').dialog({
@@ -137,8 +140,21 @@ function generateTaskView(task) {
 	viewItem += '<span class="meter remaining" style = "width:'+(task.remaining()*scale)+'em"></span>';
 	viewItem += '<span class="meter leftover" style = "width:'+(task.leftover()*scale)+'em"></span>';
 	viewItem += '<span class="meter overdue" style = "width:'+(task.overdue()*scale)+'em"></span>';
+	adjustRuler(task.end());
 	return viewItem;
-}	
+}
+
+currentEnd = 15;
+function adjustRuler(end){
+	if(end > currentEnd){
+		var incr = Math.ceil((end - currentEnd)/5);
+		var $timeLabel = $('.timeLabel');
+		for(var i = 1; i <= incr; ++i){
+			$timeLabel.append('<span>' + (currentEnd + i*5) + 'h</span>');
+		}
+		currentEnd += (incr*5);
+	}
+}
 
 function Task(id, name, description, duration, spent, status, dependencies){
 	this.id = id;

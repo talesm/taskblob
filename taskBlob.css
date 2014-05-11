@@ -34,28 +34,38 @@ header h2 {
 	position: relative;
 	padding-left: 1px;
 	padding-right: 0;	
-	padding-top: 1.5em;
 	padding-bottom: 1.7em;
 	right : 0;
-/* 	min-height: 12em; */
 	overflow: auto;
-	outline: black 1px solid;
 }
 
 /* Labels */
 .timeLabel{
+	position: static;
 	background: white;
-	position: absolute;
-	margin-left: 10em;
-	margin-top: -1.5em;
+	margin-left: 0;
+	margin-bottom: 0.2em;
 	outline: #aaa 1px solid;
 	white-space: nowrap;
 }
 .timeLabel > span{
+	background: white;
 	display: inline-block;
 	width: 10em; 
-	outline: #aaa 1px solid;
-	text-align: center;
+	text-align: right;
+}
+.timeLabel > span:AFTER{
+	position: absolute;
+	top: 0;
+	border-left: 1px solid #aaa;
+/* 	height: 1.2em; */
+	height: 100%;
+	content: ' ';
+	z-index = -1;
+}
+
+.task{
+	white-space: nowrap;
 }
 
 /* Tasks */
@@ -71,6 +81,7 @@ header h2 {
 	border-top-right-radius: 0.75em;
 	border-bottom-right-radius: 0.75em;
 	cursor: pointer;
+	z-index: 10;
 }
 .viewGroup .add{
 	border-width: 2px;
@@ -88,10 +99,6 @@ header h2 {
 	border-width: 1px 0 1px 0;
 }
 
-.task{
-	white-space: nowrap;
-}
-
 .start{
 	background-color: transparent;
 	margin-left: 10em;
@@ -100,7 +107,13 @@ header h2 {
 
 .spentReg{
 	background-color: #68c;
-	border-left-width: 1px;
+}
+
+.spentReg:BEFORE{
+	position:absolute;
+	border-left: 1px solid black;	
+	content: ' ';
+	height: 1.2em;
 }
 
 .remaining{
@@ -112,7 +125,13 @@ header h2 {
 }
 .overdue{
 	background-color: #f87;
-	border-right-width: 1px;
+}
+
+.overdue:AFTER{
+	position:absolute;
+	border-right: 1px solid black;	
+	content: ' ';
+	height: 1.2em;
 }
 
 /*************/
