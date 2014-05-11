@@ -3,7 +3,7 @@
  */
 $(function() {
 	$('.showExport')
-	.button({icons:{primary:'ui-icon-arrowthick-1-s'}})
+	.button({icons:{primary:'ui-icon-circle-arrow-s'}})
 	.click(function(){
 		$('.exportDialog').dialog('open');
 	});

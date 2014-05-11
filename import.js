@@ -3,7 +3,7 @@
  */
 $(function() {
 	$('.showImport')
-	.button({icons:{primary:'ui-icon-arrowthick-1-n'}})
+	.button({icons:{primary:'ui-icon-circle-arrow-n'}})
 	.click(function(){
 		$('.importDialog').dialog('open');
 	});
