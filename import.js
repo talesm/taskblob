@@ -22,9 +22,19 @@ $(function() {
 		console.log('Importing: ' + selectedFile.name);
 		var reader = new FileReader();
 		reader.onload = function(e) {
-			console.log(e.target.result);
+			//console.log(e.target.result);
+			tasks = JSON.parse(e.target.result, function(k, v) {
+				if(v.id !== undefined){
+					return $.extend(new Task(), v);
+				}
+				return v;
+			});
+			$viewGroup = $('.viewGroup'); 
+			$viewGroup.children('.task').detach();
+			tasks.forEach(function(value) {
+				addTaskChrono($viewGroup, value);
+			});
 			$('.importDialog').dialog('close');
-//			alert('Arquivo Importado com sucesso');
 		};
 		reader.readAsText(selectedFile);
 	});
