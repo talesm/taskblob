@@ -15,6 +15,11 @@ $(function(){
 	});
 });
 
+/**
+ * Converts an id expression in a path.
+ * @param val
+ * @returns [Number] 
+ */
 function id2path(val){
 	return JSON.parse('[' + val.replace('.', ',') + ']');
 }
@@ -34,6 +39,11 @@ function getTask(path) {
 	return container;
 }
 
+/**
+ * Converts a path in a task name.
+ * @param path
+ * @returns String
+ */
 function makeTaskName(path) {
 	var str = 'task';
 	path.forEach(function(element) {
@@ -74,13 +84,20 @@ function makeAddTaskName(path) {
 	return str;
 }
 
-var startPos = 0;
+/**
+ * The offset of representation 
+ */
+var offset = 0;
+/**
+ * The scale of representation
+ */
 var scale = 2;
-//
-//function generateTaskView() {
-//	
-//}
 
+/**
+ * Show a new task on schedule;
+ * @param viewGroup
+ * @param task
+ */
 function addTaskChrono(viewGroup, task){
 	var viewItem = '<div class="task" '+ 'id="' + makeTaskName(task.id) +'" >';
 	viewItem += generateTaskView(task);
@@ -88,12 +105,22 @@ function addTaskChrono(viewGroup, task){
 	viewGroup.append(viewItem);
 }
 
+/**
+ * Refresh the tas on schedule
+ * @param viewGroup
+ * @param task
+ */
 function editTaskChrono(viewGroup, task){
 	var $element = viewGroup.find('#' + makeTaskName(task.id));
 	var viewItem = generateTaskView(task);
 	$element.html(viewItem);
 }
 
+/**
+ * Private
+ * @param task
+ * @returns {String}
+ */
 function generateOptions(task){
 	var path = task.id;
 	var optionItem = '<span class="play ui-icon ui-icon-play" id="'+ makePlayTaskName(path) + '"></span>';
@@ -103,6 +130,11 @@ function generateOptions(task){
 	return optionItem;
 }
 
+/**
+ * Private
+ * @param task
+ * @returns {String}
+ */
 function generateTaskView(task) {
 	var path = task.id;
 	var viewItem = '<span class="taskName">'+generateOptions(task)+path.join('.')+ ". "+task.name + '</span>';
@@ -115,7 +147,16 @@ function generateTaskView(task) {
 	return viewItem;
 }
 
+/**
+ * The current position of the ruler.
+ * Should be private, please do not change.
+ */
 currentEnd = 15;
+
+/**
+ * Adjust the ruler.
+ * @param end
+ */
 function adjustRuler(end){
 	if(end > currentEnd){
 		var incr = Math.ceil((end - currentEnd)/5);
@@ -127,6 +168,9 @@ function adjustRuler(end){
 	}
 }
 
+/**
+ * The Task class. Its our main thing here.
+ */
 function Task(id, name, description, duration, spent, status, dependencies){
 	this.id = id;
 	this.name = name;
