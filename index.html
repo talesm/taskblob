@@ -36,23 +36,24 @@
 		</section>
 		<section class="editTask dialog" title="Adicionar">
 			<form>
-				<input id="taskPath" type="hidden">
-				<label for="taskName">Nome: </label>
+				<label for="taskPath">Id:</label>
+				<input id="taskPath" disabled><br/>
+				<label for="taskName">Nome:</label>
 				<input id="taskName" value="Nova Tarefa"><br/>
-				<label for="description">Descrição: </label>
+				<label for="description">Descrição:</label>
 				<input id="description" value="..."><br/>
-				<label for="duration">Duração Estimada: </label> 
+				<label for="duration">Duração Estimada:</label> 
 				<input id="duration" value="3" type="number"><br/>
-				<label for="spent">Tempo Utilizado: </label> 
+				<label for="spent">Tempo Utilizado:</label> 
 				 <input id="spent" value='1' type="number"><br/>
-				<label for="status">Status: </label> 
+				<label for="status">Status:</label> 
 				<select id="status">
 					<option value="proposed">Proposta</option>
 					<option value="open">Aberta</option>
 					<option value="overtime">Atrasada</option>
 					<option value="closed">Fechada</option>
 				</select><br/>
-				<label for="dependencies">Dependências: </label>
+				<label for="dependencies">Dependências:</label>
 				<input id="dependencies"><br/>
 			</form>
 		</section>

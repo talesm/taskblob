@@ -11,94 +11,80 @@ $(function(){
 	});
 	
 	$('.editTask').dialog({
-		width: 600,
-		autoOpen: false,
-		modal:true,
-		buttons:{
-			'Salvar':function(){
+		width : 600,
+		autoOpen : false,
+		modal : true,
+		buttons : {
+			'Salvar' : function() {
 				$this = $(this);
-				var name 		= $this.find('#taskName').val();
+				var id = id2path($this.find('#taskPath').val());
+				var name = $this.find('#taskName').val();
 				var description = $this.find('#description').val();
-				var duration 	=+$this.find('#duration').val();
-				var spent 		=+$this.find('#spent').val();
-				var status 		= $this.find('#status').val();
-				var dependStr  	= $this.find('#dependencies').val().trim();
+				var duration = +$this.find('#duration').val();
+				var spent = +$this.find('#spent').val();
+				var status = $this.find('#status').val();
+				var dependStr = $this.find('#dependencies').val();
 				var dependencies = [];
-				if(dependStr !== ''){
-					dependStr.split(',').forEach(function(value, index){
-						var dependecy = value.trim().split('.');
-						dependecy.forEach(function(value, index, arr) {
-							arr[index] = +value;
-						});
-						dependencies[index] = dependecy;
-					});
+				dependStr.split(',').forEach(function(value, index) {
+					dependencies[index] = id2path(value);
+				});
+				if (id[0] > tasks.length) {							//Adding
+					var task = new Task([ tasks.length + 1 ], name,
+							description, duration, spent, status,
+							dependencies);
+					tasks.push(task);
+					addTaskChrono($(".viewGroup"), task);
+				} else {											//Editing
+					var task = getTask(id);
+					task.name 		= name;
+					task.description= description;
+					task.duration 	= duration;
+					task.spent 		= spent;
+					task.status		= status;
+					//TODO task.dependecies;
+					editTaskChrono($(".viewGroup"), task);
 				}
-				var task = new Task([tasks.length+1], name, description, duration, spent, status, dependencies);
-				tasks.push(task);
-				addTaskChrono($(".viewGroup"), task);
-				$this.dialog( "close" );
+				$this.dialog("close");
 			}
 		},
-		close: function() {
-			console.log('Goodbye');
+		close : function() {
+			$('.editTask form').each (function(){
+				  this.reset();
+			});
 		}
 	});
 	
 	//Add new task
 	$( '.viewSection .add').on('click', function() {
-		$('.editTask').dialog("open");
+		var $editTask = $('.editTask');
+		$editTask.find('#taskPath').val((tasks.length+1));
+		$editTask.dialog('option', 'title', 'Adicionar Nova Tarefa');
+		$editTask.dialog("open");
 	});
 	
 	//Quick edit task.
 	
 	//Edit
 	$( '.viewSection').on('click', '.task', function() {
-		createModal($('.editTask'), {closeButton:true});
-		var sid = $(this).attr('id').substr(5);
-		$('.modal header > h1').html('Editar Tarefa [' + sid.replace('_', '.') + ']');
-		$('.modal .taskPath').val(sid.split('_'));
+		var $editTask = $('.editTask');
+		var sid = $(this).attr('id').substr(5).replace('_', '.');
+		var task = getTask(id2path(sid));
+		$editTask.find('#taskPath').val(sid);
+		$editTask.find('#taskName').val(task.name);
+		$editTask.find('#description').val(task.description);
+		$editTask.find('#duration').val(task.duration);
+		$editTask.find('#spent').val(task.spent);
+		$editTask.find('#status').val(task.status);
+		$editTask.find('#dependencies').val(task.dependencies);
+		$editTask.dialog('option', 'title', 'Editar Tarefa');
+		$editTask.dialog("open");
 	});
-	
-//	$( '.modal').on('click', '.save', function() {
-//		var modal = $('.modal');
-//		var path = modal.find('.taskPath').val().split('.');
-//		var ord = path[path.length-1];
-//		var name 		= modal.find('#taskName').val();
-//		var description = modal.find('#description').val();
-//		var duration 	=+modal.find('#duration').val();
-//		var spent 		=+modal.find('#spent').val();
-//		var status 		= modal.find('#status').val();
-//		var dependStr  	= modal.find('#dependencies').val().trim();
-//		var dependencies = [];
-//		if(dependStr !== ''){
-//			dependStr.split(',').forEach(function(value, index){
-//				var dependecy = value.trim().split('.');
-//				dependecy.forEach(function(value, index, arr) {
-//					arr[index] = +value;
-//				});
-//				dependencies[index] = dependecy;
-//			});
-//		}
-//		if(ord === '0'){//Adicionando
-//			if(path.length > 1)
-//				throw "Not supported yet";
-//			var task = new Task([tasks.length+1], name, description, duration, spent, status, dependencies);
-//			tasks.push(task);
-//			addTaskChrono($(".viewGroup"), task);
-//			closeModal();
-//		} else {
-//			var task = getTask(path);
-//			task.name = name;
-//			task.description = description;
-//			task.duration = duration;
-//			task.spent = spent;
-//			task.status = status;
-//			//TODO: Check for circular dependecies
-//			task.dependencies = dependencies;
-//			editTaskChrono($(".viewGroup"), task);
-//		}
-//	});
 });
+
+function id2path(val){
+	return JSON.parse('[' + val.replace('.', ',') + ']');
+}
+
 
 function getTask(path) {
 	var index = path[0]-1;
@@ -124,19 +110,35 @@ function makeTaskName(path) {
 
 var startPos = 0;
 var scale = 2;
+//
+//function generateTaskView() {
+//	
+//}
 
-function addTaskChrono(viewGroup, newTask){
-	var path = newTask.id;
-	var viewItem = '<div class="task" '+ 'id="' + makeTaskName(path) +'" >';
-	viewItem += '<span class="taskName">'+path.join('.')+ ". "+newTask.name + '</span>';
-	viewItem += '<span class="meter start" style = "width:'+(newTask.start()*scale)+'em"></span>';
-	viewItem += '<span class="meter spentReg" style = "width:'+(newTask.spentReg()*scale)+'em"></span>';
-	viewItem += '<span class="meter remaining" style = "width:'+(newTask.remaining()*scale)+'em"></span>';
-	viewItem += '<span class="meter leftover" style = "width:'+(newTask.leftover()*scale)+'em"></span>';
-	viewItem += '<span class="meter overdue" style = "width:'+(newTask.overdue()*scale)+'em"></span>';
+function addTaskChrono(viewGroup, task){
+	var viewItem = '<div class="task" '+ 'id="' + makeTaskName(task.id) +'" >';
+	viewItem += generateTaskView(task);
 	viewItem += '</div>';
 	viewGroup.append(viewItem);
 }
+
+function editTaskChrono(viewGroup, task){
+	var $element = viewGroup.find('#' + makeTaskName(task.id));
+	var viewItem = generateTaskView(task);
+	$element.html(viewItem);
+}
+
+
+function generateTaskView(task) {
+	var path = task.id;
+	var viewItem = '<span class="taskName">'+path.join('.')+ ". "+task.name + '</span>';
+	viewItem += '<span class="meter start" style = "width:'+(task.start()*scale)+'em"></span>';
+	viewItem += '<span class="meter spentReg" style = "width:'+(task.spentReg()*scale)+'em"></span>';
+	viewItem += '<span class="meter remaining" style = "width:'+(task.remaining()*scale)+'em"></span>';
+	viewItem += '<span class="meter leftover" style = "width:'+(task.leftover()*scale)+'em"></span>';
+	viewItem += '<span class="meter overdue" style = "width:'+(task.overdue()*scale)+'em"></span>';
+	return viewItem;
+}	
 
 function Task(id, name, description, duration, spent, status, dependencies){
 	this.id = id;
