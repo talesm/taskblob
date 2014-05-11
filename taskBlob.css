@@ -8,8 +8,11 @@ body{
 /*HEADER*/
 body > header, body > footer {
 	background: #eee;
-	border: #aaa 0.25em solid;
+	border: #777 1px solid;
+	border-top: #777 0.25em solid;
+	border-bottom: #777 0.25em solid;
 	border-radius: 0.5em;
+	padding-left: 0.5em;
 	font-variant: small-caps;
 }
 header h1 {
@@ -23,52 +26,6 @@ header h2 {
 /**********/
 /***MAIN***/
 /**********/
-/************************************************************/
-/* Modal													*/
-/* A nice modal effect. It will be used by dialogs above.	*/
-/************************************************************/
-
-.modal{
-	position: absolute;
-	background: rgba(170, 170, 170, .75);
-	top: 0;
-	left: 0;
-	width:100%;
-	height: 100%;
-	z-index: 100;
-}
-
-.modal:empty{
-	display: none;
-}
-
-.modal > *{
-	background: white;
-	margin: auto;
-	margin-top: 2em;
-	padding-left: 1em;
-	padding-right: 1em;
-	border-radius : 1em;
-	max-width: 20cm; 
-	height: 90%;
-}
-
-.modal header{
-	height: 3em;
-	margin-left: -0.5em;
-	margin-right: -0.5em;
-	border-bottom: 1px gray solid;
-	padding-left: 0.5em;
-	padding-right: 0.5em;
-}
-
-//What is not on a modal;
-.unmodal{
-	-webkit-user-select: none; /*Safari, Chrome*/
-    -khtml-user-select: none; /*Konqueror*/
-    -moz-user-select: none; /*Firefox*/
-    user-select: none; /* CSS3 */
-}
 /******/
 /*View*/
 /******/
@@ -78,8 +35,9 @@ header h2 {
 	padding-left: 1px;
 	padding-right: 0;	
 	padding-top: 1.5em;
+	padding-bottom: 1.5em;
 	right : 0;
-	min-height: 12em;
+/* 	min-height: 12em; */
 	overflow: auto;
 	outline: black 1px solid;
 }
@@ -101,7 +59,7 @@ header h2 {
 }
 
 /* Tasks */
-.viewGroup .taskName{
+.viewGroup .taskName, .viewGroup .add{
 	display: inline-block;
 	width: 10em;
 	height: 1.5em;
@@ -112,6 +70,10 @@ header h2 {
 	border: black 1px solid;
 	border-top-right-radius: 0.75em;
 	border-bottom-right-radius: 0.75em;
+}
+.viewGroup .add{
+	font-weight: bold;
+	bottom: 0
 }
 
 .meter{
@@ -151,36 +113,30 @@ header h2 {
 	border-right-width: 1px;
 }
 
-/***********/
-/*Insertion*/
-/***********/
-.addTask{
-	min-height: 4em;
-	border: 1px solid black;
-	border-radius: 0.25em;
-	padding: 0.25em;
-	margin: 0.25em;
-}
-.addTask > span{
-	display: inline-block;
-	white-space: nowrap;
-}
-.addTask > button{
-	float: right;
-	width: 4em;
-	height: 4em;
-}
+/*************/
+/*Edit/Insert*/
+/*************/
 
 /********************************************/
 /* Dialogs 								  	*/
 /* Thees are projected to work with modals  */
 /********************************************/
-.dialog{
-	display: none;
-} 
+.dialog {
+	line-height: 2em;
+}
 
-.modal .dialog{
-	display: block;
+.dialog label{
+	position: absolute;
+	right: 50%;
+}
+.dialog input, .dialog select{
+	position: absolute;
+	left: 50%;
+	height: 1.5em;
+}
+.dialog label::AFTER {
+	content: ' ';
+	white-space: pre;
 }
 
 /********/

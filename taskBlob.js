@@ -8,11 +8,43 @@ $(function(){
 		$( '.viewGroup .taskName').css('left', $(this).scrollLeft());
 	});
 	
+	$('.editTask').dialog({
+		width: 600,
+		autoOpen: false,
+		modal:true,
+		buttons:{
+			'Salvar':function(){
+				$this = $(this);
+				var name 		= $this.find('#taskName').val();
+				var description = $this.find('#description').val();
+				var duration 	=+$this.find('#duration').val();
+				var spent 		=+$this.find('#spent').val();
+				var status 		= $this.find('#status').val();
+				var dependStr  	= $this.find('#dependencies').val().trim();
+				var dependencies = [];
+				if(dependStr !== ''){
+					dependStr.split(',').forEach(function(value, index){
+						var dependecy = value.trim().split('.');
+						dependecy.forEach(function(value, index, arr) {
+							arr[index] = +value;
+						});
+						dependencies[index] = dependecy;
+					});
+				}
+				var task = new Task([tasks.length+1], name, description, duration, spent, status, dependencies);
+				tasks.push(task);
+				addTaskChrono($(".viewGroup"), task);
+				$this.dialog( "close" );
+			}
+		}
+//		close: function() {
+//			console.log('Goodbye');
+//		}
+	});
+	
 	//Add new task
 	$( '.viewSection .add').on('click', function() {
-		createModal($('.editTask'), {closeButton:true});
-		$('.modal header > h1').html('Adicionar Tarefa');
-		$('.modal .taskPath').val('0');
+		$('.editTask').dialog("open");
 	});
 	
 	//Quick edit task.
@@ -25,45 +57,45 @@ $(function(){
 		$('.modal .taskPath').val(sid.split('_'));
 	});
 	
-	$( '.modal').on('click', '.save', function() {
-		var modal = $('.modal');
-		var path = modal.find('.taskPath').val().split('.');
-		var ord = path[path.length-1];
-		var name 		= modal.find('.taskName').val();
-		var description = modal.find('.description').val();
-		var duration 	=+modal.find('.duration').val();
-		var spent 		=+modal.find('.spent').val();
-		var status 		= modal.find('.status').val();
-		var dependStr  	= modal.find('.dependencies').val().trim();
-		var dependencies = [];
-		if(dependStr !== ''){
-			dependStr.split(',').forEach(function(value, index){
-				var dependecy = value.trim().split('.');
-				dependecy.forEach(function(value, index, arr) {
-					arr[index] = +value;
-				});
-				dependencies[index] = dependecy;
-			});
-		}
-		if(ord === '0'){//Adicionando
-			if(path.length > 1)
-				throw "Not supported yet";
-			var task = new Task([tasks.length+1], name, description, duration, spent, status, dependencies);
-			tasks.push(task);
-			addTaskChrono($(".viewGroup"), task);
-			closeModal();
-		} else {
-			var task = getTask(path);
-			task.name = name;
-			task.description = description;
-			task.duration = duration;
-			task.spent = spent;
-			task.status = status;
-			//TODO: Check for circular dependecies
-			task.dependencies = dependencies;
-			editTaskChrono($(".viewGroup"), task);
-		}
-	});
+//	$( '.modal').on('click', '.save', function() {
+//		var modal = $('.modal');
+//		var path = modal.find('.taskPath').val().split('.');
+//		var ord = path[path.length-1];
+//		var name 		= modal.find('#taskName').val();
+//		var description = modal.find('#description').val();
+//		var duration 	=+modal.find('#duration').val();
+//		var spent 		=+modal.find('#spent').val();
+//		var status 		= modal.find('#status').val();
+//		var dependStr  	= modal.find('#dependencies').val().trim();
+//		var dependencies = [];
+//		if(dependStr !== ''){
+//			dependStr.split(',').forEach(function(value, index){
+//				var dependecy = value.trim().split('.');
+//				dependecy.forEach(function(value, index, arr) {
+//					arr[index] = +value;
+//				});
+//				dependencies[index] = dependecy;
+//			});
+//		}
+//		if(ord === '0'){//Adicionando
+//			if(path.length > 1)
+//				throw "Not supported yet";
+//			var task = new Task([tasks.length+1], name, description, duration, spent, status, dependencies);
+//			tasks.push(task);
+//			addTaskChrono($(".viewGroup"), task);
+//			closeModal();
+//		} else {
+//			var task = getTask(path);
+//			task.name = name;
+//			task.description = description;
+//			task.duration = duration;
+//			task.spent = spent;
+//			task.status = status;
+//			//TODO: Check for circular dependecies
+//			task.dependencies = dependencies;
+//			editTaskChrono($(".viewGroup"), task);
+//		}
+//	});
 });
 
 function getTask(path) {
@@ -93,7 +125,7 @@ var scale = 2;
 
 function addTaskChrono(viewGroup, newTask){
 	var path = newTask.id;
-	var viewItem = '<div class="task"'+ 'id="' + makeTaskName(path) +'" >';
+	var viewItem = '<div class="task" '+ 'id="' + makeTaskName(path) +'" >';
 	viewItem += '<span class="taskName">'+path.join('.')+ ". "+newTask.name + '</span>';
 	viewItem += '<span class="meter start" style = "width:'+(newTask.start()*scale)+'em"></span>';
 	viewItem += '<span class="meter spentReg" style = "width:'+(newTask.spentReg()*scale)+'em"></span>';
