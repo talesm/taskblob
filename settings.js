@@ -36,6 +36,7 @@ $(function(){
 		modal:true,
 		width: 600,
 	});
+	return;
 	
 	generateSaver(window.localStorage, settings.localStorage);
 	generateSaver(window.cookieStorage, settings.cookieStorage);
