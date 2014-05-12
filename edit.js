@@ -88,7 +88,8 @@ $(function() {
 						}
 					});
 					//3.Remove the others
-					trash.forEach(function(dependency) {
+					trash.forEach(function(element) {
+						var dependency = getTask(element);
 						task.removeDependency(dependency);
 					});
 					//Adding
