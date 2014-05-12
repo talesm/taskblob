@@ -193,7 +193,9 @@ Task.prototype.spentReg = function() {
 };
 
 Task.prototype.remaining = function() {
-	return this.duration - this.spentReg();
+	if(this.status !== 'closed')
+		return this.duration - this.spentReg();
+	return 0;
 };
 
 Task.prototype.overdue = function() {
@@ -201,7 +203,9 @@ Task.prototype.overdue = function() {
 };
 
 Task.prototype.leftover = function() {
-	return  0;
+	if(this.status === 'closed')
+		return this.duration - this.spentReg();
+	return 0;
 };
 
 Task.prototype.start = function() {
@@ -214,7 +218,7 @@ Task.prototype.start = function() {
 };
 
 Task.prototype.end = function() {
-	return this.start() + Math.max(this.duration, this.spent);
+	return this.start() + this.spentReg()+this.remaining()+this.overdue();
 };
 
 
