@@ -98,10 +98,11 @@ function editTaskChrono(viewGroup, task){
  * @returns {String}
  */
 function generateOptions(){
-	var optionItem = '<span class="play ui-icon ui-icon-play"></span>';
+	var optionItem = '';
+	optionItem 	  += '<span class="delete ui-icon ui-icon-trash"></span>';
 	optionItem 	  += '<span class="edit ui-icon ui-icon-pencil"></span>';
 	optionItem 	  += '<span class="add ui-icon ui-icon-plus"></span>';
-	optionItem 	  += '<span class="delete ui-icon ui-icon-trash"></span>';
+	optionItem 	  += '<span class="play ui-icon ui-icon-play"></span>';
 	return optionItem;
 }
 

@@ -95,14 +95,19 @@ header h2 {
 
 .viewGroup .taskName:hover{
 	width: 15em;
+	padding-right: .5em;
 }
 
 .viewGroup .taskName:hover span{
+	float: right;
 	display:inline-block;
 	background-color: #eee;
 	vertical-align: middle;
 	width: 16px;
-	outline: 1px solid black;
+	border: 1px solid #aaa;
+}
+.viewGroup .taskName:hover span:hover{
+	border-color: black;
 }
 
 .viewGroup .taskName:hover span.delete{
