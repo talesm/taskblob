@@ -24,7 +24,11 @@ function id2path(val){
 	return JSON.parse('[' + val.replace('.', ',') + ']');
 }
 
-
+/**
+ * Returns the task for given path.
+ * @param path
+ * @returns {Task}
+ */
 function getTask(path) {
 	var index = path[0]-1;
 	if(index >= tasks.length)
@@ -42,7 +46,7 @@ function getTask(path) {
 /**
  * Converts a path in a task name.
  * @param path
- * @returns String
+ * @returns {String}
  */
 function makeTaskName(path) {
 	var str = 'task';
@@ -140,6 +144,22 @@ function adjustRuler(end){
 }
 
 /**
+ * Compare two indices
+ * @param index1
+ * @param index2
+ * @returns {Boolean}
+ */
+function compareIndices(index1, index2){
+	if(index1.length !== index2.length)
+		return false;
+	var i, l=index1.length;
+	for(i=0; i < l; ++i)
+		if(index1[i] !== index2[i])
+			return false;
+	return true;
+}
+
+/**
  * The Task class. Its our main thing here.
  */
 function Task(id, name, description, duration, spent, status, dependencies){
@@ -196,19 +216,92 @@ Task.prototype.end = function() {
 	return this.start() + Math.max(this.duration, this.spent);
 };
 
-function compareIndices(index1, index2){
-	if(index1.length !== index2.length)
+
+/**
+ * Returns whether this task depends to the given one.
+ * @param {Array}taskid
+ * @returns {Boolean}
+ */
+Task.prototype.hasDependency = function(taskid){
+	var dependencies = this.dependencies;
+	var i, l = dependencies.length;
+	for(i = 0; i < l; ++i){
+		if(compareIndices(dependencies[i], taskid))
+			return true;
+	}
+	if(this.id.length > 1){
+		var parent = getTask(this.id.slice(0, this.id.length-1));
+		return parent.hasDependency(taskid);
+	}
+	return false;
+};
+
+/**
+ * Returns whether the given task depends from this one.
+ * @param {Array}taskid
+ * @returns {Boolean}
+ */
+Task.prototype.hasDependent = function(taskid){
+	var dependsMe = this.dependsMe;
+	var i, l = dependsMe.length;
+	for(i = 0; i < l; ++i){
+		if(compareIndices(dependsMe[i], taskid))
+			return true;
+	}
+	var subTasks = this.subTasks;
+	if(subTasks.length){
+		var i, l = subTasks.length;
+		for(i = 0; i < l; i++){
+			if(subTasks[i].hasDependent(taskid))
+				return true;
+		}
+	}
+	return false;
+};
+
+/**
+ * Add a new dependency
+ * @param {Task} task
+ * @returns {Boolean}
+ */
+Task.prototype.addDependency = function(task){
+	if(this.hasDependency(task.id) || this.hasDependent(task.id))
 		return false;
-	var i, l=index1.length;
-	for(i=0; i < l; ++i)
-		if(index1[i] !== index2[i])
-			return false;
+	this.dependencies.push(task.id);
+	task.dependsMe.push(this.id);
 	return true;
-}
+};
+
+/**
+ * Remove a dependency
+ * @param {Array} taskid
+ * @returns {Boolean}
+ */
+Task.prototype.removeDependency = function(taskid){
+	var dependencies = this.dependencies;
+	var i, l = dependencies.length;
+	var thisid = this.id;
+	for(i = 0; i < l; ++i){
+		if(compareIndices(dependencies[i], taskid)){
+			dependencies.splice(i, 1);
+			var dependsMe = getTask(taskid).dependsMe;
+			var j, m = dependsMe.length;
+			for(j = 0; j < m; ++j){
+				if(compareIndices(dependsMe[j], thisid)){
+					dependsMe.splice(j, 1);
+				}
+			}
+			return true;
+		}
+	}
+	return false;
+};
 
 Task.prototype.erase = function() {
 	if(this.id.length > 1)
 		throw 'Not supported yet!';
+	if(this.subTasks.length)
+		throw 'Can not delete a parent';
 	var id = this.id;
 	//Eliminate dependencies:
 	this.dependencies.forEach(function(value, key) {
