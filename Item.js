@@ -88,6 +88,9 @@ Item.prototype.removeDependency = function(task){
 	return true;
 };
 
+/**
+ * Erase the item
+ */
 Item.prototype.erase = function() {
 	//Eliminate dependencies:
 	this.dependencies.forEach(function(dependency) {
@@ -102,4 +105,25 @@ Item.prototype.erase = function() {
 	}, this);
 	if(this.parent)
 		this.parent.removeKid(this);
+};
+
+
+/**
+ * Get the absolute start position
+ * @returns {Number}
+ */
+Item.prototype.start = function() {
+	var start = 0;
+	this.dependencies.forEach(function(task) {
+		start = Math.max(start, task.end());
+	});
+	return start;
+};
+
+/**
+ * Get the absolute end position.
+ * @returns
+ */
+Item.prototype.end = function() {
+	return this.start() + this.spentReg()+this.remaining()+this.overdue();
 };
