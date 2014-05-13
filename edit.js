@@ -34,11 +34,17 @@ $(function() {
 		$editTask.find('#duration').val(task.duration);
 		$editTask.find('#spent').val(task.spent);
 		$editTask.find('#status').val(task.status);
-		$editTask.find('#dependencies').val(task.dependencies);
-		$editTask.find('#dependsMe').val(task.dependsMe);
+		$editTask.find('#dependencies').val(linearizeDep(task.dependencies));
+		$editTask.find('#dependsMe').val(linearizeDep(task.dependents));
 		$editTask.dialog('option', 'title', 'Editar Tarefa');
 		$editTask.dialog("open");
 	});
+	
+	function linearizeDep(dep){
+		return dep.map(function(dp){
+			return dp.id.join('.');
+		}).join(', ');
+	}
 	
 	$('.editTask').dialog({
 		width : 600,
@@ -56,7 +62,7 @@ $(function() {
 				var dependStr = $this.find('#dependencies').val();
 				var dependencies = [];
 				dependStr.split(',').forEach(function(value, index) {
-					dependencies[index] = id2path(value);
+					dependencies.push(getTask(id2path(value)));
 				});
 				if(id.length > 1)
 					throw 'Unsupported';
@@ -79,29 +85,23 @@ $(function() {
 					var trash = task.dependencies.slice();
 					//2.Remove from trash the ones who are re-added.
 					dependencies.forEach(function(dependency) {
-						var j, m = trash.length;
-						for(j = 0; j < m; ++j){
-							if(compareIndices(dependency, trash[j])){
-								trash.splice(j, 1);
-								break;
-							}
-						}
+						var j=trash.indexOf(dependency);
+						if(j != -1)
+							trash.splice(j, 1);
 					});
 					//3.Remove the others
-					trash.forEach(function(element) {
-						var dependency = getTask(element);
+					trash.forEach(function(dependency) {
 						task.removeDependency(dependency);
 					});
 					//Adding
-					dependencies.forEach(function(element) {
-						var dependency = getTask(element);
+					dependencies.forEach(function(dependency) {
 						if(dependency)
 							task.addDependency(dependency);
 					});
 					
 					//Show again
 					editTaskChrono($viewGroup, task);
-					task.dependsMe.forEach(function(dependent){
+					task.dependents.forEach(function(dependent){
 						editTaskChrono($viewGroup, getTask(dependent));
 					});
 				}
