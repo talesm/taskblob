@@ -38,7 +38,11 @@ function Item(id, parent, name, description, dependencies){
  */
 Item.prototype.hasDependency = function(task){
 	var pos = this.dependencies.indexOf(task);
-	return (pos != -1) || (!!this.parent && this.parent.hasDependency(task)); 
+	return (pos != -1) 
+		|| (!!this.parent && this.parent.hasDependency(task))
+		|| (this.dependencies.some(function(dependency){
+			return dependency.hasDependency(task);
+		})); 
 };
 
 /**
@@ -47,7 +51,11 @@ Item.prototype.hasDependency = function(task){
  * @returns {Boolean}
  */
 Item.prototype.hasDependent = function(task){
-	return this.dependents.indexOf(task) != -1;
+	var pos = this.dependents.indexOf(task);
+	return (pos != -1)
+		|| (this.dependents.some(function(dependent){
+			return dependent.hasDependent(task);
+		}));
 };
 
 /**
@@ -92,5 +100,6 @@ Item.prototype.erase = function() {
 		if(pos != -1)
 			dependent.dependency.splice(pos, 1);
 	}, this);
-	this.parent.removeKid(this);
+	if(this.parent)
+		this.parent.removeKid(this);
 };

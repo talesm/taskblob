@@ -102,7 +102,7 @@ $(function() {
 					//Show again
 					editTaskChrono($viewGroup, task);
 					task.dependents.forEach(function(dependent){
-						editTaskChrono($viewGroup, getTask(dependent));
+						editTaskChrono($viewGroup, dependent);
 					});
 				}
 				$this.dialog("close");
