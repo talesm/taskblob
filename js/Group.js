@@ -14,7 +14,7 @@ Group.prototype.constructor = Group;
  * @param {Array} id
  * @param {String} name
  * @param {String} description
- * @param {Item[]} dependependencies
+ * @param {Item[]} dependencies
  * @param {Item[]} children
  */
 function Group(id, name, description, dependencies, children) {
@@ -22,7 +22,7 @@ function Group(id, name, description, dependencies, children) {
 	this.subTasks = [];
 	if(children){
 		children.forEach(function(kid) {
-			if(kid.hasDependency(this) || this.hasDependency(kid))
+			if(kid.parent || kid.hasDependency(this) || this.hasDependency(kid))
 				return;//continue
 			kid.parent = this;
 			this.subTasks.push(kid);
@@ -32,9 +32,19 @@ function Group(id, name, description, dependencies, children) {
 
 /**
  * Add a kid to group.
+ * @param {Item} task - The item to add.
+ * @return {Boolean} whether it was successful.
  */
 Group.prototype.addKid = function(task){
-	//TODO
+	if(!task || task.parent || task.hasDependency(this) || task.hasDependency(kid))
+		return false;
+	task.parent = this;
+	this.subTasks.push(task);
+	return true;
+};
+
+Group.prototype.hasDependent = function(task){
+	return Item.prototype.hasDependent.call(this, task) || (this.parent && this.parent.hasDependent(task));
 };
 
 /**

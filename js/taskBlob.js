@@ -17,8 +17,8 @@ $(function(){
 
 /**
  * Converts an id expression in a path.
- * @param val
- * @returns [Number] 
+ * @param {String} val
+ * @returns { Number[] } 
  */
 function id2path(val){
 	return JSON.parse('[' + val.replace('.', ',') + ']');
