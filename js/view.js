@@ -24,7 +24,7 @@ $(function() {
 		viewTask(sid);
 	});
 	function viewTask(sid){
-		var task = getTask(id2path(sid));
+		var task = tasks.get(id2path(sid));
 		$playTask.find('#playPath').val(sid);
 		$playTask.find('#playName').val(task.name);
 		$playTask.find('#playDescription').val(task.description);

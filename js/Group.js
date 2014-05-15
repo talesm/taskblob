@@ -30,26 +30,27 @@ function Group(id, name, description, dependencies, children) {
 	}
 }
 
+Group.prototype.hasDependent = function(task){
+	return Item.prototype.hasDependent.call(this, task) || (this.parent && this.parent.hasDependent(task));
+};
+
 /**
  * Add a kid to group.
  * @param {Item} task - The item to add.
  * @return {Boolean} whether it was successful.
  */
 Group.prototype.addKid = function(task){
-	if(!task || task.parent || task.hasDependency(this) || task.hasDependency(kid))
+	if(!task || task.parent || task.hasDependency(this) || task.hasDependency(task))
 		return false;
 	task.parent = this;
 	this.subTasks.push(task);
 	return true;
 };
 
-Group.prototype.hasDependent = function(task){
-	return Item.prototype.hasDependent.call(this, task) || (this.parent && this.parent.hasDependent(task));
-};
-
 /**
  * Remove a kid from group.
  * @param {Item} item.
+ * @return {Boolean} whether it was successful.
  */
 Group.prototype.removeKid = function(task){
 	var pos=this.subTasks.indexOf(task);
@@ -58,6 +59,14 @@ Group.prototype.removeKid = function(task){
 	this.subTasks.splice(pos, 1);
 	task.parent = null;
 	return true;
+};
+
+/**
+ * Get the number of children
+ * @returns {Number}
+ */
+Group.prototype.size = function(){
+	return this.subTasks.length;
 };
 
 /**

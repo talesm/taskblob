@@ -1,7 +1,5 @@
-/**
- * 
- */
-tasks = [];
+
+
 $(function(){
 	$('.mainNav').buttonset();
 	$( document ).tooltip();
@@ -22,25 +20,6 @@ $(function(){
  */
 function id2path(val){
 	return JSON.parse('[' + val.replace('.', ',') + ']');
-}
-
-/**
- * Returns the task for given path.
- * @param path
- * @returns {Task}
- */
-function getTask(path) {
-	var index = path[0]-1;
-	if(index >= tasks.length)
-		return null;
-	var container = tasks[path[0]-1];
-	for (var i = 1; i < path.length; i++) {
-		index = path[i]-1;
-		if(index >= container.subTaskslength)
-			return null;
-		container = container.subTasks[index];
-	}
-	return container;
 }
 
 /**
@@ -127,7 +106,7 @@ function generateTaskView(task) {
  * The current position of the ruler.
  * Should be private, please do not change.
  */
-currentEnd = 15;
+var currentEnd = 15;
 
 /**
  * Adjust the ruler.
@@ -143,21 +122,38 @@ function adjustRuler(end){
 		currentEnd += (incr*5);
 	}
 }
+//
+///**
+// * Compare two indices
+// * @param index1
+// * @param index2
+// * @returns {Boolean}
+// */
+//function compareIndices(index1, index2){
+//	if(index1.length !== index2.length)
+//		return false;
+//	var i, l=index1.length;
+//	for(i=0; i < l; ++i)
+//		if(index1[i] !== index2[i])
+//			return false;
+//	return true;
+//}
+
+
 
 /**
- * Compare two indices
- * @param index1
- * @param index2
- * @returns {Boolean}
+ * {Group} tasks - The current tasks
  */
-function compareIndices(index1, index2){
-	if(index1.length !== index2.length)
-		return false;
-	var i, l=index1.length;
-	for(i=0; i < l; ++i)
-		if(index1[i] !== index2[i])
-			return false;
-	return true;
-}
+tasks = new Group([], 'NewProject', 'root');
 
+tasks.get = function(path) {
+	var container = this;
+	for (var i = 0; i < path.length; ++i) {
+		var index = path[i]-1;
+		if(index >= container.size())
+			return null;
+		container = container.subTasks[index];
+	}
+	return container;
+};
 

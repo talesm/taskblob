@@ -6,7 +6,7 @@ $(function() {
 	//Add new task
 	$( '.viewSection .add').on('click', function() {
 		var $editTask = $('.editTask');
-		$editTask.find('#taskPath').val((tasks.length+1));
+		$editTask.find('#taskPath').val((tasks.size()+1));
 		$editTask.dialog('option', 'title', 'Adicionar Nova Tarefa');
 		$editTask.dialog("open");
 	});
@@ -16,7 +16,7 @@ $(function() {
 	$viewSection.on('click', '.taskName .add', function(){
 		var $editTask = $('.editTask');
 		var psid = $(this).parent().parent().attr('id').substr(5).replace('_', '.');
-		var parent = getTask(id2path(psid));
+		var parent = tasks.get(id2path(psid));
 		var sid = psid + '.' + (parent.subTasks.length+1); 
 		$editTask.find('#taskPath').val(sid);
 		$editTask.dialog('option', 'title', 'Adicionar Nova Tarefa');
@@ -27,7 +27,7 @@ $(function() {
 	$viewSection.on('click', '.taskName .edit', function() {
 		var $editTask = $('.editTask');
 		var sid = $(this).parent().parent().attr('id').substr(5).replace('_', '.');
-		var task = getTask(id2path(sid));
+		var task = tasks.get(id2path(sid));
 		$editTask.find('#taskPath').val(sid);
 		$editTask.find('#taskName').val(task.name);
 		$editTask.find('#description').val(task.description);
@@ -62,19 +62,21 @@ $(function() {
 				var dependStr = $this.find('#dependencies').val();
 				var dependencies = [];
 				dependStr.split(',').forEach(function(value, index) {
-					dependencies.push(getTask(id2path(value)));
+					if(value === '')
+						return;
+					dependencies.push(tasks.get(id2path(value)));
 				});
 				if(id.length > 1)
 					throw 'Unsupported';
 				var $viewGroup=$(".viewGroup");
-				if (id[0] > tasks.length) {							//Adding
-					var task = new Task([ tasks.length + 1 ], name,
+				if (id[0] > tasks.size()) {							//Adding
+					var task = new Task([ tasks.size() + 1 ], name,
 							description, duration, spent, status,
 							dependencies);
-					tasks.push(task);
+					tasks.addKid(task);
 					addTaskChrono($viewGroup, task);
 				} else {											//Editing
-					var task = getTask(id);
+					var task = tasks.get(id);
 					task.name 		= name;
 					task.description= description;
 					task.duration 	= duration;
