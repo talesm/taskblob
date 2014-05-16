@@ -30,9 +30,45 @@ Project.prototype.get = function(path) {
 /**
  * Parses a dried representation into current projects. It erases all previous
  * data.
+ * 
+ * @param {Object}
+ *            dried - The object to wet.
+ * @returns {Project}
+ * 
+ * Observes it does only executes for projects dried by this exact version,
+ * otherwise it must pre-processes using a converter.
  */
-Project.prototype.wet = function(text) {
-	throw "Stub";
+Project.wet = function(dried) {
+	var lVersion = [1, 1, 0, 0];
+	if(!dried.version || dried.version.some(function(element, i) {
+		return element != lVersion[i];
+	}));
+	var p = new Project(dried.name, dried.description);
+	var tasks = dried.tasks.reduce(function(tasks, driedTask, ind){
+		var task = null;
+		if(driedTask){
+			if(driedTask.subTasks){
+				//task = new Group([ind+1], driedTask.name, driedTask.description);
+				throw "NOT IMPLEMENTED YET"; //TODO Implement this recursively.
+			}
+			else
+				task = new Task([ind+1], driedTask.name|| 'TRUNCATED', driedTask.description || '', driedTask.duration || 0, driedTask.spent || 0);
+			task.dependencies = driedTask.dependencies;
+		}
+		tasks.push(task);
+		return tasks;
+	}, []);
+	p.subTasks = tasks;
+	tasks.forEach(function name(task) {
+		var dependencies = task.dependencies;
+		task.dependencies = [];
+		dependencies.forEach(function(path) {
+			if(!task.addDependency(p.get(path))){
+				throw 'Format Error: Task ['+task.id.join('.')+'] has unreachable dependency ['+path.join('.')+']'; 
+			}
+		});
+	});
+	return p;
 };
 
 /**

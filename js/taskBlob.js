@@ -2,7 +2,7 @@
 /**
  * {Project} tasks - The current tasks
  */
-tasks = new Project([], 'NewProject', 'root');
+tasks = new Project('DefaultProject', 'root');
 
 // Main function
 $(function(){
