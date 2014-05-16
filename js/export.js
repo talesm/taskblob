@@ -14,7 +14,7 @@ $(function() {
 	});
 	
 	$('.exportDialog').on('click', '.textExport', function() {
-        var blob = new Blob([JSON.stringify(tasks)], {'type':'application/json'});
+        var blob = new Blob([JSON.stringify(tasks.dry())], {'type':'application/json'});
 		$(this).attr('href', window.URL.createObjectURL(blob));
 	});
 });

@@ -1,5 +1,10 @@
 
+/**
+ * {Project} tasks - The current tasks
+ */
+tasks = new Project([], 'NewProject', 'root');
 
+// Main function
 $(function(){
 	$('.mainNav').buttonset();
 	$( document ).tooltip();
@@ -122,38 +127,3 @@ function adjustRuler(end){
 		currentEnd += (incr*5);
 	}
 }
-//
-///**
-// * Compare two indices
-// * @param index1
-// * @param index2
-// * @returns {Boolean}
-// */
-//function compareIndices(index1, index2){
-//	if(index1.length !== index2.length)
-//		return false;
-//	var i, l=index1.length;
-//	for(i=0; i < l; ++i)
-//		if(index1[i] !== index2[i])
-//			return false;
-//	return true;
-//}
-
-
-
-/**
- * {Group} tasks - The current tasks
- */
-tasks = new Group([], 'NewProject', 'root');
-
-tasks.get = function(path) {
-	var container = this;
-	for (var i = 0; i < path.length; ++i) {
-		var index = path[i]-1;
-		if(index >= container.size())
-			return null;
-		container = container.subTasks[index];
-	}
-	return container;
-};
-

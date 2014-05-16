@@ -21,6 +21,7 @@ function Item(id, parent, name, description, dependencies){
 	this.description = description || '';
 	this.dependencies = [];
 	this.dependents = [];
+	this.closed = false;
 	if(dependencies){
 		dependencies.forEach(function(other) {
 			if(other && other instanceof Item && this.dependencies.indexOf(other) === -1){
