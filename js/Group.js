@@ -67,7 +67,7 @@ Group.prototype.removeKid = function(task){
 			--pos;
 			++sz;
 		}while(subTasks[pos] == null);
-		subTasks.splice(pos, sz);
+		subTasks.splice(pos+1, sz);
 	}
 	task.parent = null;
 	return true;
