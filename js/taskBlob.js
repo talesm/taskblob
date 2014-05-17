@@ -45,6 +45,17 @@ function makeTaskPath(name){
 }
 
 /**
+ * Rebuilds the entire view with current tasks.
+ */
+function refreshView() {
+	$viewGroup = $('.viewGroup');
+	$viewGroup.children('.task').remove();
+	tasks.subTasks.forEach(function(value) {
+		addTaskChrono($viewGroup, value);
+	});
+}
+
+/**
  * The offset of representation 
  */
 var offset = 0;
