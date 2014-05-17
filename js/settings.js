@@ -36,7 +36,6 @@ $(function(){
 		modal:true,
 		width: 600,
 	});
-	return;
 	
 	generateSaver(window.localStorage, settings.localStorage);
 	generateSaver(window.cookieStorage, settings.cookieStorage);
@@ -51,19 +50,19 @@ $(function(){
 
 function loadFromStorage(storage) {
 	if(storage.hasOwnProperty('tasksRepository')){
-		tasks = JSON.parse(storage.getItem('tasksRepository'), function(k, v) {
-			if(v && v.id !== undefined){
-				return $.extend(new Task(), v);
-			}
-			return v;
-		});
-		$viewGroup = $('.viewGroup'); 
-		$viewGroup.children('.task').detach();
-		tasks.forEach(function(value) {
-			if(value)
-				addTaskChrono($viewGroup, value);
-		});
+		try{
+			var tasksJSON = text2driedTasks(storage.getItem('tasksRepository'));
+			tasks = Project.wet(tasksJSON);
+			refreshView();
+		}
+		catch (error) {
+			console.log(error); 
+			alert('Armazenamento local em formato desconhecido, truncado ou não tratado. Desabilitando salvamento automático por segurança');
+			storage.wait = 0;
+			return false;
+		}
 	}
+	return true;
 }
 
 function generateSaver(storage, storageSettings) {
@@ -76,7 +75,7 @@ function generateSaver(storage, storageSettings) {
 	var ms = storageSettings.wait;
 	window.setTimeout(function timeFunction() {
 		console.log('Saving');
-		storage.setItem('tasksRepository', JSON.stringify(tasks));
+		storage.setItem('tasksRepository', JSON.stringify(tasks.dry()));
 		window.setTimeout(timeFunction, ms);
 	}, ms);
 }
