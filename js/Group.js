@@ -53,10 +53,22 @@ Group.prototype.addKid = function(task){
  * @return {Boolean} whether it was successful.
  */
 Group.prototype.removeKid = function(task){
-	var pos=this.subTasks.indexOf(task);
+	var subTasks = this.subTasks;
+	var pos=subTasks.indexOf(task);
 	if(pos === -1)
 		return false;
-	this.subTasks.splice(pos, 1);
+	task.parent = null;
+	subTasks[pos] = null; //Soft delete.
+
+	//Hard delete:
+	if(pos === subTasks.length-1){
+		var sz = 0;
+		do{
+			--pos;
+			++sz;
+		}while(subTasks[pos] == null);
+		subTasks.splice(pos, sz);
+	}
 	task.parent = null;
 	return true;
 };

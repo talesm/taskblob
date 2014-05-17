@@ -43,7 +43,7 @@ Project.wet = function(dried) {
 	if(!dried.version || dried.version.some(function(element, i) {
 		return element != lVersion[i];
 	}));
-	var p = new Project(dried.name, dried.description);
+	var project = new Project(dried.name, dried.description);
 	var tasks = dried.tasks.reduce(function(tasks, driedTask, ind){
 		var task = null;
 		if(driedTask){
@@ -54,21 +54,24 @@ Project.wet = function(dried) {
 			else
 				task = new Task([ind+1], driedTask.name|| 'TRUNCATED', driedTask.description || '', driedTask.duration || 0, driedTask.spent || 0);
 			task.dependencies = driedTask.dependencies;
+			task.parent = project;
 		}
 		tasks.push(task);
 		return tasks;
 	}, []);
-	p.subTasks = tasks;
+	project.subTasks = tasks;
 	tasks.forEach(function name(task) {
+		if(!task)
+			return;
 		var dependencies = task.dependencies;
 		task.dependencies = [];
 		dependencies.forEach(function(path) {
-			if(!task.addDependency(p.get(path))){
+			if(!task.addDependency(project.get(path))){
 				throw 'Format Error: Task ['+task.id.join('.')+'] has unreachable dependency ['+path.join('.')+']'; 
 			}
 		});
 	});
-	return p;
+	return project;
 };
 
 /**

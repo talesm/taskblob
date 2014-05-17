@@ -95,14 +95,14 @@ Item.prototype.removeDependency = function(task){
 Item.prototype.erase = function() {
 	//Eliminate dependencies:
 	this.dependencies.forEach(function(dependency) {
-		var pos = dependency.dependent.indexOf(this);
+		var pos = dependency.dependents.indexOf(this);
 		if(pos != -1)
-			dependency.dependent.splice(pos, 1);
+			dependency.dependents.splice(pos, 1);
 	}, this);
 	this.dependents.forEach(function(dependent) {
-		var pos = dependent.dependency.indexOf(this);
+		var pos = dependent.dependencies.indexOf(this);
 		if(pos != -1)
-			dependent.dependency.splice(pos, 1);
+			dependent.dependencies.splice(pos, 1);
 	}, this);
 	if(this.parent)
 		this.parent.removeKid(this);
