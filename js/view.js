@@ -4,7 +4,7 @@
 $(function() {
 	var $playTask=$('.playTask');
 	$playTask.dialog({
-		width: 600,
+		width: 500,
 		autoOpen : false,
 		modal : true,
 		buttons: {
@@ -14,7 +14,7 @@ $(function() {
 		}
 	});
 	
-	$('.viewGroup').on('click', '.task .play', function() {
+	$('.viewGroup').on('click', '.taskName .play', function() {
 		var sid = $(this).parent().parent().attr('id').substr(5).replace('_', '.');
 		viewTask(sid);
 	});

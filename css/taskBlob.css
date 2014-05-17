@@ -160,31 +160,29 @@ header h2 {
 	height: 1.2em;
 }
 
-/*************/
-/*Edit/Insert*/
-/*************/
-
 /********************************************/
 /* Dialogs 								  	*/
 /* Thees are projected to work with modals  */
 /********************************************/
-.dialog {
-	line-height: 2em;
+
+.formTable{
+	display: table;
+	margin: auto;
 }
 
-.dialog label{
-	position: absolute;
-	right: 50%;
+.formTable > .formLine{
+	display: table-row;
 }
-.dialog input, .dialog select{
-	position: absolute;
-	left: 50%;
-	height: 1.5em;
+
+.formTable > .formLine > *{
+	display: table-cell;
 }
-.dialog label::AFTER {
-	content: ' ';
-	white-space: pre;
+
+.formTable > .formLine > label{
+	padding-right: 0.25em;
+	text-align: right;
 }
+
 
 /********/
 /*FOOTER*/

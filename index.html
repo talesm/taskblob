@@ -13,6 +13,7 @@
 <script src="js/Project.js"></script>
 <script src="js/taskBlob.js"></script>
 <script src="js/edit.js"></script>
+<script src="js/split.js"></script>
 <script src="js/view.js"></script>
 <script src="js/remove.js"></script>
 <script src="js/export.js"></script>
@@ -34,41 +35,65 @@
 			</div>
 		</section>
 		<!-- Play dialog -->
-		<section class="playTask dialog" title="Ver Tarefa">
-			<form>
-				<label for="playPath">Id:</label>
-				<input id="playPath" disabled><br/>
-				<label for="playName">Nome:</label>
-				<input id="playName" disabled><br/>
-				<label for="playDescription">Descrição:</label>
-				<input id="playDescription" disabled><br/>
-				<label for="playStatus">Status:</label> 
-				<input id="playStatus" disabled><br/>
-				<label for="playRemaining">Tempo Restante:</label> 
-				<input id="playRemaining" disabled><br/>
-			</form>
-		</section>
-		
-		<!-- Edit dialog -->
+	<section class="playTask dialog" title="Ver Tarefa">
+		<form class="formTable">
+			<div class="formLine">
+				<label for="playPath">Id:</label> <input id="playPath" disabled>
+			</div>
+			<div class="formLine">
+				<label for="playName">Nome:</label> <input id="playName" disabled>
+			</div>
+			<div class="formLine">
+				<label for="playDescription">Descrição:</label> <input
+					id="playDescription" disabled>
+			</div>
+			<div class="formLine">
+				<label for="playStatus">Status:</label> <input id="playStatus"
+					disabled>
+			</div>
+			<div class="formLine">
+				<label for="playRemaining">Tempo Restante:</label> <input
+					id="playRemaining" disabled>
+			</div>
+		</form>
+	</section>
+
+	<!-- Edit dialog -->
 		<section class="editTask dialog" title="Adicionar">
-			<form>
-				<label for="taskPath">Id:</label>
-				<input id="taskPath" disabled><br/>
-				<label for="taskName">Nome:</label>
-				<input id="taskName" value="Nova Tarefa"><br/>
-				<label for="description">Descrição:</label>
-				<input id="description" value="..."><br/>
-				<label for="duration">Duração Estimada:</label> 
-				<input id="duration" value="3" type="number" min="0" step="0.01"><br/>
-				<label for="spent">Tempo Utilizado:</label> 
-				 <input id="spent" value='1' type="number" min="0" step="0.01"><br/>
-				<label for="closed">Finalizada?</label>
-				<input id="closed" type="checkbox"><br/>
-				<label for="dependencies">Dependências:</label>
-				<input id="dependencies"><br/>
-				
-				<label for="dependsMe">Dependência para:</label>
-				<input id=dependsMe disabled><br/>
+			<form class="formTable">
+				<div class="formLine">
+					<label for="taskPath">Id:</label>
+					<input id="taskPath" disabled>
+				</div>
+				<div class="formLine">
+					<label for="taskName">Nome:</label>
+					<input id="taskName" value="Nova Tarefa">
+				</div>
+				<div class="formLine">
+					<label for="description">Descrição:</label>
+					<input id="description" value="...">
+				</div>
+				<div class="formLine">
+					<label for="duration">Duração Estimada:</label> 
+					<input id="duration" value="3" type="number" min="0" step="0.01">
+				</div>
+				<div class="formLine">
+					<label for="spent">Tempo Utilizado:</label> 
+					 <input id="spent" value='1' type="number" min="0" step="0.01">
+				</div>
+				<div class="formLine">
+					<label for="closed">Finalizada?</label>
+					<input id="closed" type="checkbox">
+				</div>
+				<div class="formLine">
+					<label for="dependencies">Dependências:</label>
+					<input id="dependencies">
+					
+				</div>
+				<div class="formLine">
+					<label for="dependsMe">Dependência para:</label>
+					<input id=dependsMe disabled>
+				</div>
 			</form>
 		</section>
 		
@@ -99,6 +124,8 @@
 	</main>
 	
 	<nav class="mainNav buttonset">
+		<button class="add addButton">Tarefa</button>
+		<button class="addGroup addButton">Grupo</button>
 		<button class="showExport">Exportar</button>
 		<button class="showImport">Importar</button>
 		<button class="showSettings">Configurações</button>

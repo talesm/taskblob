@@ -2,7 +2,7 @@
  * 
  */
 $(function() {
-	$('.viewGroup').on('click', '.task .delete', function() {
+	$('.viewGroup').on('click', '.taskName .delete', function() {
 		var $task=$(this).parent().parent();//TODO change to .closest()
 		var path = makeTaskPath($task.attr('id'));
 		var task = tasks.get(path);

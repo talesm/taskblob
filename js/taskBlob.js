@@ -95,10 +95,10 @@ function editTaskChrono(viewGroup, task){
  */
 function generateOptions(){
 	var optionItem = '';
-	optionItem 	  += '<span class="delete ui-icon ui-icon-trash"></span>';
-	optionItem 	  += '<span class="edit ui-icon ui-icon-pencil"></span>';
-	optionItem 	  += '<span class="add ui-icon ui-icon-plus"></span>';
-	optionItem 	  += '<span class="play ui-icon ui-icon-play"></span>';
+	optionItem 	  += '<span class="delete ui-icon ui-icon-trash" title="Deletar"></span>';
+	optionItem 	  += '<span class="edit ui-icon ui-icon-pencil" title="Editar"></span>';
+	optionItem 	  += '<span class="split ui-icon ui-icon-arrowthickstop-1-s" title="Dividir em subTarefas"></span>';
+	optionItem 	  += '<span class="play ui-icon ui-icon-play" title="Visualizar"></span>';
 	return optionItem;
 }
 
@@ -109,7 +109,9 @@ function generateOptions(){
  */
 function generateTaskView(task) {
 	var path = task.id;
-	var viewItem = '<span class="taskName">'+generateOptions()+path.join('.')+ ". "+task.name + '</span>';
+	var name = task.name;
+	var viewItem = '<span class="taskName" title="' + name + '">'
+			+ generateOptions() + path.join('.') + ". " + name + '</span>';
 	viewItem += '<span class="meter start" style = "width:'+(task.start()*scale)+'em"></span>';
 	viewItem += '<span class="meter spentReg" style = "width:'+(task.spentReg()*scale)+'em"></span>';
 	viewItem += '<span class="meter remaining" style = "width:'+(task.remaining()*scale)+'em"></span>';
