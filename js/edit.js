@@ -33,7 +33,7 @@ $(function() {
 		$editTask.find('#description').val(task.description);
 		$editTask.find('#duration').val(task.duration);
 		$editTask.find('#spent').val(task.spent);
-		$editTask.find('#status').val(task.status);
+		$editTask.find('#closed').prop('checked', task.closed);
 		$editTask.find('#dependencies').val(linearizeDep(task.dependencies));
 		$editTask.find('#dependsMe').val(linearizeDep(task.dependents));
 		$editTask.dialog('option', 'title', 'Editar Tarefa');
@@ -58,7 +58,7 @@ $(function() {
 				var description = $this.find('#description').val();
 				var duration = +$this.find('#duration').val();
 				var spent = +$this.find('#spent').val();
-				var status = $this.find('#status').val();
+				var closed = $this.find('#closed').is(':checked');
 				var dependStr = $this.find('#dependencies').val();
 				var dependencies = [];
 				dependStr.split(',').forEach(function(value, index) {
@@ -71,7 +71,7 @@ $(function() {
 				var $viewGroup=$(".viewGroup");
 				if (id[0] > tasks.size()) {							//Adding
 					var task = new Task([ tasks.size() + 1 ], name,
-							description, duration, spent, status,
+							description, duration, spent, null,
 							dependencies);
 					tasks.addKid(task);
 					addTaskChrono($viewGroup, task);
@@ -81,7 +81,7 @@ $(function() {
 					task.description= description;
 					task.duration 	= duration;
 					task.spent 		= spent;
-					task.status		= status;
+					task.closed		= closed;
 					//Erasing:
 					//1.Put on trash all current dependencies
 					var trash = task.dependencies.slice();

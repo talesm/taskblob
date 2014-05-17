@@ -55,6 +55,7 @@ Project.wet = function(dried) {
 				task = new Task([ind+1], driedTask.name|| 'TRUNCATED', driedTask.description || '', driedTask.duration || 0, driedTask.spent || 0);
 			task.dependencies = driedTask.dependencies;
 			task.parent = project;
+			task.closed = driedTask.closed;
 		}
 		tasks.push(task);
 		return tasks;

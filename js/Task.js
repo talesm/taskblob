@@ -12,14 +12,11 @@ Task.prototype.constructor = Task;
  * @constructor
  * @base Item
  */
-function Task(id, name, description, duration, spent, status, dependencies){
+function Task(id, name, description, duration, spent, closed, dependencies){
 	Item.call(this, id, null, name, description, dependencies);
 	this.spent = spent || 0;
 	this.duration = duration || 0;
-	if(!status)
-		this.status = 'proposed';
-	else
-		this.status = status;
+	this.closed = !!closed;//Force boolean
 	this.subTasks = null;
 }
 
@@ -36,7 +33,7 @@ Task.prototype.spentReg = function() {
  * @returns {Number}
  */
 Task.prototype.remaining = function() {
-	if(this.status !== 'closed')
+	if(!this.closed)
 		return this.duration - this.spentReg();
 	return 0;
 };
@@ -54,7 +51,7 @@ Task.prototype.overdue = function() {
  * @returns {Number}
  */
 Task.prototype.leftover = function() {
-	if(this.status === 'closed')
+	if(this.closed)
 		return this.duration - this.spentReg();
 	return 0;
 };
