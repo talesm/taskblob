@@ -51,12 +51,13 @@ function makeTaskPath(name){
 function refreshView() {
 	$viewGroup = $('.viewGroup');
 	$viewGroup.children('.item').remove();
-	tasks.subTasks.forEach(function(item) {
-		if(item){
-			if(item.subTasks)
-				addGroupChrono(item, $viewGroup);
-			else
-				addTaskChrono(item, $viewGroup);
+	tasks.subTasks.forEach(function addItem(item) {
+		if (item) {
+			if (item.subTasks) {
+				addGroupChrono(item);
+				item.subTasks.forEach(addItem);
+			} else
+				addTaskChrono(item);
 		}
 	});
 }
