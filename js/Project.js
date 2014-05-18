@@ -16,6 +16,10 @@ function Project(name, descritpion) {
 	this.version = [ 1, 1, 0, 0 ];
 }
 
+/**
+ * @param {Array} path
+ * @returns {Item}
+ */
 Project.prototype.get = function(path) {
 	var container = this;
 	for (var i = 0; i < path.length; ++i) {

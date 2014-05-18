@@ -85,6 +85,24 @@ Group.prototype.removeKid = function(task){
 };
 
 /**
+ * Removes a kid an puts another in its place.
+ * @param {Item} kid
+ * @param {Item} fosterKid
+ * 
+ * @b Important! It do not reasing ids, you have to do it on your own.
+ */
+Group.prototype.swap = function(kid, fosterKid){
+	var ind = this.subTasks.indexOf(kid);
+	if(ind===-1)
+		throw Error('Swapping the kid of another person.');
+	if(fosterKid.parent)
+		throw Error('Foster kid already has a parent.');
+	kid.parent = null;
+	fosterKid.parent = this;
+	this.subTasks[ind] = fosterKid;
+};
+
+/**
  * Get the number of children
  * @returns {Number}
  */
