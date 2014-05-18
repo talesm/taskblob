@@ -33,7 +33,7 @@ Task.prototype.spentReg = function() {
  * @returns {Number}
  */
 Task.prototype.remaining = function() {
-	if(!this.closed)
+	if(!this.isClosed())
 		return this.duration - this.spentReg();
 	return 0;
 };
@@ -51,7 +51,7 @@ Task.prototype.overdue = function() {
  * @returns {Number}
  */
 Task.prototype.leftover = function() {
-	if(this.closed)
+	if(this.isClosed())
 		return this.duration - this.spentReg();
 	return 0;
 };

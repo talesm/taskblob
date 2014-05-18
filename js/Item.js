@@ -90,6 +90,14 @@ Item.prototype.removeDependency = function(task){
 };
 
 /**
+ * Return whether this or all this' children are closed. 
+ * @returns {Boolean}
+ */
+Item.prototype.isClosed = function() {
+	return this.closed;
+};
+
+/**
  * Erase the item
  */
 Item.prototype.erase = function() {

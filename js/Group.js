@@ -36,6 +36,14 @@ Group.prototype.hasDependent = function(task){
 	return Item.prototype.hasDependent.call(this, task) || (this.parent && this.parent.hasDependent(task));
 };
 
+
+Group.prototype.isClosed = function() {
+	return this.closed || this.subTasks.every(function(kid){
+		return kid.isClosed();
+	});
+};
+
+
 /**
  * Add a kid to group.
  * @param {Item} task - The item to add.

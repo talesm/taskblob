@@ -28,7 +28,7 @@ $(function() {
 		$playTask.find('#playPath').val(sid);
 		$playTask.find('#playName').val(task.name);
 		$playTask.find('#playDescription').val(task.description);
-		$playTask.find('#playStatus').val(task.closed?'Fechada': 'Aberta');
+		$playTask.find('#playStatus').val(task.isClosed()?'Fechada': 'Aberta');
 		$playTask.find('#playRemaining').val(task.remaining());
 		$playTask.dialog("open");
 	}
