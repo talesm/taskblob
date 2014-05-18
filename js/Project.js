@@ -59,8 +59,8 @@ Project.wet = function(dried) {
 				if (driedTask.subTasks) {
 					item = new Group(parent.id.concat([ ind + 1 ]),
 							driedTask.name || 'TRUNCATED', driedTask.description || '',
-							driedTask.closed, null,
-							driedTask.subTasks);
+							driedTask.closed);
+					item.subTasks = wetter(item, driedTask.subTasks);
 				} else{
 					item = new Task(parent.id.concat([ ind + 1 ]),
 							driedTask.name || 'TRUNCATED',
