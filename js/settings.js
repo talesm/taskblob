@@ -2,53 +2,83 @@
  * 
  */
 $(function(){
-	startCookieStorage();
+	//Checking if has localStorage, otherwise it loads a polyfill.
+	if(!window.localStorage)
+		startCookieStorage();
+	
+	//Creating settings
 	var settings = {
-			localStorage :{
-				available : !!window.localStorage,
-				wait: (window.localStorage)?2000:0,
-				saver: 0,
-			},
-
-			cookieStorage :{
-				available : !window.localStorage,//TODO Do some real checking here
-				wait: (window.localStorage)?0:5000,
-				saver: 0,
-			},
+		localStorage :{
+			available : !!window.localStorage,
+			wait: (window.localStorage)?500:0,
+			saver: 0,
+		},
 	};
 	
+	//Creating settings dialog
+	var $settingsDialog=$('.settingsDialog');
+	$settingsDialog.dialog({
+		autoOpen: false,
+		modal:true,
+		width: 600,
+		close: function() {
+			$(this).find().css('display', '');
+			$(this).find('#localStorageWait').attr('disabled', false);
+		},
+		buttons: {
+			'Ok': function(){
+				applyChanges.call(this);
+				$(this).dialog('close');
+			},
+			'Aplicar': applyChanges,
+			'Cancelar': function()
+			{
+				$(this).dialog('close');
+			},
+		}
+	});
+	
+	//Creating settings button
 	$('.showSettings')
 	.button({icons:{primary:'ui-icon-gear'}})
 	.click(function(){
 		var $localStorage=$('#localStorageWait');
-		$localStorage.attr('disabled', !settings.localStorage.available);
-		$localStorage.val(settings.localStorage.wait);
+		$localStorage.parent().css('display', settings.localStorage.available?'':'none');
+		$localStorage.val(settings.localStorage.wait || 500);
+		$localStorage.attr('disabled', !settings.localStorage.wait);
+		$('#localStorageActive').prop('checked', !!settings.localStorage.wait);
 		
-		var $cookieStorage=$('#cookieStorageWait');
-		$cookieStorage.attr('disabled', !settings.cookieStorage.available);
-		$cookieStorage.val(settings.cookieStorage.wait);
-		
-		$('.settingsDialog').dialog('open');
+		$settingsDialog.dialog('open');
 	});
 	
-	$('.settingsDialog').dialog({
-		autoOpen: false,
-		modal:true,
-		width: 600,
+	//Effect of disabling the 'time to wait' field.
+	$settingsDialog.on('change', '#localStorageActive', function() {
+		$settingsDialog.find('#localStorageWait').attr('disabled', !$(this).prop('checked'));
 	});
 	
-	generateSaver(window.localStorage, settings.localStorage);
-	generateSaver(window.cookieStorage, settings.cookieStorage);
-	
+	//Loading settings
 	if(settings.localStorage.available){
-		loadFromStorage(window.localStorage);
-	} else if(settings.cookieStorage.available){
-		loadFromStorage(window.cookieStorage);
+		loadFromStorage(window.localStorage, settings);
 	}
 	
+	//Setup of the saver.
+	generateSaver(window.localStorage, settings.localStorage, settings);
+	
+	//Apply dialog changes.
+	function applyChanges(){
+		var $this = $(this);
+		if(settings.localStorage.available){
+			settings.localStorage.wait = $this.find('#localStorageActive').prop('checked') && (+$this.find('#localStorageWait').val());
+			generateSaver(window.localStorage, settings.localStorage, settings);
+		}
+	}
 });
 
-function loadFromStorage(storage) {
+/**
+ * Load a project from storage. 
+ */
+function loadFromStorage(storage, settings) { 
+	//Loading the tasks
 	if(storage.hasOwnProperty('tasksRepository')){
 		try{
 			var tasksJSON = text2driedTasks(storage.getItem('tasksRepository'));
@@ -59,29 +89,55 @@ function loadFromStorage(storage) {
 			console.log(error); 
 			alert('Armazenamento local em formato desconhecido, truncado ou não tratado. Desabilitando salvamento automático por segurança');
 			storage.wait = 0;
-			return false;
 		}
 	}
-	return true;
+	//Loading the settings
+	if(storage.hasOwnProperty('taskBlobSettings')){
+		try{
+			var jsonSettings = JSON.parse(storage.getItem('taskBlobSettings'));
+			//Must read manually to avoid cache attacks. 
+			if(jsonSettings.localStorage){
+				settings.localStorage.wait = +jsonSettings.localStorage.wait;//TODO truncate the value.
+			}
+		}
+		catch (error) {
+			console.log('Can not load settings, using default');
+			console.log(error);
+		}
+	}
+	else 
+		console.log('Can not find settings, using default');
+	return settings;
 }
 
-function generateSaver(storage, storageSettings) {
+/**
+ * Setup the saver function.
+ */
+function generateSaver(storage, storageSettings, settings) {
+	//Persisting the settings itself
+	storage.setItem('taskBlobSettings', JSON.stringify(settings));
+	
+	//Deleting the old saver.
 	if(storageSettings.saver)
 		window.clearTimeout(storageSettings.saver);
-	if(!storageSettings.available || !storageSettings.wait){
+	
+	//If wait zero, disable saving altogether.
+	if(!storageSettings.available || !(+storageSettings.wait)){
 		storageSettings.saver = 0;
 		return;
 	}
-	var ms = storageSettings.wait;
-	window.setTimeout(function timeFunction() {
+	//Otherwise sets a time out.
+	var ms = +storageSettings.wait;
+	storageSettings.saver = window.setTimeout(function timeFunction() {
 		console.log('Saving');
 		storage.setItem('tasksRepository', JSON.stringify(tasks.dry()));
-		window.setTimeout(timeFunction, ms);
+		storageSettings.saver = window.setTimeout(timeFunction, ms);
 	}, ms);
 }
 
 function startCookieStorage() {
-	window.cookieStorage = {
+	console.log('localStorage not found. Trying cookies.');
+	window.localStorage = {
 		getItem : function(sKey) {
 			if (!sKey || !this.hasOwnProperty(sKey)) {
 				return null;
@@ -117,5 +173,5 @@ function startCookieStorage() {
 					.test(document.cookie);
 		}
 	};
-	window.cookieStorage.length = (document.cookie.match(/\=/g) || window.localStorage).length;
+	window.localStorage.length = (document.cookie.match(/\=/g) || window.localStorage).length;
 }
