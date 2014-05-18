@@ -31,7 +31,7 @@ function Item(id, parent, name, description, dependencies) {
 	if (dependencies) {
 		dependencies.forEach(function(other) {
 			if (other && other instanceof Item
-					&& this.dependencies.indexOf(other) === -1) {
+					&& this.dependencies.indexOf(other) === -1 && other !== this) {
 				this.dependencies.push(other);
 				other.dependents.push(this);
 			}
@@ -76,7 +76,7 @@ Item.prototype.hasDependent = function(task) {
  * @returns {Boolean}
  */
 Item.prototype.addDependency = function(task) {
-	if (this.hasDependency(task) || this.hasDependent(task))
+	if (task === this || this.hasDependency(task) || this.hasDependent(task))
 		return false;
 	this.dependencies.push(task);
 	task.dependents.push(this);
