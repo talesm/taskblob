@@ -32,13 +32,14 @@ function id2path(val){
  * @param path
  * @returns {String}
  */
-function makeTaskName(path) {
-	var str = 'task';
+function makeItemName(path) {
+	var str = 'item';
 	path.forEach(function(element) {
 		str += '_' + element;
 	});
 	return str;
 }
+var makeTaskName = makeItemName;// I do not trust the refactor that much.
 
 function makeTaskPath(name){
 	return name.substr(5).split('_');
@@ -68,32 +69,31 @@ var scale = 2;
 /**
  * Show a new task on schedule;
  * @param viewGroup
- * @param task
+ * @param {Task} task
  */
 function addTaskChrono(viewGroup, task){
-	var viewItem = '<div class="task" '+ 'id="' + makeTaskName(task.id) +'" >';
-	viewItem += generateTaskView(task);
+	var viewItem = '<div class="item" '+ 'id="' + makeItemName(task.id) +'" >';
+	viewItem += generateItemView(task, generateTaskOptions());
 	viewItem += '</div>';
 	viewGroup.append(viewItem);
 }
 
 /**
- * Refresh the tas on schedule
+ * Refresh the task on schedule
  * @param viewGroup
- * @param task
+ * @param {Task} task
  */
 function editTaskChrono(viewGroup, task){
-	var $element = viewGroup.find('#' + makeTaskName(task.id));
-	var viewItem = generateTaskView(task);
+	var $element = viewGroup.find('#' + makeItemName(task.id));
+	var viewItem = generateItemView(task, generateTaskOptions());
 	$element.html(viewItem);
 }
 
 /**
  * Private
- * @param task
  * @returns {String}
  */
-function generateOptions(){
+function generateTaskOptions(){
 	var optionItem = '';
 	optionItem 	  += '<span class="delete ui-icon ui-icon-trash" title="Deletar"></span>';
 	optionItem 	  += '<span class="edit ui-icon ui-icon-pencil" title="Editar"></span>';
@@ -103,20 +103,61 @@ function generateOptions(){
 }
 
 /**
+ * Show a new group on schedule;
+ * @param viewGroup
+ * @param {Group} task
+ */
+function addGroupChrono(viewGroup, group) {
+	var viewItem = '<div class="item" '+ 'id="' + makeItemName(group.id) +'" >';
+	viewItem += generateItemView(group, generateGroupOptions());
+	viewItem += '</div>';
+	viewGroup.append(viewItem);
+}
+
+/**
+ * Refresh the task on schedule
+ * @param viewGroup
+ * @param {Groups} group
+ */
+function editGroupChrono(viewGroup, group){
+	var $element = viewGroup.find('#' + makeItemName(group.id));
+	var viewItem = generateItemView(group, generateGroupOptions());
+	$element.html(viewItem);
+}
+
+/**
+ * Private
+ * @returns {String}
+ */
+function generateGroupOptions(){
+	var optionItem = '';
+	optionItem 	  += '<span class="delete ui-icon ui-icon-trash" title="Deletar"></span>';
+	optionItem 	  += '<span class="edit ui-icon ui-icon-pencil" title="Editar"></span>';
+	optionItem 	  += '<span class="addSubGroup ui-icon ui-icon-folder-open" title="Dividir em subTarefas"></span>';
+	optionItem 	  += '<span class="play ui-icon ui-icon-play" title="Visualizar"></span>';
+	return optionItem;
+}
+
+/**
  * Private
  * @param task
  * @returns {String}
  */
-function generateTaskView(task) {
+function generateItemView(task, options) {
 	var path = task.id;
 	var name = task.name;
 	var viewItem = '<span class="taskName" title="' + name + '">'
-			+ generateOptions() + path.join('.') + ". " + name + '</span>';
-	viewItem += '<span class="meter start" style = "width:'+(task.start()*scale)+'em"></span>';
-	viewItem += '<span class="meter spentReg" style = "width:'+(task.spentReg()*scale)+'em"></span>';
-	viewItem += '<span class="meter remaining" style = "width:'+(task.remaining()*scale)+'em"></span>';
-	viewItem += '<span class="meter leftover" style = "width:'+(task.leftover()*scale)+'em"></span>';
-	viewItem += '<span class="meter overdue" style = "width:'+(task.overdue()*scale)+'em"></span>';
+			+ options + path.join('.') + ". " + name + '</span>';
+	var start=task.start();
+	var spentReg=task.spentReg();
+	var remaining=task.remaining();
+	var leftover=task.leftover();
+	var overdue=task.overdue();
+	viewItem += '<span class="meter start" style = "width:'+(start*scale)+'em"></span>';
+	viewItem += '<span class="meter spentReg" style = "width:'+(spentReg*scale)+'em"></span>';
+	viewItem += '<span class="meter remaining" style = "width:'+(remaining*scale)+'em"></span>';
+	viewItem += '<span class="meter leftover" style = "width:'+(leftover*scale)+'em"></span>';
+	viewItem += '<span class="meter overdue" style = "width:'+(overdue*scale)+'em"></span>';
 	adjustRuler(task.end());
 	return viewItem;
 }

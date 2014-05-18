@@ -14,12 +14,14 @@ Group.prototype.constructor = Group;
  * @param {Array} id
  * @param {String} name
  * @param {String} description
+ * @param {Boolean} closed
  * @param {Item[]} dependencies
  * @param {Item[]} children
  */
-function Group(id, name, description, dependencies, children) {
+function Group(id, name, description, closed, dependencies, children) {
 	Item.call(this, id, null, name, description, dependencies);
 	this.subTasks = [];
+	this.closed = closed;
 	if(children){
 		children.forEach(function(kid) {
 			if(kid.parent || kid.hasDependency(this) || this.hasDependency(kid))
@@ -116,7 +118,7 @@ Group.prototype.overdue = function() {
  * @returns {Number}
  */
 Group.prototype.leftover = function() {
-	return this.subTasks.leftover(function(previous, task) {
-		return previous+task.overdue();
+	return this.subTasks.reduce(function(previous, task) {
+		return previous+task.leftover();
 	}, 0);
 };

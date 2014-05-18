@@ -35,32 +35,33 @@
 			</div>
 		</section>
 		<!-- Play dialog -->
-	<section class="playTask dialog" title="Ver Tarefa">
-		<form class="formTable">
-			<div class="formLine">
-				<label for="playPath">Id:</label> <input id="playPath" disabled>
-			</div>
-			<div class="formLine">
-				<label for="playName">Nome:</label> <input id="playName" disabled>
-			</div>
-			<div class="formLine">
-				<label for="playDescription">Descrição:</label> <input
-					id="playDescription" disabled>
-			</div>
-			<div class="formLine">
-				<label for="playStatus">Status:</label> <input id="playStatus"
-					disabled>
-			</div>
-			<div class="formLine">
-				<label for="playRemaining">Tempo Restante:</label> <input
-					id="playRemaining" disabled>
-			</div>
-		</form>
-	</section>
-
-	<!-- Edit dialog -->
+		<section class="playTask dialog" title="Ver Tarefa">
+			<form class="formTable">
+				<div class="formLine">
+					<label for="playPath">Id:</label> <input id="playPath" disabled>
+				</div>
+				<div class="formLine">
+					<label for="playName">Nome:</label> <input id="playName" disabled>
+				</div>
+				<div class="formLine">
+					<label for="playDescription">Descrição:</label> <input
+						id="playDescription" disabled>
+				</div>
+				<div class="formLine">
+					<label for="playStatus">Status:</label> <input id="playStatus"
+						disabled>
+				</div>
+				<div class="formLine">
+					<label for="playRemaining">Tempo Restante:</label> <input
+						id="playRemaining" disabled>
+				</div>
+			</form>
+		</section>
+	
+		<!-- Edit dialog -->
 		<section class="editTask dialog" title="Adicionar">
 			<form class="formTable">
+				<input type="hidden" id="type" value="task">
 				<div class="formLine">
 					<label for="taskPath">Id:</label>
 					<input id="taskPath" disabled>
@@ -96,7 +97,7 @@
 				</div>
 			</form>
 		</section>
-		
+			
 		<!-- Export dialog -->
 		<section class="exportDialog dialog" title="Exportar">
 			<a href="" download="tasks.json" class="textExport">Exportar para seu computador.</a>
