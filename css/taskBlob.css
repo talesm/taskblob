@@ -102,19 +102,24 @@ header h2 {
 	bottom: 0
 }
 
-.viewGroup .taskName > span{
+.viewGroup .taskName > span.name{
+	display: inline-block;
+	position: static;
+}
+
+.viewGroup .taskName > .itemButtons{
 	display:none;
 	
 }
 
-.viewGroup .taskName:hover > span{
+.viewGroup .taskName:hover > span.itemButtons{
 	display:block;
 	position: absolute;
 	vertical-align: middle;
 	z-index: 100;
 	right: 0.25em;
 }
-.viewGroup .taskName:hover > span > span{
+.viewGroup .taskName:hover > span.itemButtons > span{
 	display:inline-block;
 	background-color: #eee;
 	vertical-align: middle;
@@ -122,16 +127,16 @@ header h2 {
 	width: 16px;
 	opacity: 0.75;
 }
-.viewGroup .taskName:active > span > span{
+.viewGroup .taskName:active > span.itemButtons > span{
 	opacity: 1;
 }
 
-.viewGroup .taskName:hover span:hover{
+.viewGroup .taskName:hover > span.itemButtons > span:hover{
 	border-color: black;
 	opacity: 1;
 }
 
-.viewGroup .taskName:hover span.delete{
+.viewGroup .taskName:hover > span.itemButtons > span.delete{
 	background-color: #fab;
 }
 

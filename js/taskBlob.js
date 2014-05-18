@@ -181,8 +181,9 @@ function generateGroupOptions(){
 function generateItemView(task, options) {
 	var path = task.id;
 	var name = task.name;
-	var viewItem = '<span class="taskName" title="' + name + '">'
-			+ options + path.join('.') + ". " + name + '</span>';
+	var viewItem = '<span class="taskName" title="' + name + '">';
+	viewItem += options; 
+	viewItem += '<span class="name">' + path.join('.') + ". " + name + '</span></span>';
 	var start = task.start();
 	var spentReg = task.spentReg();
 	var remaining = task.remaining();
@@ -218,6 +219,10 @@ function updateItemView(task, $taskContainer) {
 	$taskContainer.children('.overdue').css('width', (overdue*scale)+'em');
 	$taskContainer.children('.unreachable').css('width', (unreachable*scale)+'em');
 	adjustRuler(task.end() + task.leftover());
+	var $itemName=$taskContainer.children('.taskName');
+	$itemName.attr('title', task.name);
+	var newName = task.id.join('.') + '. ' + task.name;
+	$itemName.children('.name').text(newName);
 }
 
 /**
