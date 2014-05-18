@@ -123,11 +123,30 @@ Group.prototype.overdue = function() {
 };
 
 /**
- * Get the lefover time
+ * Get the leftover time
  * @returns {Number}
  */
 Group.prototype.leftover = function() {
 	return this.subTasks.reduce(function(previous, task) {
 		return previous+task.leftover();
 	}, 0);
+};
+
+/**
+ * Get time you can't you use but have to wait anyway.
+ * It happens when a group have a 'hole' inside: a period of time
+ * where no subTask can be active, having some finished before and
+ * others starting later.
+ * @returns {Number}
+ */
+Group.prototype.unreachable = function(){
+	return this.end() - Item.prototype.end.call(this);
+};
+
+Group.prototype.end = function() {
+	var betterEnd = Item.prototype.end.call(this);
+	var kidsEnd = this.subTasks.reduce(function(larger, task){
+		return Math.max(larger, task.end());
+	}, 0);
+	return Math.max(betterEnd, kidsEnd);
 };

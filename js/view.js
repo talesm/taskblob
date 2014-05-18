@@ -15,22 +15,26 @@ $(function() {
 	});
 	
 	$('.viewGroup').on('click', '.taskName .play', function() {
-		var sid = $(this).parent().parent().attr('id').substr(5).replace('_', '.');
-		viewTask(sid);
-	});
-	
-	$('.viewGroup').on('dblclick', '.task .taskName', function() {
-		var sid = $(this).parent().attr('id').substr(5).replace('_', '.');
-		viewTask(sid);
-	});
-	function viewTask(sid){
-		var task = tasks.get(id2path(sid));
-		$playTask.find('#playPath').val(sid);
+		var path = makeItemPath($(this).closest('.item').attr('id'));
+		var task = tasks.get(path );
+		$playTask.find('#playPath').val(path.join('.'));
 		$playTask.find('#playName').val(task.name);
 		$playTask.find('#playDescription').val(task.description);
-		$playTask.find('#playStatus').val(task.isClosed()?'Fechada': 'Aberta');
+		var status;
+		if(task.isClosed())
+			status = "Fechada";
+		else if(task.overdue() > 0)
+			status = "Atrasada";
+		else if(task.spentReg() > 0)
+			status = "Iniciada";
+		else if(task.isReady())
+			status = "Pronta";
+		else
+			status = "Aguardando";
+		$playTask.find('#playStatus').val(status);
 		$playTask.find('#playRemaining').val(task.remaining());
 		$playTask.dialog("open");
-	}
+	});
+	
 });
 

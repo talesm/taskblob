@@ -39,7 +39,7 @@ $(function() {
 	//Add new subTask
 	$viewSection.on('click', '.taskName .addSubTask', function() {
 		var group = tasks
-				.get(makeTaskPath($(this).closest('.item').attr('id')));
+				.get(makeItemPath($(this).closest('.item').attr('id')));
 		var path = group.id.join('.') + '.' + (group.subTasks.length + 1);
 		$editTask.find('#taskPath').val(path);
 		$editTask.find('#taskName').val('Tarefa' + path);
@@ -56,7 +56,7 @@ $(function() {
 
 	// Edit a task
 	$viewSection.on('click', '.taskName .edit', function() {
-		var path = makeTaskPath( $(this).closest('.item').attr('id'));
+		var path = makeItemPath( $(this).closest('.item').attr('id'));
 		var item = tasks.get(path);
 		$editTask.find('#taskPath').val(path.join('.'));
 		$editTask.find('#taskName').val(item.name);
@@ -162,17 +162,16 @@ $(function() {
 				} else 
 					editTaskChrono(dirtItem);
 				if(dirtItem.parent && dirtItem.parent !== tasks){
-					parents[dirtItem.parent] = false;
+					var p = dirtItem.parent;
+					do{
+						parents[p.id] = p;
+						dirt = p.dependents.concat(dirt);
+						p = p.parent;
+					}while(p !== tasks);
 				}
 			}
-			var parentList = Object.keys(parents);
-			while(parentList.length){
-				var group = parentList.pop();
-				if(group.parent && group.parent!==tasks && !parents[group.parent]){
-					parentList = [group.parent].concat(parentList);
-				}
-				editGroupChrono(group);
-				parents[group] = true;
+			for ( var prt in parents) {
+				editGroupChrono(parents[prt]);
 			}
 		}
 		$this.dialog("close");

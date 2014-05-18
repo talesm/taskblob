@@ -41,7 +41,7 @@ function makeItemName(path) {
 }
 var makeTaskName = makeItemName;// I do not trust the refactor that much.
 
-function makeTaskPath(name){
+function makeItemPath(name){
 	return name.substr(5).split('_');
 }
 
@@ -90,8 +90,7 @@ function addTaskChrono(task){
  */
 function editTaskChrono(task){
 	var $element = $('.viewGroup #' + makeItemName(task.id));
-	var viewItem = generateItemView(task, generateTaskOptions());
-	$element.html(viewItem);
+	updateItemView(task, $element);
 }
 
 /**
@@ -99,11 +98,12 @@ function editTaskChrono(task){
  * @returns {String}
  */
 function generateTaskOptions(){
-	var optionItem = '';
-	optionItem 	  += '<span class="delete ui-icon ui-icon-trash" title="Deletar"></span>';
-	optionItem 	  += '<span class="edit ui-icon ui-icon-pencil" title="Editar"></span>';
-	optionItem 	  += '<span class="split ui-icon ui-icon-arrowthickstop-1-s" title="Dividir em subTarefas"></span>';
+	var optionItem = '<span class="itemButtons">';
 	optionItem 	  += '<span class="play ui-icon ui-icon-play" title="Visualizar"></span>';
+	optionItem 	  += '<span class="split ui-icon ui-icon-arrowthickstop-1-s" title="Dividir em subTarefas"></span>';
+	optionItem 	  += '<span class="edit ui-icon ui-icon-pencil" title="Editar"></span>';
+	optionItem 	  += '<span class="delete ui-icon ui-icon-trash" title="Deletar"></span>';
+	optionItem	  += '</span>';
 	return optionItem;
 }
 
@@ -127,8 +127,7 @@ function addGroupChrono(group) {
  */
 function editGroupChrono(group){
 	var $element = $('.viewGroup #' + makeItemName(group.id));
-	var viewItem = generateItemView(group, generateGroupOptions());
-	$element.html(viewItem);
+	updateItemView(group, $element);
 }
 
 /**
@@ -136,11 +135,12 @@ function editGroupChrono(group){
  * @returns {String}
  */
 function generateGroupOptions(){
-	var optionItem = '';
-	optionItem 	  += '<span class="delete ui-icon ui-icon-trash" title="Deletar"></span>';
-	optionItem 	  += '<span class="edit ui-icon ui-icon-pencil" title="Editar"></span>';
-	optionItem 	  += '<span class="addSubGroup ui-icon ui-icon-folder-open" title="Adicionar Sub-grupo"></span>';
+	var optionItem = '<span class="itemButtons">';
 	optionItem 	  += '<span class="addSubTask ui-icon ui-icon-document" title="Adicionar Sub-tarefa"></span>';
+	optionItem 	  += '<span class="addSubGroup ui-icon ui-icon-folder-open" title="Adicionar Sub-grupo"></span>';
+	optionItem 	  += '<span class="edit ui-icon ui-icon-pencil" title="Editar"></span>';
+	optionItem 	  += '<span class="delete ui-icon ui-icon-trash" title="Deletar"></span>';
+	optionItem	  += '</span>';
 	return optionItem;
 }
 
@@ -154,18 +154,41 @@ function generateItemView(task, options) {
 	var name = task.name;
 	var viewItem = '<span class="taskName" title="' + name + '">'
 			+ options + path.join('.') + ". " + name + '</span>';
-	var start=task.start();
-	var spentReg=task.spentReg();
-	var remaining=task.remaining();
-	var leftover=task.leftover();
-	var overdue=task.overdue();
+	var start = task.start();
+	var spentReg = task.spentReg();
+	var remaining = task.remaining();
+	var leftover = task.leftover();
+	var overdue = task.overdue();
+	var unreachable = task.unreachable();
 	viewItem += '<span class="meter start" style = "width:'+(start*scale)+'em"></span>';
 	viewItem += '<span class="meter spentReg" style = "width:'+(spentReg*scale)+'em"></span>';
 	viewItem += '<span class="meter remaining" style = "width:'+(remaining*scale)+'em"></span>';
 	viewItem += '<span class="meter leftover" style = "width:'+(leftover*scale)+'em"></span>';
 	viewItem += '<span class="meter overdue" style = "width:'+(overdue*scale)+'em"></span>';
-	adjustRuler(task.end());
+	viewItem += '<span class="meter unreachable" style = "width:'+(unreachable*scale)+'em"></span>';
+	adjustRuler(task.end() + task.leftover());
 	return viewItem;
+}
+
+/**
+ * Private
+ * @param {Item} task
+ * @returns {String}
+ */
+function updateItemView(task, $taskContainer) {
+	var start = task.start();
+	var spentReg = task.spentReg();
+	var remaining = task.remaining();
+	var leftover = task.leftover();
+	var overdue = task.overdue();
+	var unreachable = task.unreachable();
+	$taskContainer.children('.start').css('width', (start*scale)+'em');
+	$taskContainer.children('.spentReg').css('width', (spentReg*scale)+'em');
+	$taskContainer.children('.remaining').css('width', (remaining*scale)+'em');
+	$taskContainer.children('.leftover').css('width', (leftover*scale)+'em');
+	$taskContainer.children('.overdue').css('width', (overdue*scale)+'em');
+	$taskContainer.children('.unreachable').css('width', (unreachable*scale)+'em');
+	adjustRuler(task.end() + task.leftover());
 }
 
 /**

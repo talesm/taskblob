@@ -55,3 +55,12 @@ Task.prototype.leftover = function() {
 		return this.duration - this.spentReg();
 	return 0;
 };
+
+
+/**
+ * Get time you can't you use. Always zero for tasks
+ * @returns {Number}
+ */
+Item.prototype.unreachable = function(){
+	return 0;
+};
