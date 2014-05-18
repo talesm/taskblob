@@ -21,10 +21,10 @@ $(function(){
 /**
  * Converts an id expression in a path.
  * @param {String} val
- * @returns { Number[] } 
+ * @returns { Array } 
  */
 function id2path(val){
-	return JSON.parse('[' + val.replace('.', ',') + ']');
+	return val.split('.');
 }
 
 /**

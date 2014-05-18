@@ -10,7 +10,6 @@ $(function() {
 	});
 	var $editTask = $('.editTask');
 	var $viewSection = $('.viewSection');
-	var $viewGroup = $(".viewGroup");
 
 	// Add new task
 	$('.add').on('click', function() {
@@ -51,7 +50,17 @@ $(function() {
 	
 	//Add new subGroup
 	$viewSection.on('click', '.taskName .addSubGroup', function(){
-		alert('Funcionalidade não implementada.');
+		var group = tasks
+		.get(makeItemPath($(this).closest('.item').attr('id')));
+		var path = group.id.join('.') + '.' + (group.subTasks.length + 1);
+		$editTask.find('#taskPath').val(path);
+		$editTask.find('#taskName').val('Grupo' + path);
+		$editTask.find('#type').val('group');
+		$editTask.find('#closed').parent().css('display', 'none');
+		$editTask.find('#duration').parent().css('display', 'none');
+		$editTask.find('#spent').parent().css('display', 'none');
+		$editTask.dialog('option', 'title', 'Adicionar Novo Grupo');
+		$editTask.dialog("open");
 	});
 
 	// Edit a task
