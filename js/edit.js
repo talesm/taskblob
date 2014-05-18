@@ -10,10 +10,13 @@ $(function() {
 	});
 	var $editTask = $('.editTask');
 	var $viewSection = $('.viewSection');
+	var $viewGroup = $(".viewGroup");
 
 	// Add new task
 	$('.add').on('click', function() {
-		$editTask.find('#taskPath').val((tasks.size() + 1));
+		var path = (tasks.size() + 1);
+		$editTask.find('#taskPath').val(path);
+		$editTask.find('#taskName').val('Tarefa' + path);
 		$editTask.find('#type').val('task');
 		$editTask.find('#closed').parent().css('display', 'none');
 		$editTask.dialog('option', 'title', 'Adicionar Nova Tarefa');
@@ -22,7 +25,9 @@ $(function() {
 
 	// Add new group
 	$('.addGroup').on('click', function() {
-		$editTask.find('#taskPath').val((tasks.size() + 1));
+		var path = (tasks.size() + 1);
+		$editTask.find('#taskPath').val(path);
+		$editTask.find('#taskName').val('Grupo' + path);
 		$editTask.find('#type').val('group');
 		$editTask.find('#closed').parent().css('display', 'none');
 		$editTask.find('#duration').parent().css('display', 'none');
@@ -30,13 +35,30 @@ $(function() {
 		$editTask.dialog('option', 'title', 'Adicionar Novo Grupo');
 		$editTask.dialog("open");
 	});
+	
+	//Add new subTask
+	$viewSection.on('click', '.taskName .addSubTask', function() {
+		var group = tasks
+				.get(makeTaskPath($(this).closest('.item').attr('id')));
+		var path = group.id.join('.') + '.' + (group.subTasks.length + 1);
+		$editTask.find('#taskPath').val(path);
+		$editTask.find('#taskName').val('Tarefa' + path);
+		$editTask.find('#type').val('task');
+		$editTask.find('#closed').parent().css('display', 'none');
+		$editTask.dialog('option', 'title', 'Adicionar Nova Tarefa');
+		$editTask.dialog("open");
+	});
+	
+	//Add new subGroup
+	$viewSection.on('click', '.taskName .addSubGroup', function(){
+		alert('Funcionalidade não implementada.');
+	});
 
 	// Edit a task
 	$viewSection.on('click', '.taskName .edit', function() {
-		var sid = $(this).closest('.item').attr('id').substr(5).replace('_',
-				'.');
-		var item = tasks.get(id2path(sid));
-		$editTask.find('#taskPath').val(sid);
+		var path = makeTaskPath( $(this).closest('.item').attr('id'));
+		var item = tasks.get(path);
+		$editTask.find('#taskPath').val(path.join('.'));
 		$editTask.find('#taskName').val(item.name);
 		$editTask.find('#description').val(item.description);
 		if(item.subTasks){
@@ -54,12 +76,6 @@ $(function() {
 		$editTask.dialog('option', 'title', 'Editar Tarefa');
 		$editTask.dialog("open");
 	});
-
-	function linearizeDep(dep) {
-		return dep.map(function(dp) {
-			return dp.id.join('.');
-		}).join(', ');
-	}
 
 	$('.editTask').dialog({
 		width : 500,
@@ -80,6 +96,13 @@ $(function() {
 			});
 		}
 	});
+
+	function linearizeDep(dep) {
+		return dep.map(function(dp) {
+			return dp.id.join('.');
+		}).join(', ');
+	}
+	
 	function saveTask() {
 		$this = $(this);
 		var id = id2path($this.find('#taskPath').val());
@@ -96,22 +119,9 @@ $(function() {
 				return;
 			dependencies.push(tasks.get(id2path(value)));
 		});
-		if (id.length > 1)
-			throw Error('Unsupported');
-		var $viewGroup = $(".viewGroup");
-		if (id[0] > tasks.size()) { // Adding
-			if (type === 'task') {
-				var newTask = new Task([ tasks.size() + 1 ], name, description,
-						duration, spent, false, dependencies);
-				tasks.addKid(newTask);
-				addTaskChrono($viewGroup, newTask);
-			} else if (type === 'group') {
-				var newGroup = new Group([ tasks.size() + 1 ], name,
-						description, false, dependencies);
-				tasks.addKid(newGroup);
-				addGroupChrono($viewGroup, newGroup);
-			} else
-				throw Error("Unknown item type");
+		var parent = tasks.get(id.slice(0, id.length-1));
+		if (id[id.length-1] > parent.size()) { // Adding
+			addItem(type, parent, name, description, dependencies, duration, spent);
 		} else { // Editing
 			var item = tasks.get(id);
 			item.name = name;
@@ -148,9 +158,9 @@ $(function() {
 				dirt = dirtItem.dependents.concat(dirt);
 				if(dirtItem.subTasks){
 					dirt = dirtItem.subTasks.concat(dirt);
-					editGroupChrono($viewGroup, dirtItem);
+					editGroupChrono(dirtItem);
 				} else 
-					editTaskChrono($viewGroup, dirtItem);
+					editTaskChrono(dirtItem);
 				if(dirtItem.parent && dirtItem.parent !== tasks){
 					parents[dirtItem.parent] = false;
 				}
@@ -161,10 +171,34 @@ $(function() {
 				if(group.parent && group.parent!==tasks && !parents[group.parent]){
 					parentList = [group.parent].concat(parentList);
 				}
-				editGroupChrono($viewGroup, group);
+				editGroupChrono(group);
 				parents[group] = true;
 			}
 		}
 		$this.dialog("close");
+	}
+	
+	/**
+	 * @param {String} type
+	 * @param {Group} parent
+	 * @param {String} name
+	 * @param {String} description
+	 * @param {Item[]} dependencies
+	 * @param {Number} duration
+	 * @param {Number} spent 
+	 */
+	function addItem(type, parent, name, description, dependencies, duration, spent){
+		if (type === 'task') {
+			var newTask = new Task(parent.id.concat([ parent.size() + 1 ]), name, description,
+					duration, spent, false, dependencies);
+			parent.addKid(newTask);
+			addTaskChrono(newTask);
+		} else if (type === 'group') {
+			var newGroup = new Group([ parent.size() + 1 ], name,
+					description, false, dependencies);
+			parent.addKid(newGroup);
+			addGroupChrono(newGroup);
+		} else
+			throw Error("Unknown item type");
 	}
 });

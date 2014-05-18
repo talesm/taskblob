@@ -11,7 +11,7 @@ $(function() {
 			task.erase();
 			renewed.forEach(function(path){
 				var dtask = getTask(path);
-				editTaskChrono($task.parent(), dtask);
+				editTaskChrono(dtask, $task.parent());
 			});
 			$task.remove();
 		}

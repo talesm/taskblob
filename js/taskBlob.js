@@ -54,9 +54,9 @@ function refreshView() {
 	tasks.subTasks.forEach(function(item) {
 		if(item){
 			if(item.subTasks)
-				addGroupChrono($viewGroup, item);
+				addGroupChrono(item, $viewGroup);
 			else
-				addTaskChrono($viewGroup, item);
+				addTaskChrono(item, $viewGroup);
 		}
 	});
 }
@@ -72,23 +72,23 @@ var scale = 2;
 
 /**
  * Show a new task on schedule;
- * @param viewGroup
  * @param {Task} task
  */
-function addTaskChrono(viewGroup, task){
+function addTaskChrono(task){
+	var $target = (task.parent === tasks) ? $('.viewGroup') : $('.viewGroup #'
+			+ makeItemName(task.parent.id));
 	var viewItem = '<div class="item" '+ 'id="' + makeItemName(task.id) +'" >';
 	viewItem += generateItemView(task, generateTaskOptions());
 	viewItem += '</div>';
-	viewGroup.append(viewItem);
+	$target.append(viewItem);
 }
 
 /**
  * Refresh the task on schedule
- * @param viewGroup
  * @param {Task} task
  */
-function editTaskChrono(viewGroup, task){
-	var $element = viewGroup.find('#' + makeItemName(task.id));
+function editTaskChrono(task){
+	var $element = $('.viewGroup #' + makeItemName(task.id));
 	var viewItem = generateItemView(task, generateTaskOptions());
 	$element.html(viewItem);
 }
@@ -108,23 +108,24 @@ function generateTaskOptions(){
 
 /**
  * Show a new group on schedule;
- * @param viewGroup
+ * @param parent
  * @param {Group} task
  */
-function addGroupChrono(viewGroup, group) {
+function addGroupChrono(group) {
+	var $target = (group.parent === tasks) ? $('.viewGroup') : $('.viewGroup #'
+			+ makeItemName(group.parent.id));
 	var viewItem = '<div class="item" '+ 'id="' + makeItemName(group.id) +'" >';
 	viewItem += generateItemView(group, generateGroupOptions());
 	viewItem += '</div>';
-	viewGroup.append(viewItem);
+	$target.append(viewItem);
 }
 
 /**
  * Refresh the task on schedule
- * @param viewGroup
- * @param {Groups} group
+ * @param {Group} group
  */
-function editGroupChrono(viewGroup, group){
-	var $element = viewGroup.find('#' + makeItemName(group.id));
+function editGroupChrono(group){
+	var $element = $('.viewGroup #' + makeItemName(group.id));
 	var viewItem = generateItemView(group, generateGroupOptions());
 	$element.html(viewItem);
 }
