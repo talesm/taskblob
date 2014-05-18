@@ -132,56 +132,7 @@ $(function() {
 		if (id[id.length-1] > parent.size()) { // Adding
 			addItem(type, parent, name, description, dependencies, duration, spent);
 		} else { // Editing
-			var item = tasks.get(id);
-			item.name = name;
-			item.description = description;
-			if (type === 'task') {
-				item.duration = duration;
-				item.spent = spent;
-			}
-			item.closed = closed;
-			// Erasing:
-			// 1.Put on trash all current dependencies
-			var trash = item.dependencies.slice();
-			// 2.Remove from trash the ones who are re-added.
-			dependencies.forEach(function(dependency) {
-				var j = trash.indexOf(dependency);
-				if (j != -1)
-					trash.splice(j, 1);
-			});
-			// 3.Remove the others
-			trash.forEach(function(dependency) {
-				item.removeDependency(dependency);
-			});
-			// Adding
-			dependencies.forEach(function(dependency) {
-				if (dependency)
-					item.addDependency(dependency);
-			});
-
-			// Show again
-			var dirt = [item];//Need to be entirely re-evaluated
-			var parents = {}; //Need only to be redrawn
-			while(dirt.length){
-				var dirtItem = dirt.pop();
-				dirt = dirtItem.dependents.concat(dirt);
-				if(dirtItem.subTasks){
-					dirt = dirtItem.subTasks.concat(dirt);
-					editGroupChrono(dirtItem);
-				} else 
-					editTaskChrono(dirtItem);
-				if(dirtItem.parent && dirtItem.parent !== tasks){
-					var p = dirtItem.parent;
-					do{
-						parents[p.id] = p;
-						dirt = p.dependents.concat(dirt);
-						p = p.parent;
-					}while(p !== tasks);
-				}
-			}
-			for ( var prt in parents) {
-				editGroupChrono(parents[prt]);
-			}
+			setItem(type, id, name, description, dependencies, duration, spent, closed);
 		}
 		$this.dialog("close");
 	}
@@ -201,6 +152,7 @@ $(function() {
 					duration, spent, false, dependencies);
 			parent.addKid(newTask);
 			addTaskChrono(newTask);
+			
 		} else if (type === 'group') {
 			var newGroup = new Group([ parent.size() + 1 ], name,
 					description, false, dependencies);
@@ -208,5 +160,47 @@ $(function() {
 			addGroupChrono(newGroup);
 		} else
 			throw Error("Unknown item type");
+		refreshItems([parent]);
+	}
+	
+	/**
+	 * @param {String} type
+	 * @param {Array} id
+	 * @param {String} name
+	 * @param {String} description
+	 * @param {Item[]} dependencies
+	 * @param {Number} duration
+	 * @param {Number} spent 
+	 */
+	function setItem(type, id, name, description, dependencies, duration, spent, closed){
+		var item = tasks.get(id);
+		item.name = name;
+		item.description = description;
+		if (type === 'task') {
+			item.duration = duration;
+			item.spent = spent;
+		}
+		item.closed = closed;
+		// Erasing:
+		// 1.Put on trash all current dependencies
+		var trash = item.dependencies.slice();
+		// 2.Remove from trash the ones who are re-added.
+		dependencies.forEach(function(dependency) {
+			var j = trash.indexOf(dependency);
+			if (j != -1)
+				trash.splice(j, 1);
+		});
+		// 3.Remove the others
+		trash.forEach(function(dependency) {
+			item.removeDependency(dependency);
+		});
+		// Adding
+		dependencies.forEach(function(dependency) {
+			if (dependency)
+				item.addDependency(dependency);
+		});
+
+		// Show again
+		refreshItems([item]);
 	}
 });

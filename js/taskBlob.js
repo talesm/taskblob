@@ -62,6 +62,35 @@ function refreshView() {
 	});
 }
 
+
+
+/**
+ * @param {Item[]} dirt - the items to refresh.
+ */
+function refreshItems(items){
+	var parents = {}; //Need only to be redrawn
+	while(items.length){
+		var dirtItem = items.pop();
+		items = dirtItem.dependents.concat(items);
+		if(dirtItem.subTasks){
+			items = dirtItem.subTasks.concat(items);
+			editGroupChrono(dirtItem);
+		} else 
+			editTaskChrono(dirtItem);
+		if(dirtItem.parent && dirtItem.parent !== tasks){
+			var p = dirtItem.parent;
+			do{
+				parents[p.id] = p;
+				items = p.dependents.concat(items);
+				p = p.parent;
+			}while(p !== tasks);
+		}
+	}
+	for ( var prt in parents) {
+		editGroupChrono(parents[prt]);
+	}
+}
+
 /**
  * The offset of representation 
  */
