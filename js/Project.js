@@ -10,7 +10,7 @@ Project.prototype.constructor = Project;
  * 
  * @constructor
  * @base Group
- */
+ ******************************************************************************/
 function Project(name, descritpion) {
 	Group.call(this, [], name, descritpion);
 	this.version = [ 1, 1, 0, 0 ];
@@ -44,35 +44,53 @@ Project.wet = function(dried) {
 		return element != lVersion[i];
 	}));
 	var project = new Project(dried.name, dried.description);
-	var tasks = dried.tasks.reduce(function(tasks, driedTask, ind){
-		var task = null;
-		if(driedTask){
-			if(driedTask.subTasks){
-				//task = new Group([ind+1], driedTask.name, driedTask.description);
-				throw "NOT IMPLEMENTED YET"; //TODO Implement this recursively.
+	project.subTasks = wetter(project, dried.tasks);
+	project.subTasks.forEach(resolveDependencies);
+	return project;
+	/**
+	 * @param {Group} parent
+	 * @param {Array} items
+	 * @returns {Array} 
+	 */
+	function wetter(parent, items){
+		return items.reduce(function(tasks, driedTask, ind){
+			var item = null;
+			if (driedTask) {
+				if (driedTask.subTasks) {
+					item = new Group(parent.id.concat([ ind + 1 ]),
+							driedTask.name || 'TRUNCATED', driedTask.description || '',
+							driedTask.closed, null,
+							driedTask.subTasks);
+				} else{
+					item = new Task(parent.id.concat([ ind + 1 ]),
+							driedTask.name || 'TRUNCATED',
+							driedTask.description || '',
+							driedTask.duration || 0, driedTask.spent || 0,
+							driedTask.closed);
+				}
+				item.parent = parent;
+				item.dependencies = driedTask.dependencies;
 			}
-			else
-				task = new Task([ind+1], driedTask.name|| 'TRUNCATED', driedTask.description || '', driedTask.duration || 0, driedTask.spent || 0);
-			task.dependencies = driedTask.dependencies;
-			task.parent = project;
-			task.closed = driedTask.closed;
-		}
-		tasks.push(task);
-		return tasks;
-	}, []);
-	project.subTasks = tasks;
-	tasks.forEach(function name(task) {
-		if(!task)
+			tasks.push(item);
+			return tasks;
+		}, []);
+	}
+	/**
+	 * @param {Item} item - the item.
+	 */
+	function resolveDependencies(item) {
+		if(!item)
 			return;
-		var dependencies = task.dependencies;
-		task.dependencies = [];
+		var dependencies = item.dependencies;
+		item.dependencies = [];
 		dependencies.forEach(function(path) {
-			if(!task.addDependency(project.get(path))){
-				throw 'Format Error: Task ['+task.id.join('.')+'] has unreachable dependency ['+path.join('.')+']'; 
+			if(!item.addDependency(project.get(path))){
+				throw Error('Format Error: Task ['+item.id.join('.')+'] has unreachable dependency ['+path.join('.')+']'); 
 			}
 		});
-	});
-	return project;
+		if(item.subTasks)
+			item.subTasks.forEach(resolveDependencies);
+	}
 };
 
 /**

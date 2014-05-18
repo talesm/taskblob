@@ -50,10 +50,14 @@ function makeTaskPath(name){
  */
 function refreshView() {
 	$viewGroup = $('.viewGroup');
-	$viewGroup.children('.task').remove();
-	tasks.subTasks.forEach(function(task) {
-		if(task)
-			addTaskChrono($viewGroup, task);
+	$viewGroup.children('.item').remove();
+	tasks.subTasks.forEach(function(item) {
+		if(item){
+			if(item.subTasks)
+				addGroupChrono($viewGroup, item);
+			else
+				addTaskChrono($viewGroup, item);
+		}
 	});
 }
 
@@ -133,8 +137,8 @@ function generateGroupOptions(){
 	var optionItem = '';
 	optionItem 	  += '<span class="delete ui-icon ui-icon-trash" title="Deletar"></span>';
 	optionItem 	  += '<span class="edit ui-icon ui-icon-pencil" title="Editar"></span>';
-	optionItem 	  += '<span class="addSubGroup ui-icon ui-icon-folder-open" title="Dividir em subTarefas"></span>';
-	optionItem 	  += '<span class="play ui-icon ui-icon-play" title="Visualizar"></span>';
+	optionItem 	  += '<span class="addSubGroup ui-icon ui-icon-folder-open" title="Adicionar Sub-grupo"></span>';
+	optionItem 	  += '<span class="addSubTask ui-icon ui-icon-document" title="Adicionar Sub-tarefa"></span>';
 	return optionItem;
 }
 
