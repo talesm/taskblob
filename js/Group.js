@@ -69,9 +69,11 @@ Group.prototype.removeKid = function(task){
 		return false;
 	task.parent = null;
 	subTasks[pos] = null; //Soft delete.
-
+	
 	//Hard delete:
-	if(pos === subTasks.length-1){
+	if(subTasks.length === 1) //To avoid infinite loop bug.
+		this.subTasks = [];
+	else if(pos === subTasks.length-1){
 		var sz = 0;
 		do{
 			--pos;
@@ -79,7 +81,6 @@ Group.prototype.removeKid = function(task){
 		}while(subTasks[pos] == null);
 		subTasks.splice(pos+1, sz);
 	}
-	task.parent = null;
 	return true;
 };
 
