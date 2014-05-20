@@ -74,15 +74,16 @@ $(function() {
 			$editTask.find('#type').val('group');
 			$editTask.find('#duration').parent().css('display', 'none');
 			$editTask.find('#spent').parent().css('display', 'none');
+			$editTask.dialog('option', 'title', 'Editar Grupo');
 		}else {
 			$editTask.find('#type').val('task');
 			$editTask.find('#duration').val(item.duration);
 			$editTask.find('#spent').val(item.spent);
+			$editTask.dialog('option', 'title', 'Editar Tarefa');
 		}
 		$editTask.find('#closed').prop('checked', item.closed);
 		$editTask.find('#dependencies').val(linearizeDep(item.dependencies));
 		$editTask.find('#dependsMe').val(linearizeDep(item.dependents));
-		$editTask.dialog('option', 'title', 'Editar Tarefa');
 		$editTask.dialog("open");
 	});
 

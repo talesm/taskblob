@@ -213,6 +213,7 @@ header h2 {
 
 .formTable > .formLine > *{
 	display: table-cell;
+	vertical-align: top;
 }
 
 .formTable > .formLine > label{
