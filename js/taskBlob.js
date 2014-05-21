@@ -1,34 +1,78 @@
-
 /**
  * {Project} tasks - The current tasks
  */
 tasks = new Project('DefaultProject', 'root');
 
 // Main function
-$(function(){
+$(function() {
 	$('.mainNav').buttonset();
-	$( document ).tooltip();
+	$(document).tooltip();
 
-	//Scroll effect
-	$( '.viewGroup' ).on( 'scroll', function( event ) {
-		var $viewGroup=$( '.viewGroup');
-		var scrollLeft=$(this).scrollLeft();
+	// Scroll effect
+	$('.viewGroup').on('scroll', function(event) {
+		var $viewGroup = $('.viewGroup');
+		var scrollLeft = $(this).scrollLeft();
 		$viewGroup.find('.taskName').css('left', scrollLeft);
 		$viewGroup.find('.add').css('left', scrollLeft);
+	}).on('contextmenu', '.item', function(ev) {
+		ev.preventDefault();
+		var item = tasks.get(makeItemPath($(this).attr('id')));
+		if (item.subTasks)
+			openGroupMenu(item, ev.pageX, ev.pageY);
+		else {
+			openTaskMenu(item, ev.pageX, ev.pageY);
+		}
+	});
+
+	$('.popMenu').menu().hide().on('focusout', function() {
+		$(this).hide('fast');
 	});
 });
 
 /**
- * Converts an id expression in a path.
- * @param {String} val
- * @returns { Array } 
+ * 
+ * @param {Task}
+ *            task
+ * @param {Number}
+ *            x
+ * @param {Number}
+ *            y
  */
-function id2path(val){
+function openTaskMenu(task, x, y) {
+	var $taskMenu=$('#taskMenu');
+	$taskMenu.attr('data-itemid', task.id.join('.'));
+	$taskMenu.show('fast').focus().css('left', x).css('top', y);
+}
+
+/**
+ * 
+ * @param {Group}
+ *            group
+ * @param {Number}
+ *            x
+ * @param {Number}
+ *            y
+ */
+function openGroupMenu(group, x, y) {
+	var $taskGroup=$('#groupMenu');
+	$taskGroup.attr('data-itemid', group.id.join('.'));
+	$taskGroup.show('fast').focus().css('left', x).css('top', y);
+}
+
+/**
+ * Converts an id expression in a path.
+ * 
+ * @param {String}
+ *            val
+ * @returns { Array }
+ */
+function id2path(val) {
 	return val.split('.');
 }
 
 /**
  * Converts a path in a task name.
+ * 
  * @param path
  * @returns {String}
  */
@@ -41,7 +85,7 @@ function makeItemName(path) {
 }
 var makeTaskName = makeItemName;// I do not trust the refactor that much.
 
-function makeItemPath(name){
+function makeItemPath(name) {
 	return name.substr(5).split('_');
 }
 
@@ -62,28 +106,27 @@ function refreshView() {
 	});
 }
 
-
-
 /**
- * @param {Item[]} dirt - the items to refresh.
+ * @param {Item[]}
+ *            dirt - the items to refresh.
  */
-function refreshItems(items){
-	var parents = {}; //Need only to be redrawn
-	while(items.length){
+function refreshItems(items) {
+	var parents = {}; // Need only to be redrawn
+	while (items.length) {
 		var dirtItem = items.pop();
 		items = dirtItem.dependents.concat(items);
-		if(dirtItem.subTasks){
+		if (dirtItem.subTasks) {
 			items = dirtItem.subTasks.concat(items);
 			editGroupChrono(dirtItem);
-		} else 
+		} else
 			editTaskChrono(dirtItem);
-		if(dirtItem.parent && dirtItem.parent !== tasks){
+		if (dirtItem.parent && dirtItem.parent !== tasks) {
 			var p = dirtItem.parent;
-			do{
+			do {
 				parents[p.id] = p;
 				items = p.dependents.concat(items);
 				p = p.parent;
-			}while(p !== tasks);
+			} while (p !== tasks);
 		}
 	}
 	for ( var prt in parents) {
@@ -92,7 +135,7 @@ function refreshItems(items){
 }
 
 /**
- * The offset of representation 
+ * The offset of representation
  */
 var offset = 0;
 /**
@@ -102,12 +145,15 @@ var scale = 2;
 
 /**
  * Show a new task on schedule;
- * @param {Task} task
+ * 
+ * @param {Task}
+ *            task
  */
-function addTaskChrono(task){
+function addTaskChrono(task) {
 	var $target = (task.parent === tasks) ? $('.viewGroup') : $('.viewGroup #'
 			+ makeItemName(task.parent.id));
-	var viewItem = '<div class="item" '+ 'id="' + makeItemName(task.id) +'" >';
+	var viewItem = '<div class="item" ' + 'id="' + makeItemName(task.id)
+			+ '" >';
 	viewItem += generateItemView(task, generateTaskOptions());
 	viewItem += '</div>';
 	$target.append(viewItem);
@@ -115,36 +161,42 @@ function addTaskChrono(task){
 
 /**
  * Refresh the task on schedule
- * @param {Task} task
+ * 
+ * @param {Task}
+ *            task
  */
-function editTaskChrono(task){
+function editTaskChrono(task) {
 	var $element = $('.viewGroup #' + makeItemName(task.id));
 	updateItemView(task, $element);
 }
 
 /**
  * Private
+ * 
  * @returns {String}
  */
-function generateTaskOptions(){
+function generateTaskOptions() {
 	var optionItem = '<span class="itemButtons">';
-	optionItem 	  += '<span class="play ui-icon ui-icon-play" title="Visualizar"></span>';
-	optionItem 	  += '<span class="split ui-icon ui-icon-arrowthickstop-1-s" title="Dividir em subTarefas"></span>';
-	optionItem 	  += '<span class="edit ui-icon ui-icon-pencil" title="Editar"></span>';
-	optionItem 	  += '<span class="delete ui-icon ui-icon-trash" title="Deletar"></span>';
-	optionItem	  += '</span>';
+	optionItem += '<span class="play ui-icon ui-icon-play" title="Visualizar"></span>';
+	optionItem += '<span class="split ui-icon ui-icon-arrowthickstop-1-s" title="Dividir em subTarefas"></span>';
+	optionItem += '<span class="edit ui-icon ui-icon-pencil" title="Editar"></span>';
+	optionItem += '<span class="delete ui-icon ui-icon-trash" title="Deletar"></span>';
+	optionItem += '</span>';
 	return optionItem;
 }
 
 /**
  * Show a new group on schedule;
+ * 
  * @param parent
- * @param {Group} task
+ * @param {Group}
+ *            task
  */
 function addGroupChrono(group) {
 	var $target = (group.parent === tasks) ? $('.viewGroup') : $('.viewGroup #'
 			+ makeItemName(group.parent.id));
-	var viewItem = '<div class="item" '+ 'id="' + makeItemName(group.id) +'" >';
+	var viewItem = '<div class="item" ' + 'id="' + makeItemName(group.id)
+			+ '" >';
 	viewItem += generateItemView(group, generateGroupOptions());
 	viewItem += '</div>';
 	$target.append(viewItem);
@@ -152,29 +204,33 @@ function addGroupChrono(group) {
 
 /**
  * Refresh the task on schedule
- * @param {Group} group
+ * 
+ * @param {Group}
+ *            group
  */
-function editGroupChrono(group){
+function editGroupChrono(group) {
 	var $element = $('.viewGroup #' + makeItemName(group.id));
 	updateItemView(group, $element);
 }
 
 /**
  * Private
+ * 
  * @returns {String}
  */
-function generateGroupOptions(){
+function generateGroupOptions() {
 	var optionItem = '<span class="itemButtons">';
-	optionItem 	  += '<span class="addSubTask ui-icon ui-icon-document" title="Adicionar Sub-tarefa"></span>';
-	optionItem 	  += '<span class="addSubGroup ui-icon ui-icon-folder-open" title="Adicionar Sub-grupo"></span>';
-	optionItem 	  += '<span class="edit ui-icon ui-icon-pencil" title="Editar"></span>';
-	optionItem 	  += '<span class="delete ui-icon ui-icon-trash" title="Deletar"></span>';
-	optionItem	  += '</span>';
+	optionItem += '<span class="addSubTask ui-icon ui-icon-document" title="Adicionar Sub-tarefa"></span>';
+	optionItem += '<span class="addSubGroup ui-icon ui-icon-folder-open" title="Adicionar Sub-grupo"></span>';
+	optionItem += '<span class="edit ui-icon ui-icon-pencil" title="Editar"></span>';
+	optionItem += '<span class="delete ui-icon ui-icon-trash" title="Deletar"></span>';
+	optionItem += '</span>';
 	return optionItem;
 }
 
 /**
  * Private
+ * 
  * @param task
  * @returns {String}
  */
@@ -182,27 +238,36 @@ function generateItemView(task, options) {
 	var path = task.id;
 	var name = task.name;
 	var viewItem = '<span class="taskName" title="' + name + '">';
-	viewItem += options; 
-	viewItem += '<span class="name">' + path.join('.') + ". " + name + '</span></span>';
+	viewItem += options;
+	viewItem += '<span class="name">' + path.join('.') + ". " + name
+			+ '</span></span>';
 	var start = task.start();
 	var spentReg = task.spentReg();
 	var remaining = task.remaining();
 	var leftover = task.leftover();
 	var overdue = task.overdue();
 	var unreachable = task.unreachable();
-	viewItem += '<span class="meter start" style = "width:'+(start*scale)+'em"></span>';
-	viewItem += '<span class="meter spentReg" style = "width:'+(spentReg*scale)+'em"></span>';
-	viewItem += '<span class="meter remaining" style = "width:'+(remaining*scale)+'em"></span>';
-	viewItem += '<span class="meter leftover" style = "width:'+(leftover*scale)+'em"></span>';
-	viewItem += '<span class="meter overdue" style = "width:'+(overdue*scale)+'em"></span>';
-	viewItem += '<span class="meter unreachable" style = "width:'+(unreachable*scale)+'em"></span>';
+	viewItem += '<span class="meter start" style = "width:' + (start * scale)
+			+ 'em"></span>';
+	viewItem += '<span class="meter spentReg" style = "width:'
+			+ (spentReg * scale) + 'em"></span>';
+	viewItem += '<span class="meter remaining" style = "width:'
+			+ (remaining * scale) + 'em"></span>';
+	viewItem += '<span class="meter leftover" style = "width:'
+			+ (leftover * scale) + 'em"></span>';
+	viewItem += '<span class="meter overdue" style = "width:'
+			+ (overdue * scale) + 'em"></span>';
+	viewItem += '<span class="meter unreachable" style = "width:'
+			+ (unreachable * scale) + 'em"></span>';
 	adjustRuler(task.end() + task.leftover());
 	return viewItem;
 }
 
 /**
  * Private
- * @param {Item} task
+ * 
+ * @param {Item}
+ *            task
  * @returns {String}
  */
 function updateItemView(task, $taskContainer) {
@@ -212,36 +277,40 @@ function updateItemView(task, $taskContainer) {
 	var leftover = task.leftover();
 	var overdue = task.overdue();
 	var unreachable = task.unreachable();
-	$taskContainer.children('.start').css('width', (start*scale)+'em');
-	$taskContainer.children('.spentReg').css('width', (spentReg*scale)+'em');
-	$taskContainer.children('.remaining').css('width', (remaining*scale)+'em');
-	$taskContainer.children('.leftover').css('width', (leftover*scale)+'em');
-	$taskContainer.children('.overdue').css('width', (overdue*scale)+'em');
-	$taskContainer.children('.unreachable').css('width', (unreachable*scale)+'em');
+	$taskContainer.children('.start').css('width', (start * scale) + 'em');
+	$taskContainer.children('.spentReg')
+			.css('width', (spentReg * scale) + 'em');
+	$taskContainer.children('.remaining').css('width',
+			(remaining * scale) + 'em');
+	$taskContainer.children('.leftover')
+			.css('width', (leftover * scale) + 'em');
+	$taskContainer.children('.overdue').css('width', (overdue * scale) + 'em');
+	$taskContainer.children('.unreachable').css('width',
+			(unreachable * scale) + 'em');
 	adjustRuler(task.end() + task.leftover());
-	var $itemName=$taskContainer.children('.taskName');
+	var $itemName = $taskContainer.children('.taskName');
 	$itemName.attr('title', task.name);
 	var newName = task.id.join('.') + '. ' + task.name;
 	$itemName.children('.name').text(newName);
 }
 
 /**
- * The current position of the ruler.
- * Should be private, please do not change.
+ * The current position of the ruler. Should be private, please do not change.
  */
 var currentEnd = 15;
 
 /**
  * Adjust the ruler.
+ * 
  * @param end
  */
-function adjustRuler(end){
-	if(end > currentEnd){
-		var incr = Math.ceil((end - currentEnd)/5);
+function adjustRuler(end) {
+	if (end > currentEnd) {
+		var incr = Math.ceil((end - currentEnd) / 5);
 		var $timeLabel = $('.timeLabel');
-		for(var i = 1; i <= incr; ++i){
-			$timeLabel.append('<span>' + (currentEnd + i*5) + 'h</span>');
+		for (var i = 1; i <= incr; ++i) {
+			$timeLabel.append('<span>' + (currentEnd + i * 5) + 'h</span>');
 		}
-		currentEnd += (incr*5);
+		currentEnd += (incr * 5);
 	}
 }
