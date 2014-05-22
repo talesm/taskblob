@@ -16,48 +16,33 @@ $(function() {
 	});
 	// Configuring the description editor
 	var editor = new EpicEditor({
-		container : 'playFormatedDescription',
+		container : 'playFormattedDescription',
 		textarea : 'playDescription',
 		basePath: 'ext',
-		localStorageName: 'playDescription'
+		localStorageName: 'playDescription',
+		button: false
 	});
 	
 	console.log(editor);
 	
-//	editor.load(function () {
-//	  console.log("Editor loaded.");
-//	});
-
-	
+	//Context menu
 	$('.popMenu').on('click', '.play', function() {
 		var path = $(this).closest('.popMenu').attr('data-itemid').split('.');
-		var task = tasks.get(path );
-		$playTask.find('#playPath').val(path.join('.'));
-		$playTask.find('#playName').val(task.name);
-		$playTask.find('#playDescription').val(task.description);
-		var status;
-		if(task.isClosed())
-			status = "Fechada";
-		else if(task.overdue() > 0)
-			status = "Atrasada";
-		else if(task.spentReg() > 0)
-			status = "Iniciada";
-		else if(task.isReady())
-			status = "Pronta";
-		else
-			status = "Aguardando";
-		$playTask.find('#playStatus').val(status);
-		$playTask.find('#playRemaining').val(task.remaining());
-		$playTask.dialog("open");
-		editor.load();
+		openView(path);
 	});
 	
+	//Quick button
 	$('.viewGroup').on('click', '.play', function() {
 		var path = makeItemPath($(this).closest('.item').attr('id'));
+		openView(path);
+	});
+	
+	function openView(path) {
 		var task = tasks.get(path );
 		$playTask.find('#playPath').val(path.join('.'));
 		$playTask.find('#playName').val(task.name);
-		$playTask.find('#playDescription').val(task.description);
+		$playTask.find('#playDescription').val(task.description);//TODO Editable...
+		
 		var status;
 		if(task.isClosed())
 			status = "Fechada";
@@ -73,7 +58,7 @@ $(function() {
 		$playTask.find('#playRemaining').val(task.remaining());
 		$playTask.dialog("open");
 		editor.load().preview();
-	});
+	}
 	
 });
 

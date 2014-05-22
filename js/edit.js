@@ -87,8 +87,17 @@ $(function() {
 		$editTask.dialog("open");
 	});
 
+	// Configuring the description editor
+	var editor = new EpicEditor({
+		container : 'editFormattedDescription',
+		textarea : 'description',
+		basePath: 'ext',
+		localStorageName: 'editDescription'
+	});
+
+	//Creating the dialog
 	$('.editTask').dialog({
-		width : 500,
+		width : 600,
 		autoOpen : false,
 		modal : true,
 		buttons : {
@@ -97,6 +106,9 @@ $(function() {
 				$(this).dialog("close");
 			}
 		},
+		open : function() {
+			editor.load();
+		},
 		close : function() {
 			$editTask.find('#closed').parent().css('display', '');
 			$editTask.find('#duration').parent().css('display', '');
@@ -104,8 +116,11 @@ $(function() {
 			$('.editTask form').each(function() {
 				this.reset();
 			});
+			editor.unload();
 		}
 	});
+	
+	//Adding the editor
 
 	function linearizeDep(dep) {
 		return dep.map(function(dp) {
