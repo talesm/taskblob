@@ -10,9 +10,24 @@ $(function() {
 		buttons: {
 			'Fechar': function() {
 				$playTask.dialog('close');
+				editor.unload();
 			}
 		}
 	});
+	// Configuring the description editor
+	var editor = new EpicEditor({
+		container : 'playFormatedDescription',
+		textarea : 'playDescription',
+		basePath: 'ext',
+		localStorageName: 'playDescription'
+	});
+	
+	console.log(editor);
+	
+//	editor.load(function () {
+//	  console.log("Editor loaded.");
+//	});
+
 	
 	$('.popMenu').on('click', '.play', function() {
 		var path = $(this).closest('.popMenu').attr('data-itemid').split('.');
@@ -34,6 +49,7 @@ $(function() {
 		$playTask.find('#playStatus').val(status);
 		$playTask.find('#playRemaining').val(task.remaining());
 		$playTask.dialog("open");
+		editor.load();
 	});
 	
 	$('.viewGroup').on('click', '.play', function() {
@@ -56,6 +72,7 @@ $(function() {
 		$playTask.find('#playStatus').val(status);
 		$playTask.find('#playRemaining').val(task.remaining());
 		$playTask.dialog("open");
+		editor.load().preview();
 	});
 	
 });

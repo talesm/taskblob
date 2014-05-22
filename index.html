@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="css/taskBlob.css">
 <script src="ext/js/jquery-1.10.2.js"></script>
 <script src="ext/js/jquery-ui-1.10.4.custom.js"></script>
+<script src="ext/js/epiceditor.js"></script>
 <script src="js/Item.js"></script>
 <script src="js/Task.js"></script>
 <script src="js/Group.js"></script>
@@ -43,8 +44,9 @@
 					<label for="playName">Nome:</label> <input id="playName" disabled>
 				</div>
 				<div class="formLine">
-					<label for="playDescription">Descrição:</label> <input
-						id="playDescription" disabled>
+					<label for="playDescription" style="height: 6em">Descrição:</label>
+					<textarea id="playDescription" class="formatedText" ></textarea>
+					<div id="playFormatedDescription" style="height: 6em">...</div>
 				</div>
 				<div class="formLine">
 					<label for="playStatus">Status:</label> <input id="playStatus"

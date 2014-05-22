@@ -220,6 +220,9 @@ header h2 {
 	padding-right: 0.25em;
 	text-align: right;
 }
+.formTable .formatedText {
+	display: none;
+}
 
 
 /************************************************/
