@@ -16,7 +16,15 @@ $(function() {
 		$viewGroup.find('.add').css('left', scrollLeft);
 	}).on('contextmenu', '.item', function(ev) {
 		ev.preventDefault();
-		var item = tasks.get(makeItemPath($(this).attr('id')));
+		ev.stopImmediatePropagation();
+		var item = tasks.get($(this).attr('data-itemid').split('.') );
+		if (item.subTasks)
+			openGroupMenu(item, ev.pageX, ev.pageY);
+		else {
+			openTaskMenu(item, ev.pageX, ev.pageY);
+		}
+	}).on('click', '.options', function(ev) {
+		var item = tasks.get($(this).closest('.item').attr('data-itemid').split('.') );
 		if (item.subTasks)
 			openGroupMenu(item, ev.pageX, ev.pageY);
 		else {
@@ -26,7 +34,8 @@ $(function() {
 
 	$('.popMenu').menu().hide().on('focusout', function() {
 		$(this).hide('fast');
-	});
+	});//options
+	
 });
 
 /**
@@ -153,8 +162,8 @@ function addTaskChrono(task) {
 	var $target = (task.parent === tasks) ? $('.viewGroup') : $('.viewGroup #'
 			+ makeItemName(task.parent.id));
 	var viewItem = '<div class="item" ' + 'id="' + makeItemName(task.id)
-			+ '" >';
-	viewItem += generateItemView(task, generateTaskOptions());
+			+ '" data-itemid="' + task.id.join('.') + '" >';
+	viewItem += generateItemView(task, generateItemOptions());
 	viewItem += '</div>';
 	$target.append(viewItem);
 }
@@ -175,12 +184,11 @@ function editTaskChrono(task) {
  * 
  * @returns {String}
  */
-function generateTaskOptions() {
+function generateItemOptions() {
 	var optionItem = '<span class="itemButtons">';
 	optionItem += '<span class="play ui-icon ui-icon-play" title="Visualizar"></span>';
-	optionItem += '<span class="split ui-icon ui-icon-arrowthickstop-1-s" title="Dividir em subTarefas"></span>';
 	optionItem += '<span class="edit ui-icon ui-icon-pencil" title="Editar"></span>';
-	optionItem += '<span class="delete ui-icon ui-icon-trash" title="Deletar"></span>';
+	optionItem += '<span class="options ui-icon ui-icon-triangle-1-s" title="Mais opções"></span>';
 	optionItem += '</span>';
 	return optionItem;
 }
@@ -196,8 +204,8 @@ function addGroupChrono(group) {
 	var $target = (group.parent === tasks) ? $('.viewGroup') : $('.viewGroup #'
 			+ makeItemName(group.parent.id));
 	var viewItem = '<div class="item" ' + 'id="' + makeItemName(group.id)
-			+ '" >';
-	viewItem += generateItemView(group, generateGroupOptions());
+			+ '" data-itemid="' + group.id.join('.') + '" >';
+	viewItem += generateItemView(group, generateItemOptions());
 	viewItem += '</div>';
 	$target.append(viewItem);
 }
@@ -211,21 +219,6 @@ function addGroupChrono(group) {
 function editGroupChrono(group) {
 	var $element = $('.viewGroup #' + makeItemName(group.id));
 	updateItemView(group, $element);
-}
-
-/**
- * Private
- * 
- * @returns {String}
- */
-function generateGroupOptions() {
-	var optionItem = '<span class="itemButtons">';
-	optionItem += '<span class="addSubTask ui-icon ui-icon-document" title="Adicionar Sub-tarefa"></span>';
-	optionItem += '<span class="addSubGroup ui-icon ui-icon-folder-open" title="Adicionar Sub-grupo"></span>';
-	optionItem += '<span class="edit ui-icon ui-icon-pencil" title="Editar"></span>';
-	optionItem += '<span class="delete ui-icon ui-icon-trash" title="Deletar"></span>';
-	optionItem += '</span>';
-	return optionItem;
 }
 
 /**

@@ -25,15 +25,9 @@ $(function() {
 	
 	console.log(editor);
 	
-	//Context menu
-	$('.popMenu').on('click', '.play', function() {
-		var path = $(this).closest('.popMenu').attr('data-itemid').split('.');
-		openView(path);
-	});
-	
-	//Quick button
-	$('.viewGroup').on('click', '.play', function() {
-		var path = makeItemPath($(this).closest('.item').attr('id'));
+	//Button and context
+	$('.viewGroup, .popMenu').on('click', '.play', function() {
+		var path = $(this).closest('.item, .popMenu').attr('data-itemid').split('.');
 		openView(path);
 	});
 	

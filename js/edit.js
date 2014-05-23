@@ -9,7 +9,7 @@ $(function() {
 		}
 	});
 	var $editTask = $('.editTask');
-	var $viewSection = $('.viewSection');
+	var $popMenu = $('.popMenu');
 
 	// Add new task
 	$('.add').on('click', function() {
@@ -36,9 +36,8 @@ $(function() {
 	});
 	
 	//Add new subTask
-	$viewSection.on('click', '.taskName .addSubTask', function() {
-		var group = tasks
-				.get(makeItemPath($(this).closest('.item').attr('id')));
+	$popMenu.on('click', '.addSubTask', function() {
+		var group = tasks.get($(this).closest('.popMenu').attr('data-itemid').split('.'));
 		var path = group.id.join('.') + '.' + (group.subTasks.length + 1);
 		$editTask.find('#taskPath').val(path);
 		$editTask.find('#taskName').val('Tarefa' + path);
@@ -49,9 +48,8 @@ $(function() {
 	});
 	
 	//Add new subGroup
-	$viewSection.on('click', '.taskName .addSubGroup', function(){
-		var group = tasks
-		.get(makeItemPath($(this).closest('.item').attr('id')));
+	$popMenu.on('click', '.addSubGroup', function(){
+		var group = tasks.get($(this).closest('.popMenu').attr('data-itemid').split('.'));
 		var path = group.id.join('.') + '.' + (group.subTasks.length + 1);
 		$editTask.find('#taskPath').val(path);
 		$editTask.find('#taskName').val('Grupo' + path);
@@ -64,8 +62,8 @@ $(function() {
 	});
 
 	// Edit a task
-	$viewSection.on('click', '.taskName .edit', function() {
-		var path = makeItemPath( $(this).closest('.item').attr('id'));
+	$('.viewSection, .popMenu').on('click', '.edit', function() {
+		var path = $(this).closest('.item, .popMenu').attr('data-itemid').split('.');
 		var item = tasks.get(path);
 		$editTask.find('#taskPath').val(path.join('.'));
 		$editTask.find('#taskName').val(item.name);
