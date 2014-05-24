@@ -250,12 +250,12 @@ function generateItemView(task, options) {
 			+ (spentReg * scale) + 'em"></span>';
 	viewItem += '<span class="meter remaining" style = "width:'
 			+ (remaining * scale) + 'em"></span>';
-	viewItem += '<span class="meter leftover" style = "width:'
-			+ (leftover * scale) + 'em"></span>';
 	viewItem += '<span class="meter overdue" style = "width:'
-			+ (overdue * scale) + 'em"></span>';
+		+ (overdue * scale) + 'em"></span>';
 	viewItem += '<span class="meter unreachable" style = "width:'
 			+ (unreachable * scale) + 'em"></span>';
+	viewItem += '<span class="meter leftover" style = "width:'
+		+ (leftover * scale) + 'em"></span>';
 	adjustRuler(task.end() + task.leftover());
 	return viewItem;
 }
