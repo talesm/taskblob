@@ -205,7 +205,7 @@ function generateItemOptions(extra) {
 function addGroupChrono(group) {
 	var $target = (group.parent === tasks) ? $('.viewGroup') : $('.viewGroup #'
 			+ makeItemName(group.parent.id));
-	var viewItem = '<div class="item" ' + 'id="' + makeItemName(group.id)
+	var viewItem = '<div class="item collapsed" ' + 'id="' + makeItemName(group.id)
 			+ '" data-itemid="' + group.id.join('.') + '" >';
 	var collapseButton = '<span class="collapse ui-icon ui-icon-folder-open" title="Encolher"></span>';
 	collapseButton    += '<span class="collapse ui-icon ui-icon-folder-collapsed" title="Expandir"></span>';
