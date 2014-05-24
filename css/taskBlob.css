@@ -78,8 +78,13 @@ header h2 {
 	white-space: nowrap;
 }
 
+/* This hides collapsed things*/
+.collapsed .item{
+	display: none;
+}
+
 /* Tasks */
-.viewGroup .taskName, .viewGroup > .add{
+.viewGroup .taskName{
 	display: inline-block;
 	width: 10em;
 	height: 1.5em;
@@ -95,16 +100,19 @@ header h2 {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-.viewGroup > .add{
-	border-color: rgba(119, 119, 119, 0.75);
-	border-width: 2px;
-	font-weight: bold;
-	bottom: 0
+
+.viewGroup .item.collapsed > .taskName{
+	border-bottom-right-radius: 0;
+/* 	color: rgba(0, 0, 0, 0.5); */
+	background-color: rgba(224, 224, 224, 0.75);
 }
 
 .viewGroup .taskName > span.name{
 	display: inline-block;
 	position: static;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	width: inherit;
 }
 
 .viewGroup .taskName > .itemButtons{
@@ -138,6 +146,14 @@ header h2 {
 
 .viewGroup .taskName:hover > span.itemButtons > span.delete{
 	background-color: #fab;
+}
+
+.viewGroup .item.collapsed > .taskName > span.itemButtons > span.ui-icon-folder-open{
+	display: none;
+}
+
+.viewGroup .item:not(.collapsed) > .taskName > span.itemButtons > span.ui-icon-folder-collapsed{
+	display: none;
 }
 
 /*Meters*/
@@ -190,13 +206,6 @@ header h2 {
 	border-right: 1px solid rgba(0, 0, 0, 0.25);
 }
 
-/* .unreachable::AFTER{ */
-/* 	position:absolute; */
-/* 	border-right: 1px solid black;	 */
-/* 	content: ' '; */
-/* 	height: 1.2em; */
-/* } */
-
 /********************************************/
 /* Dialogs 								  	*/
 /* Thees are projected to work with modals  */
@@ -232,6 +241,23 @@ header h2 {
      width: 150px;
      position: absolute;
      z-index: 1000;
+ }
+ 
+.popMenu .ui-icon  {
+	background-color: #bbd;
+ 	border: 2px #bbd solid;
+ 	border-radius: 4px;
+}
+
+
+.popMenu .delete:hover  {
+ 	color: #c55;
+ }
+
+.popMenu .delete .ui-icon  {
+ 	background-color: #c55;
+ 	border: 2px #c55 solid;
+ 	border-radius: 4px;
  }
 /********/
 /*FOOTER*/

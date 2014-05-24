@@ -184,10 +184,12 @@ function editTaskChrono(task) {
  * 
  * @returns {String}
  */
-function generateItemOptions() {
+function generateItemOptions(extra) {
 	var optionItem = '<span class="itemButtons">';
 	optionItem += '<span class="play ui-icon ui-icon-play" title="Visualizar"></span>';
 	optionItem += '<span class="edit ui-icon ui-icon-pencil" title="Editar"></span>';
+	if(extra)
+		optionItem += extra;
 	optionItem += '<span class="options ui-icon ui-icon-triangle-1-s" title="Mais opções"></span>';
 	optionItem += '</span>';
 	return optionItem;
@@ -205,7 +207,9 @@ function addGroupChrono(group) {
 			+ makeItemName(group.parent.id));
 	var viewItem = '<div class="item" ' + 'id="' + makeItemName(group.id)
 			+ '" data-itemid="' + group.id.join('.') + '" >';
-	viewItem += generateItemView(group, generateItemOptions());
+	var collapseButton = '<span class="collapse ui-icon ui-icon-folder-open" title="Encolher"></span>';
+	collapseButton    += '<span class="collapse ui-icon ui-icon-folder-collapsed" title="Expandir"></span>';
+	viewItem += generateItemView(group, generateItemOptions(collapseButton));
 	viewItem += '</div>';
 	$target.append(viewItem);
 }
