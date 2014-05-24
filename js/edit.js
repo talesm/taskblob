@@ -161,20 +161,23 @@ $(function() {
 	 * @param {Number} spent 
 	 */
 	function addItem(type, parent, name, description, dependencies, duration, spent){
+		var newId=parent.id.concat([ parent.size() + 1 ]);
 		if (type === 'task') {
-			var newTask = new Task(parent.id.concat([ parent.size() + 1 ]), name, description,
+			var newTask = new Task(newId, name, description,
 					duration, spent, false, dependencies);
 			parent.addKid(newTask);
 			addTaskChrono(newTask);
 			
 		} else if (type === 'group') {
-			var newGroup = new Group([ parent.size() + 1 ], name,
+			var newGroup = new Group(newId, name,
 					description, false, dependencies);
 			parent.addKid(newGroup);
 			addGroupChrono(newGroup);
 		} else
 			throw Error("Unknown item type");
 		refreshItems([parent]);
+		var seuBucetao = '#'+makeItemName(parent.id);
+		$(seuBucetao).removeClass( 'collapsed' );
 	}
 	
 	/**
