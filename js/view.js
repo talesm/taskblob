@@ -23,8 +23,6 @@ $(function() {
 		button: false
 	});
 	
-	console.log(editor);
-	
 	//Button and context
 	$('.viewGroup, .popMenu').on('click', '.play', function() {
 		var path = $(this).closest('.item, .popMenu').attr('data-itemid').split('.');
