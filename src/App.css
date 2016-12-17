@@ -1,0 +1,271 @@
+/*HEADER*/
+body > header, body > footer {
+	background: #fff;
+	border: #eee 1px solid;
+	border-right: #bbb 0.25em solid;
+	border-bottom: #bbb 0.25em solid;
+	border-radius: 0.5em;
+	padding-left: 0.5em;
+	font-variant: small-caps;
+}
+body > footer {
+	text-align: center;
+}
+
+header h1 {
+	color: #666;
+	display: inline-block;
+}
+
+header h1 :LINK, header h1 :VISITED{
+	color: #666;
+	text-decoration: overline underline;
+
+}
+header h2 {
+	display: inline-block;
+	font-size: medium;
+	font-style: italic;
+}
+/**********/
+/***MAIN***/
+/**********/
+/******/
+/*View*/
+/******/
+.viewGroup{
+	background: #eee;
+	position: relative;
+	padding-left: 1px;
+	padding-right: 0;
+	right : 0;
+	overflow: auto;
+}
+
+/* Labels */
+.timeLabel{
+	position: static;
+	background: white;
+	margin-left: 0;
+	margin-bottom: 0.2em;
+	outline: #aaa 1px solid;
+	white-space: nowrap;
+}
+.timeLabel > span{
+	background: white;
+	display: inline-block;
+	width: 10em;
+	text-align: right;
+}
+.timeLabel > span:AFTER{
+	position: absolute;
+	top: 0;
+	border-left: 1px solid #aaa;
+/* 	height: 1.2em; */
+	height: 100%;
+	content: ' ';
+	/*z-index = -1;*/
+}
+
+.item{
+	white-space: nowrap;
+}
+
+/* This hides collapsed things*/
+.collapsed .item{
+	display: none;
+}
+
+/* Tasks */
+.viewGroup .taskName{
+	display: inline-block;
+	width: 10em;
+	height: 1.5em;
+	vertical-align: top;
+	position: absolute;
+	left: 0;
+	background-color: rgba(255, 255, 255, 0.75);
+	border: 1px solid rgba(187, 187, 187, 0.75);
+	border-top-right-radius: 0.75em;
+	border-bottom-right-radius: 0.75em;
+	cursor: pointer;
+	z-index: 10;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.viewGroup .item.collapsed > .taskName{
+	border-bottom-right-radius: 0;
+/* 	color: rgba(0, 0, 0, 0.5); */
+	background-color: rgba(224, 224, 224, 0.75);
+}
+
+.viewGroup .taskName > span.name{
+	display: inline-block;
+	position: static;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	width: inherit;
+}
+
+.viewGroup .taskName > .itemButtons{
+	display:none;
+
+}
+
+.viewGroup .taskName:hover > span.itemButtons{
+	display:block;
+	position: absolute;
+	vertical-align: middle;
+	z-index: 100;
+	right: 0.25em;
+}
+.viewGroup .taskName:hover > span.itemButtons > span{
+	display:inline-block;
+	background-color: #eee;
+	vertical-align: middle;
+	border: 1px solid #aaa;
+	width: 16px;
+	opacity: 0.75;
+}
+.viewGroup .taskName:active > span.itemButtons > span{
+	opacity: 1;
+}
+
+.viewGroup .taskName:hover > span.itemButtons > span:hover{
+	border-color: black;
+	opacity: 1;
+}
+
+.viewGroup .taskName:hover > span.itemButtons > span.delete{
+	background-color: #fab;
+}
+
+.viewGroup .item.collapsed > .taskName > span.itemButtons > span.ui-icon-folder-open{
+	display: none;
+}
+
+.viewGroup .item:not(.collapsed) > .taskName > span.itemButtons > span.ui-icon-folder-collapsed{
+	display: none;
+}
+
+.item > .item{
+	background-color: rgba(0, 0, 0, 0.1 );
+}
+
+.item > .item:first-of-type{
+	margin-top: -0.5em;
+	background: linear-gradient(to top, rgba(0, 0, 0, 0.1 ) 80%, transparent);
+}
+
+.item > .item:last-of-type{
+	margin-bottom: 0.25em;
+}
+
+/*Meters*/
+.meter{
+	display: inline-block;
+	height: 1.2em;
+	width: 2em;
+	margin-top: 0.15em;
+	border-color: black;
+	border-style: solid;
+	border-width: 1px 0 1px 0;
+}
+
+.start{
+	background-color: transparent;
+	border-color: transparent;
+	margin-left: 10em;
+}
+
+.spentReg{
+	background: #68c;
+	border-color: #57b;
+}
+
+.spentReg::BEFORE{
+	position:absolute;
+	border-left: 1px solid rgba(0, 0, 0, 0.25);
+	content: ' ';
+	height: 1.2em;
+}
+
+.remaining{
+	background: #fea;
+	border-color: #ed9;
+}
+
+.overdue{
+	background: #f87;
+	border-color: #e76;
+}
+
+.unreachable{
+	background: transparent;
+	background: repeating-linear-gradient(-45deg, transparent, transparent 0.25em, rgba(170,170,170,0.5) 0.25em, rgba(170,170,170,0.5) 0.5em);
+	border-color: rgba(153,153,153,0.5);
+}
+
+.leftover{
+	background: #1f5;
+	border-color: #0e4;
+	border-right: 1px solid #aaa;
+}
+
+/********************************************/
+/* Dialogs 								  	*/
+/* Thees are projected to work with modals  */
+/********************************************/
+
+.formTable{
+	display: table;
+	margin: auto;
+}
+
+.formTable > .formLine{
+	display: table-row;
+}
+
+.formTable > .formLine > *{
+	display: table-cell;
+	vertical-align: top;
+}
+
+.formTable > .formLine > label{
+	padding-right: 0.25em;
+	text-align: right;
+}
+.formTable .formatedText {
+	display: none;
+}
+
+
+/************************************************/
+/*	Menus										*/
+/************************************************/
+ .ui-menu {
+     width: 150px;
+     position: absolute;
+     z-index: 1000;
+ }
+
+.popMenu .ui-icon  {
+	background-color: #bbd;
+ 	border: 2px #bbd solid;
+ 	border-radius: 4px;
+}
+
+
+.popMenu .delete:hover  {
+ 	color: #c55;
+ }
+
+.popMenu .delete .ui-icon  {
+ 	background-color: #c55;
+ 	border: 2px #c55 solid;
+ 	border-radius: 4px;
+ }
+/********/
+/*FOOTER*/
+/********/
