@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
@@ -28,8 +27,8 @@ class App extends Component {
       		<button className="showImport">Importar</button>
       		<button className="showSettings">Configurações</button>
       	</nav>
-      	<footer>
-      		Copyright 2014 TalesM
+      	<footer className>
+      		Copyright 2014~2016 TalesM
       		<address>
       			<a target="_blank" href="http://twitter.com/TalesM">Twitter</a>
       			<a href="mailto:tales.miranda88+spamTaskBlob@gmail.com">Email</a>
