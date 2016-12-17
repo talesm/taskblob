@@ -25,7 +25,7 @@ solution too incomplete, because:
 
 3. Control how much you expects to work and how much you already worked can be 
 	really hard, It's easy to forgot how complete is something. 
-	
+
 I make the assumption you don't want to have hard deadlines for a hobby, as it's 
 hobby after all and making compromises withdraws all the fun, But is good know 
 how much time your pet-project will cost an efficient you are being. So this 
