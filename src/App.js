@@ -1,23 +1,20 @@
-import React, { Component } from 'react';
+import React from 'react';
+import TimeLabel from './ui/TimeLabel'
 import './App.css';
 
-class App extends Component {
+
+class App extends React.Component {
   render() {
     return (
       <div className="App">
         <header>
       		<h1><a href="#">Task Blob</a></h1>
-      		<h2>Sua forma rápida e prática de gerenciar tarefas.</h2>
+      		<h2>&nbsp;Sua forma rápida e prática de gerenciar tarefas.</h2>
       	</header>
         <section className="viewSection">
           <div className="message"></div>
           <div className="viewGroup">
-            <div className="timeLabel">
-              <span>Tarefas</span>
-              <span>5h</span>
-              <span>10h</span>
-              <span>15h</span>
-            </div>
+            <TimeLabel min="0" max="15" interval="5" unit="h">Tasks</TimeLabel>
           </div>
         </section>
         <nav className="mainNav buttonset">
