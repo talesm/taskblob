@@ -6,7 +6,7 @@ export default function(props) {
   const max     =+props.max||15
   const interval=+props.interval||5
   for (let i = min+interval; i <= max; i += interval){
-    arr.push(<span>{i}{props.unit}</span>);
+    arr.push(<span key={i}>{i}{props.unit}</span>);
   }
   return (
     <div className="timeLabel">

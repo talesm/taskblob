@@ -1,7 +1,7 @@
 import React from 'react';
 import TimeLabel from './ui/TimeLabel'
+import Item from './ui/Item'
 import './App.css';
-
 
 class App extends React.Component {
   render() {
@@ -15,14 +15,15 @@ class App extends React.Component {
           <div className="message"></div>
           <div className="viewGroup">
             <TimeLabel min="0" max="15" interval="5" unit="h">Tasks</TimeLabel>
+            <Item start="5em" spent="7.5em">A name</Item>
           </div>
         </section>
         <nav className="mainNav buttonset">
-      		<button className="add addButton">Tarefa</button>
-      		<button className="addGroup addButton">Grupo</button>
-      		<button className="showExport">Exportar</button>
-      		<button className="showImport">Importar</button>
-      		<button className="showSettings">Configurações</button>
+      		<button className="add addButton">+ Task</button>
+      		<button className="addGroup addButton">+ Group</button>
+      		<button className="showExport">Export</button>
+      		<button className="showImport">Import</button>
+      		<button className="showSettings">Settings</button>
       	</nav>
       	<footer className>
       		Copyright 2014~2016 TalesM
