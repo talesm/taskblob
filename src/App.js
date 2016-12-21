@@ -1,6 +1,5 @@
 import React from 'react';
-import TimeLabel from './ui/TimeLabel'
-import Item from './ui/Item'
+import GanttViewer from './ui/GanttViewer';
 import './App.css';
 
 class App extends React.Component {
@@ -13,10 +12,7 @@ class App extends React.Component {
       	</header>
         <section className="viewSection">
           <div className="message"></div>
-          <div className="viewGroup">
-            <TimeLabel min="0" max="15" interval="5" unit="h">Tasks</TimeLabel>
-            <Item start="5em" spent="7.5em">A name</Item>
-          </div>
+          <GanttViewer>Tasks</GanttViewer>
         </section>
         <nav className="mainNav buttonset">
       		<button className="add addButton">+ Task</button>
