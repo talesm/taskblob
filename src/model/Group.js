@@ -171,7 +171,7 @@ Group.prototype.end = function() {
 };
 
 Group.prototype.map = function (func) {
-	this.subTasks.map(func);
+	return this.subTasks.map(func);
 }
 
 export default Group;

@@ -6,9 +6,9 @@ export default function(props) {
   const items = (props.items||[]).map(item => (
     <Item key={item.id}
       start="0"
-      spent={ Math.min(item.spent, item.duration)+"em"}
-      remaining={Math.max(item.duration - item.spent, 0)+"em"}
-      overdue={Math.max(-item.duration + item.spent, 0)+"em"}
+      spent={ Math.min(item.spent, item.duration)*2+"em"}
+      remaining={Math.max(item.duration - item.spent, 0)*2+"em"}
+      overdue={Math.max(-item.duration + item.spent, 0)*2+"em"}
       closed={item.closed}
     >
       {item.name}
