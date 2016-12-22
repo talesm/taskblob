@@ -170,8 +170,8 @@ Group.prototype.end = function() {
 	return Math.max(betterEnd, kidsEnd);
 };
 
-Group.prototype.map = function (func) {
-	return this.subTasks.map(func);
+Group.prototype.toArray = function () {
+	return this.subTasks;
 }
 
 export default Group;
