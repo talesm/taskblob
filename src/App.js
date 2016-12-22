@@ -1,12 +1,13 @@
 import React from 'react';
 import GanttViewer from './ui/GanttViewer';
+import MainNav from './ui/MainNav';
 import './App.css';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tasks: [
+      project: [
         {id: 1, name: "Task1", description: "A task", duration: 7, spent: 5, closed: false, dependencies: []},
         {id: 2, name: "Task2", description: "A task", duration: 3, spent: 5, closed: false, dependencies: []},
         {id: 3, name: "Task3", description: "A task", duration: 7, spent: 5, closed: true, dependencies: []},
@@ -24,15 +25,9 @@ class App extends React.Component {
       	</header>
         <section className="viewSection">
           <div className="message"></div>
-          <GanttViewer items={this.state.tasks}>Tasks</GanttViewer>
+          <GanttViewer items={this.state.project}>Tasks</GanttViewer>
         </section>
-        <nav className="mainNav buttonset">
-      		<button className="add addButton">+ Task</button>
-      		<button className="addGroup addButton">+ Group</button>
-      		<button className="showExport">Export</button>
-      		<button className="showImport">Import</button>
-      		<button className="showSettings">Settings</button>
-      	</nav>
+        <MainNav />
       	<footer className>
       		Copyright 2014~2016 TalesM
       		<address>
