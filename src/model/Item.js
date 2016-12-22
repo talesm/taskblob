@@ -48,7 +48,7 @@ function Item(id, parent, name, description, dependencies) {
  */
 Item.prototype.hasDependency = function(task) {
 	var pos = this.dependencies.indexOf(task);
-	return (pos != -1) || (!!this.parent && this.parent.hasDependency(task))
+	return (pos !== -1) || (!!this.parent && this.parent.hasDependency(task))
 			|| (this.dependencies.some(function(dependency) {
 				return dependency.hasDependency(task);
 			}));
@@ -63,7 +63,7 @@ Item.prototype.hasDependency = function(task) {
  */
 Item.prototype.hasDependent = function(task) {
 	var pos = this.dependents.indexOf(task);
-	return (pos != -1) || (this.dependents.some(function(dependent) {
+	return (pos !== -1) || (this.dependents.some(function(dependent) {
 		return dependent.hasDependent(task);
 	}));
 };
@@ -92,11 +92,11 @@ Item.prototype.addDependency = function(task) {
  */
 Item.prototype.removeDependency = function(task) {
 	var pos = this.dependencies.indexOf(task);
-	if (pos == -1)
+	if (pos === -1)
 		return false;
 	this.dependencies.splice(pos, 1);
 	var opos = task.dependents.indexOf(this);
-	if (opos == -1)
+	if (opos === -1)
 		return false;
 	task.dependents.splice(opos, 1);
 	return true;
@@ -135,12 +135,12 @@ Item.prototype.erase = function() {
 	// Eliminate dependencies:
 	this.dependencies.forEach(function(dependency) {
 		var pos = dependency.dependents.indexOf(this);
-		if (pos != -1)
+		if (pos !== -1)
 			dependency.dependents.splice(pos, 1);
 	}, this);
 	this.dependents.forEach(function(dependent) {
 		var pos = dependent.dependencies.indexOf(this);
-		if (pos != -1)
+		if (pos !== -1)
 			dependent.dependencies.splice(pos, 1);
 	}, this);
 	if (this.parent)

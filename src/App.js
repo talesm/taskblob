@@ -8,12 +8,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      project: [
-        {id: 1, name: "Task1", description: "A task", duration: 7, spent: 5, closed: false, dependencies: []},
-        {id: 2, name: "Task2", description: "A task", duration: 3, spent: 5, closed: false, dependencies: []},
-        {id: 3, name: "Task3", description: "A task", duration: 7, spent: 5, closed: true, dependencies: []},
-        {id: 4, name: "Task4", description: "A task", duration: 3, spent: 5, closed: true, dependencies: []},
-      ]
+      project: new Project('Test1', 'Test1')
     }
   }
 
