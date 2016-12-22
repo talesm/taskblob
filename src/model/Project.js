@@ -1,13 +1,15 @@
 /**
  * @file Project.js An special group.
  */
+import Group from './Group'
+import Task from './Task'
 
 Project.prototype = Object.create(Group.prototype);
 Project.prototype.constructor = Project;
 
 /*******************************************************************************
  * The Project class
- * 
+ *
  * @constructor
  * @base Group
  ******************************************************************************/
@@ -34,18 +36,18 @@ Project.prototype.get = function(path) {
 /**
  * Parses a dried representation into current projects. It erases all previous
  * data.
- * 
+ *
  * @param {Object}
  *            dried - The object to wet.
  * @returns {Project}
- * 
+ *
  * Observes it does only executes for projects dried by this exact version,
  * otherwise it must pre-processes using a converter.
  */
 Project.wet = function(dried) {
 	var lVersion = [1, 1, 0, 0];
 	if(!dried.version || dried.version.some(function(element, i) {
-		return element != lVersion[i];
+		return element !== lVersion[i];
 	}));
 	var project = new Project(dried.name, dried.description);
 	project.subTasks = wetter(project, dried.tasks);
@@ -54,7 +56,7 @@ Project.wet = function(dried) {
 	/**
 	 * @param {Group} parent
 	 * @param {Array} items
-	 * @returns {Array} 
+	 * @returns {Array}
 	 */
 	function wetter(parent, items){
 		return items.reduce(function(tasks, driedTask, ind){
@@ -89,7 +91,7 @@ Project.wet = function(dried) {
 		item.dependencies = [];
 		dependencies.forEach(function(path) {
 			if(!item.addDependency(project.get(path))){
-				throw Error('Format Error: Task ['+item.id.join('.')+'] has unreachable dependency ['+path.join('.')+']'); 
+				throw Error('Format Error: Task ['+item.id.join('.')+'] has unreachable dependency ['+path.join('.')+']');
 			}
 		});
 		if(item.subTasks)
@@ -99,7 +101,7 @@ Project.wet = function(dried) {
 
 /**
  * Converts the project to a a dry representation, safe to be stored as JSON.
- * 
+ *
  * @returns {Object}
  */
 Project.prototype.dry = function() {
@@ -143,3 +145,5 @@ Project.prototype.dry = function() {
 		}, [])
 	};
 };
+
+export default Project;

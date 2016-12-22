@@ -1,13 +1,13 @@
 /**
  * @file Item.js
  * @author TalesM
- * 
+ *
  * Defines the item class
  */
 
 /**
  * The Item class
- * 
+ *
  * @constructor
  * @param {Array}
  *            id - the path.
@@ -41,7 +41,7 @@ function Item(id, parent, name, description, dependencies) {
 
 /**
  * Returns whether this task depends to the given one.
- * 
+ *
  * @param {Item}
  *            task - The item to search
  * @returns {Boolean}
@@ -56,7 +56,7 @@ Item.prototype.hasDependency = function(task) {
 
 /**
  * Returns whether the given task depends from this one.
- * 
+ *
  * @param {Item}
  *            task - The item to search
  * @returns {Boolean}
@@ -70,7 +70,7 @@ Item.prototype.hasDependent = function(task) {
 
 /**
  * Add a new dependency
- * 
+ *
  * @param {Item}
  *            task
  * @returns {Boolean}
@@ -85,7 +85,7 @@ Item.prototype.addDependency = function(task) {
 
 /**
  * Remove a dependency
- * 
+ *
  * @param {Item}
  *            task
  * @returns {Boolean}
@@ -104,7 +104,7 @@ Item.prototype.removeDependency = function(task) {
 
 /**
  * Return whether this or all this' children are closed.
- * 
+ *
  * @returns {Boolean}
  */
 Item.prototype.isClosed = function() {
@@ -113,7 +113,7 @@ Item.prototype.isClosed = function() {
 
 /**
  * Return whether this or all this' children are closed.
- * 
+ *
  * @returns {Boolean}
  */
 Item.prototype.isReady = function() {
@@ -149,7 +149,7 @@ Item.prototype.erase = function() {
 
 /**
  * Get the absolute start position
- * 
+ *
  * @returns {Number}
  */
 Item.prototype.start = function() {
@@ -162,9 +162,11 @@ Item.prototype.start = function() {
 
 /**
  * Get the absolute end position.
- * 
+ *
  * @returns
  */
 Item.prototype.end = function() {
 	return this.start() + this.spentReg() + this.remaining() + this.overdue();
 };
+
+export default Item;

@@ -1,8 +1,9 @@
 /**
  * @file Group.js
  * @author TalesM
- * 
+ *
  */
+import Item from './Item';
 
 //Defining subclass.
 Group.prototype = Object.create(Item.prototype);
@@ -69,7 +70,7 @@ Group.prototype.removeKid = function(task){
 		return false;
 	task.parent = null;
 	subTasks[pos] = null; //Soft delete.
-	
+
 	//Hard delete:
 	if(subTasks.length === 1) //To avoid infinite loop bug.
 		this.subTasks = [];
@@ -88,7 +89,7 @@ Group.prototype.removeKid = function(task){
  * Removes a kid an puts another in its place.
  * @param {Item} kid
  * @param {Item} fosterKid
- * 
+ *
  * @b Important! It do not reasing ids, you have to do it on your own.
  */
 Group.prototype.swap = function(kid, fosterKid){
@@ -168,3 +169,5 @@ Group.prototype.end = function() {
 	}, 0);
 	return Math.max(betterEnd, kidsEnd);
 };
+
+export default Group;

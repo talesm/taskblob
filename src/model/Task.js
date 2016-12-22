@@ -1,8 +1,9 @@
 /**
  * @file Tasks.js
  * @author TalesM
- * 
+ *
  */
+import Item from './Item';
 
 //Defining subclass.
 Task.prototype = Object.create(Item.prototype);
@@ -61,6 +62,8 @@ Task.prototype.leftover = function() {
  * Get time you can't you use. Always zero for tasks
  * @returns {Number}
  */
-Item.prototype.unreachable = function(){
+Task.prototype.unreachable = function(){
 	return 0;
 };
+
+export default Task;

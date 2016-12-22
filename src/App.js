@@ -1,6 +1,7 @@
 import React from 'react';
 import GanttViewer from './ui/GanttViewer';
 import MainNav from './ui/MainNav';
+import Project from './model/Project';
 import './App.css';
 
 class App extends React.Component {
