@@ -11,6 +11,18 @@ function Meter(props) {
   return <span className={className} style={style}/>;
 }
 
+function AddNewItem(props) {
+  return (
+    <div className="item placeholder">
+      <span className="taskName" title="{props.children}">
+        <span className="name">{props.children}</span>
+      </span>
+    </div>
+  );
+}
+
+export {AddNewItem, Meter};
+
 export default function(props) {
   const meters = ['start', 'spent', 'overdue', 'remaining', 'unreachable']
       .map(type => <Meter closed={props.closed} key={type} type={type} width={props[type]}/>);
