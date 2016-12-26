@@ -13,7 +13,7 @@ export default function(props) {
     <div className="viewGroup">
       <TimeLabel min="0" max="15" interval="5" unit="h">{props.children}</TimeLabel>
       {items}
-      <ItemController template={AddNewItem}>Add New Task</ItemController>
+      <ItemController template={AddNewItem} onSubmit={props.onInsertItem}>Add New Task</ItemController>
     </div>
   );
 }

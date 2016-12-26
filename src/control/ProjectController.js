@@ -14,6 +14,13 @@ export default class extends React.Component {
   }
 
   render() {
-    return <this.props.template project={this.state.project}/>;
+    return <this.props.template project={this.state.project} onInsertItem={this.insertItem}/>;
+  }
+
+  insertItem = (item) => {
+    //Clone...
+    item.id = Math.random();
+    this.project.addKid(item);
+    this.setState({ project: this.project.toArray() });
   }
 }

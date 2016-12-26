@@ -5,7 +5,7 @@ import MainNav from './MainNav';
 export default function(props) {
   return (
     <div className="App">
-      <GanttViewer items={props.project}>Tasks</GanttViewer>
+      <GanttViewer items={props.project} onInsertItem={props.onInsertItem}>Tasks</GanttViewer>
     </div>
   );
 }
