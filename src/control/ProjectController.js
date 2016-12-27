@@ -18,9 +18,9 @@ export default class extends React.Component {
   }
 
   insertItem = (item) => {
+    const task = new Task(new Date().toISOString(), item.name);
     //Clone...
-    item.id = Math.random();
-    this.project.addKid(item);
+    this.project.addKid(task);
     this.setState({ project: this.project.toArray() });
   }
 }

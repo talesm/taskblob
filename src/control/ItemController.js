@@ -1,15 +1,16 @@
 import React from 'react';
-import Task from '../model/Task'
 
 export default class extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {item: new Task(0, "New Item")};
+    this.state = {item: {}};
   }
 
   componentDidMount() {
-    if(this.props.item){
+    if(this.props.item) {
       this.setState({item: this.props.item});
+    } else {
+      this.setState({item: {name: this.props.children||'New'}});
     }
   }
 
@@ -20,13 +21,14 @@ export default class extends React.Component {
   render() {
     const start=0;
     const item = this.state.item;
-    const itemInfo = {
-      start:     start*2+"em",
-      spent:     item.spentReg()*2+"em",
-      remaining: item.remaining()*2+"em",
-      overdue:   item.overdue()*2+"em",
+    const scale = 2;
+    const itemInfo = item.name?{
+      start:     start*scale+"em",
+      spent:     Math.min(item.spent, item.duration)*scale+"em",
+      remaining: Math.max(item.duration - item.spent, 0)*scale+"em",
+      overdue:   Math.max(item.spent - item.duration, 0)*scale+"em",
       closed:    item.closed,
-    }
+    } : {};
     return (
       <this.props.template {...itemInfo} onSubmit={this.submit} editName={this.editName} onReset={this.reset}>
         {this.state.item.name}
@@ -43,9 +45,8 @@ export default class extends React.Component {
   submit = (ev) => {
     if(this.props.onSubmit){
       this.props.onSubmit(this.state.item)
-    } else {
-      this.reset();
     }
+    this.reset();
   }
 
   reset = () => {
