@@ -1,6 +1,6 @@
 import React from 'react';
 import TimeLabel from './TimeLabel'
-import Item, {AddNewItem} from './Item';
+import Item, {AddNewItem} from './GanttItem';
 import ItemController from '../control/ItemController'
 
 export default function(props) {
