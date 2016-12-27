@@ -30,7 +30,7 @@ export default class extends React.Component {
       closed:    item.closed,
     } : {};
     return (
-      <this.props.template {...itemInfo} onSubmit={this.submit} editName={this.editName} onReset={this.reset}>
+      <this.props.template {...this.props} {...itemInfo} onSubmit={this.submit} editName={this.editName} onReset={this.reset}>
         {this.state.item.name}
       </this.props.template>
     );

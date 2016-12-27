@@ -14,8 +14,15 @@ function Meter(props) {
 
 function AddNewItem(props) {
   return (
-    <div className="item placeholder">
-      <GanttItemName closed={props.closed} onChange={props.editName} onSubmit={props.onSubmit}>{props.children}</GanttItemName>
+    <div className="item placeholder" onClick={props.onClick}>
+      <GanttItemName
+        closed={props.closed}
+        onChange={props.editName}
+        onSubmit={props.onSubmit}
+        selected={props.selected}
+      >
+        {props.children}
+      </GanttItemName>
     </div>
   );
 }
@@ -30,8 +37,15 @@ export default function(props) {
   );
 
   return (
-    <div className="item">
-      <GanttItemName closed={props.closed} onChange={props.editName} onSubmit={props.onSubmit}>{props.children}</GanttItemName>
+    <div className="item" onClick={props.onClick}>
+      <GanttItemName
+        closed={props.closed}
+        onChange={props.editName}
+        onSubmit={props.onSubmit}
+        selected={props.selected}
+      >
+        {props.children}
+      </GanttItemName>
       {meters}
     </div>
   );

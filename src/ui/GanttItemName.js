@@ -21,13 +21,20 @@ export default class extends React.Component {
       }
     }
     const keydown = (ev) => {
-      if(ev.key === 'Enter'){
-        submit(ev);
-      } else if (ev.key === 'Escape') {
-        reset(ev);
+      switch (ev.key) {
+        case 'ArrowDown':
+        case 'ArrowUp':
+        case 'Enter':
+          submit(ev);
+          break;
+        case 'Escape':
+          reset(ev);
+          break;
+        default:
+          break;
       }
     }
-    if(this.state.editing){
+    if(this.props.selected){
       name = (
         <input autoFocus
           className="name"
@@ -38,10 +45,17 @@ export default class extends React.Component {
         />
       );
     } else {
-      name = <span className="name">{this.props.closed?(<del>{this.props.children}</del>):this.props.children}</span>;
+      name = <span className="name">{this.props.children}</span>;
+    }
+    const classes = ['taskName'];
+    if(this.props.selected){
+      classes.push('selected')
+    }
+    if(this.props.closed){
+      classes.push('closed')
     }
     return (
-      <span onBlur={reset} className="taskName" title={this.props.children} onClick={()=>this.setState({editing:true})}>
+      <span onBlur={reset} className={classes.join(' ')} title={this.props.children} onClick={()=>this.setState({editing:true})}>
         {name}
       </span>
     );

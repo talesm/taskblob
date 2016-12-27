@@ -97,7 +97,7 @@ header h2 {
 }
 
 /* Tasks */
-.viewGroup .taskName{
+.taskName {
 	display: inline-block;
 	width: 10em;
 	height: 1.5em;
@@ -114,33 +114,49 @@ header h2 {
 	text-overflow: ellipsis;
 }
 
-.viewGroup .item.collapsed > .taskName{
+.taskName.selected {
+	border-left: 4px solid black;
+}
+
+.item.collapsed > .taskName{
 	border-bottom-right-radius: 0;
 /* 	color: rgba(0, 0, 0, 0.5); */
 	background-color: rgba(224, 224, 224, 0.75);
 }
 
-.viewGroup .taskName > span.name{
+.taskName > .name {
 	display: inline-block;
 	position: static;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	width: inherit;
+	font-family: sans-serif;
+	font-size: 12pt;
 }
 
-.viewGroup .taskName > .itemButtons{
+.taskName.closed > .name {
+	text-decoration: underline solid black;
+}
+
+.taskName > input {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	background: transparent;
+}
+
+.taskName > .itemButtons{
 	display:none;
-
 }
 
-.viewGroup .taskName:hover > span.itemButtons{
+.taskName:hover > span.itemButtons{
 	display:block;
 	position: absolute;
 	vertical-align: middle;
 	z-index: 100;
 	right: 0.25em;
 }
-.viewGroup .taskName:hover > span.itemButtons > span{
+.taskName:hover > span.itemButtons > span{
 	display:inline-block;
 	background-color: #eee;
 	vertical-align: middle;
@@ -148,24 +164,24 @@ header h2 {
 	width: 16px;
 	opacity: 0.75;
 }
-.viewGroup .taskName:active > span.itemButtons > span{
+.taskName:active > span.itemButtons > span{
 	opacity: 1;
 }
 
-.viewGroup .taskName:hover > span.itemButtons > span:hover{
+.taskName:hover > span.itemButtons > span:hover{
 	border-color: black;
 	opacity: 1;
 }
 
-.viewGroup .taskName:hover > span.itemButtons > span.delete{
+.taskName:hover > span.itemButtons > span.delete{
 	background-color: #fab;
 }
 
-.viewGroup .item.collapsed > .taskName > span.itemButtons > span.ui-icon-folder-open{
+.item.collapsed > .taskName > span.itemButtons > span.ui-icon-folder-open{
 	display: none;
 }
 
-.viewGroup .item:not(.collapsed) > .taskName > span.itemButtons > span.ui-icon-folder-collapsed{
+.item:not(.collapsed) > .taskName > span.itemButtons > span.ui-icon-folder-collapsed{
 	display: none;
 }
 
