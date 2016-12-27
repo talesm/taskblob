@@ -5,7 +5,7 @@ import ItemController from '../control/ItemController'
 
 export default function(props) {
   const items = (props.items||[]).map(item => (
-    <ItemController template={Item} key={item.id} item={item}>
+    <ItemController template={Item} key={item.id} item={item} onSubmit={props.onEditItem}>
       {item.name}
     </ItemController>
   ));

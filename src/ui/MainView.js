@@ -1,11 +1,11 @@
 import React from 'react';
-import GanttViewer from './GanttViewer';
+import GanttViewer from './GanttGraph';
 import MainNav from './MainNav';
 
 export default function(props) {
   return (
     <div className="App">
-      <GanttViewer items={props.project} onInsertItem={props.onInsertItem}>Tasks</GanttViewer>
+      <GanttViewer items={props.project} onInsertItem={props.onInsertItem} onEditItem={props.onEditItem}>Tasks</GanttViewer>
     </div>
   );
 }

@@ -23,12 +23,15 @@ function AddNewItem(props) {
 export {AddNewItem, Meter};
 
 export default function(props) {
-  const meters = ['start', 'spent', 'overdue', 'remaining', 'unreachable']
-      .map(type => <Meter closed={props.closed} key={type} type={type} width={props[type]}/>);
+  const meters = [
+    'start', 'spent', 'overdue', 'remaining', 'unreachable'
+  ].map(
+    type => <Meter closed={props.closed} key={type} type={type} width={props[type]}/>
+  );
 
   return (
     <div className="item">
-      <GanttItemName closed={props.closed}>{props.children}</GanttItemName>
+      <GanttItemName closed={props.closed} onChange={props.editName} onSubmit={props.onSubmit}>{props.children}</GanttItemName>
       {meters}
     </div>
   );

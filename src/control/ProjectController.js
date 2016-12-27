@@ -14,13 +14,22 @@ export default class extends React.Component {
   }
 
   render() {
-    return <this.props.template project={this.state.project} onInsertItem={this.insertItem}/>;
+    return (
+      <this.props.template
+        project={this.state.project}
+        onInsertItem={this.insertItem}
+        onEditItem={this.editItem}
+      />
+    );
   }
 
   insertItem = (item) => {
     const task = new Task(new Date().toISOString(), item.name);
-    //Clone...
     this.project.addKid(task);
+    this.setState({ project: this.project.toArray() });
+  }
+
+  editItem = (item) => {
     this.setState({ project: this.project.toArray() });
   }
 }
