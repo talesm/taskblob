@@ -17,7 +17,10 @@ export default function (props) {
         <td><input type="number" min="0" max="8760"/>h</td>
       </tr>
       <tr>
-        <td colSpan="2"><input type='checkbox'/>Closed?</td>
+        <td colSpan="2">
+          <input type='checkbox' checked={props.closed} onChange={props.editClosed} />
+            Closed?
+          </td>
       </tr>
     </tbody></table>
   );

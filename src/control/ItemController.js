@@ -30,7 +30,14 @@ export default class extends React.Component {
       closed:    item.closed,
     } : {};
     return (
-      <this.props.template {...this.props} {...itemInfo} onSubmit={this.submit} editName={this.editName} onReset={this.reset}>
+      <this.props.template
+        {...this.props}
+        {...itemInfo}
+        onSubmit={this.submit}
+        editName={this.editName}
+        editClosed={this.editClosed}
+        onReset={this.reset}
+      >
         {this.state.item.name}
       </this.props.template>
     );
@@ -39,6 +46,12 @@ export default class extends React.Component {
   editName = (ev) => {
     const item = this.state.item;
     item.name = ev.target.value;
+    this.setState({item});
+  }
+
+  editClosed = (ev) => {
+    const item = this.state.item;
+    item.closed = ev.target.checked;
     this.setState({item});
   }
 

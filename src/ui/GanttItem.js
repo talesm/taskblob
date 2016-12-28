@@ -22,7 +22,7 @@ export default function(props) {
       >
         {props.children}
       </ItemName>
-      {props.selected&&<Detail/>}
+      {props.selected && <Detail {...props}/>}
       {meters}
     </div>
   );
