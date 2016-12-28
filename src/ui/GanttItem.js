@@ -20,7 +20,7 @@ export default function(props) {
   );
 
   return (
-    <div className={'item '+props.className} onClick={props.onClick}>
+    <div className={'item '+(props.className||'')} onClick={props.onClick}>
       <GanttItemName
         closed={props.closed}
         onChange={props.editName}
