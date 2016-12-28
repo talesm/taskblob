@@ -1,13 +1,8 @@
 import React from 'react';
 import ItemName from './GanttItemName'
 import Meter from './GanttMeter'
+import Detail from './GanttItemDetail'
 import './GanttItem.css'
-
-function Detail(props) {
-  return (
-    <div className="detail"></div>
-  );
-}
 
 export default function(props) {
   const meters = [

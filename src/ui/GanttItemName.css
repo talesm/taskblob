@@ -24,6 +24,9 @@
 
 .taskName.selected {
 	border-left: 4px solid black;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+  border-right: 0;
 }
 
 .item.collapsed > .taskName{
