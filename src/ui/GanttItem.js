@@ -5,10 +5,11 @@ import Detail from './GanttItemDetail'
 import './GanttItem.css'
 
 export default function(props) {
+  const scale = props.scale || 2;
   const meters = [
-    'start', 'spent', 'overdue', 'remaining', 'unreachable'
+    'start', 'spentReg', 'overdue', 'remaining', 'unreachable'
   ].map(
-    type => <Meter closed={props.closed} key={type} type={type} width={props[type]}/>
+    type => <Meter closed={props.closed} key={type} type={type} width={(props[type]||0)*scale+"em"}/>
   );
 
   return (

@@ -21,12 +21,13 @@ export default class extends React.Component {
   render() {
     const start=0;
     const item = this.state.item;
-    const scale = 2;
     const itemInfo = item.name?{
-      start:     start*scale+"em",
-      spent:     Math.min(item.spent, item.duration)*scale+"em",
-      remaining: Math.max(item.duration - item.spent, 0)*scale+"em",
-      overdue:   Math.max(item.spent - item.duration, 0)*scale+"em",
+      start:     start,
+      duration:  item.duration,
+      spent:     item.spent,
+      spentReg:  Math.min(item.spent, item.duration),
+      remaining: Math.max(item.duration - item.spent, 0),
+      overdue:   Math.max(item.spent - item.duration, 0),
       closed:    item.closed,
     } : {};
     return (
@@ -37,6 +38,7 @@ export default class extends React.Component {
         editName={this.editName}
         editClosed={this.editClosed}
         onReset={this.reset}
+        scale="2"
       >
         {this.state.item.name}
       </this.props.template>
