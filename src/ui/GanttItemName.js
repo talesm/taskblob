@@ -39,7 +39,7 @@ export default function(props) {
       />
     );
   } else {
-    name = <span className="name">{props.children||props.placeholder}</span>;
+    name = <span className="name">{(props.id||'*')+' '}{props.children||props.placeholder}</span>;
   }
   const classes = ['taskName'];
   if(props.selected){

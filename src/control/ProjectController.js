@@ -27,7 +27,7 @@ export default class extends React.Component {
     if(!item.name){
       return;
     }
-    const task = new Task(new Date().toISOString(), item.name);
+    const task = new Task(this.project.size(), item.name);
     this.project.addKid(task);
     this.setState({ project: this.project.toArray() });
   }

@@ -15,6 +15,7 @@ export default function(props) {
   return (
     <div className={'item '+(props.className||'')} onClick={props.onClick}>
       <ItemName
+        id={props.id}
         closed={props.closed}
         onChange={props.editName}
         onSubmit={props.onSubmit}

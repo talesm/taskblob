@@ -18,11 +18,12 @@ export default class extends React.Component{
     const items = (this.props.items||[]).map((item, index) => (
       <ItemController
         template={GanttItem}
-        key={item.id}
+        key={index}
         item={item}
         selected={this.state.selected === index && this.state.showSelected}
         onSubmit={this.props.onEditItem}
         onClick={this.onClickItem.bind(this, index)}
+        items={this.props.items}
       >
         {item.name}
       </ItemController>

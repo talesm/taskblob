@@ -22,13 +22,15 @@ export default class extends React.Component {
     const start=0;
     const item = this.state.item;
     const itemInfo = item.name?{
-      start:     start,
-      duration:  item.duration,
-      spent:     item.spent,
-      spentReg:  Math.min(item.spent, item.duration),
-      remaining: Math.max(item.duration - item.spent, 0),
-      overdue:   Math.max(item.spent - item.duration, 0),
-      closed:    item.closed,
+      start:        start,
+      duration:     item.duration,
+      spent:        item.spent,
+      dependencies: (item.dependencies||[]).slice(0),
+      spentReg:     Math.min(item.spent, item.duration),
+      remaining:    Math.max(item.duration - item.spent, 0),
+      overdue:      Math.max(item.spent - item.duration, 0),
+      closed:       item.closed,
+      id:           item.id+'.',
     } : {};
     return (
       <this.props.template

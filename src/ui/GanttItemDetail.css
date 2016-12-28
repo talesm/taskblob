@@ -15,6 +15,9 @@
 .detail input {
   width: 5em;
 }
+.detail select {
+  width: 100%;
+}
 
 .detail::before {
   position: absolute;
