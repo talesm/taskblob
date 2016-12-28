@@ -3,7 +3,7 @@ import './GanttItemDetail.css'
 
 export default function (props) {
   return (
-    <table className="detail">
+    <table className="detail"><tbody>
       <tr>
         <td>Estimated</td>
         <td><input type="number" min="0" max="8760"/>h</td>
@@ -17,8 +17,8 @@ export default function (props) {
         <td><input type="number" min="0" max="8760"/>h</td>
       </tr>
       <tr>
-        <td colspan="2"><input type='checkbox'/>Closed?</td>
+        <td colSpan="2"><input type='checkbox'/>Closed?</td>
       </tr>
-    </table>
+    </tbody></table>
   );
 }
