@@ -7,8 +7,11 @@ export default class extends React.Component{
   constructor(props) {
     super(props)
     this.state = {
-      selected: null
+      selected: 0,
+      showSelected: false,
     }
+    //A bad thing, for a good cause.
+    window.onkeydown = this.onKeyDown;
   }
 
   render() {
@@ -17,7 +20,7 @@ export default class extends React.Component{
         template={GanttItem}
         key={item.id}
         item={item}
-        selected={this.state.selected === index}
+        selected={this.state.selected === index && this.state.showSelected}
         onSubmit={this.props.onEditItem}
         onClick={this.onClickItem.bind(this, index)}
       >
@@ -28,7 +31,6 @@ export default class extends React.Component{
     return (
       <div
         className="viewGroup"
-        onKeyDown={this.onKeyDown}
         onClick={this.onClick}
       >
         <TimeLabel min="0" max="15" interval="5" unit="h">{this.props.children}</TimeLabel>
@@ -37,7 +39,7 @@ export default class extends React.Component{
           template={GanttItem}
           className="placeholder"
           onSubmit={this.props.onInsertItem}
-          selected={this.state.selected === length}
+          selected={this.state.selected === length && this.state.showSelected}
           onClick={this.onClickItem.bind(this, length)}
           placeholder="Add New Task"
         />
@@ -46,21 +48,24 @@ export default class extends React.Component{
   }
 
   onClickItem(index, ev){
-    this.setState({selected: index});
+    this.setState({selected: index, showSelected: true});
     ev.stopPropagation();
   }
 
   onClick = (ev) => {
-    this.setState({selected: null});
+    this.setState({showSelected: false});
   }
 
   onKeyDown = (ev) => {
     switch (ev.key) {
       case 'ArrowUp':
-        this.setState({selected: Math.max(0, (this.state.selected||1) -1)})
+        this.setState({selected: Math.max(0, this.state.selected -1), showSelected: true})
         break;
       case 'ArrowDown':
-        this.setState({selected: Math.min(this.props.items.length, (this.state.selected +1)||0)})
+        this.setState({selected: Math.min(this.props.items.length, this.state.selected +1), showSelected: true})
+        break;
+      case 'Escape':
+        this.setState({showSelected: false});
         break;
       default:
         console.log(ev.key);
