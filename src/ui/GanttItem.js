@@ -12,23 +12,6 @@ function Meter(props) {
   return <span className={className} style={style}/>;
 }
 
-function AddNewItem(props) {
-  return (
-    <div className="item placeholder" onClick={props.onClick}>
-      <GanttItemName
-        closed={props.closed}
-        onChange={props.editName}
-        onSubmit={props.onSubmit}
-        selected={props.selected}
-      >
-        {props.children}
-      </GanttItemName>
-    </div>
-  );
-}
-
-export {AddNewItem, Meter};
-
 export default function(props) {
   const meters = [
     'start', 'spent', 'overdue', 'remaining', 'unreachable'
@@ -37,7 +20,7 @@ export default function(props) {
   );
 
   return (
-    <div className="item" onClick={props.onClick}>
+    <div className={'item '+props.className} onClick={props.onClick}>
       <GanttItemName
         closed={props.closed}
         onChange={props.editName}

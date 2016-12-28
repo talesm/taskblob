@@ -1,6 +1,6 @@
 import React from 'react';
 import TimeLabel from './TimeLabel'
-import Item, {AddNewItem} from './GanttItem';
+import Item from './GanttItem';
 import ItemController from '../control/ItemController'
 
 export default class extends React.Component{
@@ -29,7 +29,8 @@ export default class extends React.Component{
         <TimeLabel min="0" max="15" interval="5" unit="h">{this.props.children}</TimeLabel>
         {items}
         <ItemController
-          template={AddNewItem}
+          template={Item}
+          className="placeholder"
           onSubmit={this.props.onInsertItem}
           selected={this.state.selected === this.props.items.length}
           onClick={()=>this.setState({selected: this.props.items.length})}
