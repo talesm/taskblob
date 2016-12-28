@@ -46,7 +46,8 @@
 }
 
 .taskName.closed > .name {
-	text-decoration: underline solid black;
+	text-decoration: underline solid darkgray;
+	color: darkgray;
 }
 
 .taskName > input {

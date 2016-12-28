@@ -36,6 +36,8 @@ export default class extends React.Component {
         {...itemInfo}
         onSubmit={this.submit}
         editName={this.editName}
+        editDuration={this.editDuration}
+        editSpent={this.editSpent}
         editClosed={this.editClosed}
         onReset={this.reset}
         scale="2"
@@ -48,6 +50,18 @@ export default class extends React.Component {
   editName = (ev) => {
     const item = this.state.item;
     item.name = ev.target.value;
+    this.setState({item});
+  }
+
+  editDuration = (ev) => {
+    const item = this.state.item;
+    item.duration = ev.target.value;
+    this.setState({item});
+  }
+
+  editSpent = (ev) => {
+    const item = this.state.item;
+    item.spent = ev.target.value;
     this.setState({item});
   }
 
