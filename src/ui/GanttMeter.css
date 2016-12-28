@@ -1,0 +1,64 @@
+
+.meter{
+	display: inline-block;
+	height: 1.2em;
+	width: 2em;
+	margin-top: 0.15em;
+	border-color: black;
+	border-style: solid;
+	border-width: 1px 0 1px 0;
+}
+
+.start{
+	background-color: transparent;
+	border-color: transparent;
+	margin-left: 10em;
+}
+
+.spent{
+	background: #68c;
+	border-color: #57b;
+}
+
+.spent.closed {
+	background: #1c3;
+	border-color: #0b2;
+}
+
+.spent::BEFORE{
+	position:absolute;
+	border-left: 1px solid rgba(0, 0, 0, 0.25);
+	content: ' ';
+	height: 1.2em;
+}
+
+.remaining{
+	background: lightgray;
+	background: repeating-linear-gradient(-45deg, transparent, transparent 0.25em, lightgray 0.25em, lightgray 0.5em);
+	border-color: #57b;
+}
+
+.remaining.closed{
+	border-color: #0b2;
+}
+
+.overdue{
+	background: #f87;
+	border-color: #e76;
+}
+
+.overdue.closed{
+	background: repeating-linear-gradient(-45deg, #0a1, #0a1 0.25em, #d65 0.25em, #d65 0.5em);
+}
+
+.unreachable{
+	background: gray;
+	background: repeating-linear-gradient(-45deg, transparent, transparent 0.25em, gray 0.25em, gray 0.5em);
+	border-color: rgba(153,153,153,0.5);
+	border-right: 1px solid #aaa;
+}
+
+.leftover{
+	background: #1f5;
+	border-color: #0e4;
+}

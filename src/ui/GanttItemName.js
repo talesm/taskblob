@@ -1,4 +1,5 @@
 import React from 'react';
+import './GanttItemName.css'
 
 export default function(props) {
   let name;

@@ -1,15 +1,12 @@
 import React from 'react';
-import GanttItemName from './GanttItemName'
+import ItemName from './GanttItemName'
+import Meter from './GanttMeter'
+import './GanttItem.css'
 
-function Meter(props) {
-  const style = {
-    width: props.width||0
-  }
-  let className = "meter "+props.type;
-  if(props.closed) {
-    className += " closed"
-  }
-  return <span className={className} style={style}/>;
+function Detail(props) {
+  return (
+    <div className="detail"></div>
+  );
 }
 
 export default function(props) {
@@ -21,7 +18,7 @@ export default function(props) {
 
   return (
     <div className={'item '+(props.className||'')} onClick={props.onClick}>
-      <GanttItemName
+      <ItemName
         closed={props.closed}
         onChange={props.editName}
         onSubmit={props.onSubmit}
@@ -29,7 +26,8 @@ export default function(props) {
         placeholder={props.placeholder}
       >
         {props.children}
-      </GanttItemName>
+      </ItemName>
+      {props.selected&&<Detail/>}
       {meters}
     </div>
   );
