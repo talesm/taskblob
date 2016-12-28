@@ -15,3 +15,13 @@
 .detail input {
   width: 5em;
 }
+
+.detail::before {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  top: 1.5em;
+  width: 1px;
+  background-color: rgba(187, 187, 187, 0.75);
+  content: '';
+}
