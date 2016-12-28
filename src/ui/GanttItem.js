@@ -26,6 +26,7 @@ export default function(props) {
         onChange={props.editName}
         onSubmit={props.onSubmit}
         selected={props.selected}
+        placeholder={props.placeholder}
       >
         {props.children}
       </GanttItemName>

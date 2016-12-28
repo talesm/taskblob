@@ -10,7 +10,7 @@ export default class extends React.Component {
     if(this.props.item) {
       this.setState({item: this.props.item});
     } else {
-      this.setState({item: {name: this.props.children||'New'}});
+      this.setState({item: {name: this.props.children||''}});
     }
   }
 

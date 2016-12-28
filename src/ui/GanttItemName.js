@@ -34,10 +34,11 @@ export default function(props) {
         onChange={props.onChange}
         onKeyDown={keydown}
         onReset={props.onReset}
+        placeholder={props.placeholder}
       />
     );
   } else {
-    name = <span className="name">{props.children}</span>;
+    name = <span className="name">{props.children||props.placeholder}</span>;
   }
   const classes = ['taskName'];
   if(props.selected){
