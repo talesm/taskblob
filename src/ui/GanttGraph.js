@@ -68,7 +68,6 @@ export default class extends React.Component{
         this.setState({showSelected: false});
         break;
       default:
-        console.log(ev.key);
         break;
     }
   }
