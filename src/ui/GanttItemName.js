@@ -49,7 +49,7 @@ export default function(props) {
     classes.push('closed')
   }
   return (
-    <span onBlur={reset} className={classes.join(' ')} title={props.children}>
+    <span onBlur={submit} className={classes.join(' ')} title={props.children}>
       {name}
     </span>
   );

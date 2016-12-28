@@ -1,5 +1,5 @@
 
-.item .detail {
+.detail {
   position: absolute;
   left: 10.5em;
   left: calc(10em + 4px);
@@ -10,4 +10,8 @@
 	border-top-right-radius: 0.75em;
 	border-bottom-right-radius: 0.75em;
   padding-right: 0.75em;
+}
+
+.detail input {
+  width: 5em;
 }
