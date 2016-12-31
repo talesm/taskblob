@@ -24,8 +24,18 @@ export default function (props) {
       </tr>
       <tr>
         <td colSpan="2">
-          <select multiple>
-            {(props.items||[]).map((item, index) => <option key={index}>{item.id + ". " + item.name}</option>)}
+          <select multiple
+            onChange={props.editDependencies}
+            value={props.dependencies.map(dep => props.items.indexOf(dep))}
+          >
+            {(props.items||[]).map((item, index) => (
+              <option
+                key={index}
+                value={index}
+              >
+                {item.id + ". " + item.name}
+              </option>
+            ))}
           </select>
         </td>
       </tr>

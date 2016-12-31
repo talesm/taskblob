@@ -41,6 +41,7 @@ export default class extends React.Component {
         editDuration={this.editDuration}
         editSpent={this.editSpent}
         editClosed={this.editClosed}
+        editDependencies={this.editDependencies}
         onReset={this.reset}
         scale="2"
       >
@@ -70,6 +71,13 @@ export default class extends React.Component {
   editClosed = (ev) => {
     const item = this.state.item;
     item.closed = ev.target.checked;
+    this.setState({item});
+  }
+
+  editDependencies = (ev) => {
+    const item = this.state.item;
+    const items = this.props.items;
+    item.dependencies = Array.filter(ev.target.options, op=>op.selected).map(op=>items[op.value]);
     this.setState({item});
   }
 
