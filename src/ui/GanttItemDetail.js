@@ -32,6 +32,7 @@ export default function (props) {
               <option
                 key={index}
                 value={index}
+                disabled={props.item === item || item.hasDependency(props.item)}
               >
                 {item.id + ". " + item.name}
               </option>

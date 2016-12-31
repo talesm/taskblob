@@ -77,7 +77,10 @@ export default class extends React.Component {
   editDependencies = (ev) => {
     const item = this.state.item;
     const items = this.props.items;
-    item.dependencies = Array.filter(ev.target.options, op=>op.selected).map(op=>items[op.value]);
+    item.dependencies = Array
+      .filter(ev.target.options, op=>op.selected)
+      .map(op=>items[op.value])
+      .filter(obj => obj !== item && !obj.hasDependency(item));
     this.setState({item});
   }
 
