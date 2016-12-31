@@ -19,10 +19,9 @@ export default class extends React.Component {
   }
 
   render() {
-    const start=0;
     const item = this.state.item;
     const itemInfo = item.name?{
-      start:        start,
+      start:        item.start(),
       duration:     item.duration,
       spent:        item.spent,
       dependencies: (item.dependencies||[]).slice(0),
