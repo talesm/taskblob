@@ -19,6 +19,7 @@ export default class extends React.Component {
         project={this.state.project}
         onInsertItem={this.insertItem}
         onEditItem={this.editItem}
+        onEraseItem={this.eraseItem}
       />
     );
   }
@@ -33,6 +34,11 @@ export default class extends React.Component {
   }
 
   editItem = (item) => {
+    this.setState({ project: this.project.toArray() });
+  }
+
+  eraseItem = (item) => {
+    this.project.removeKid(item);
     this.setState({ project: this.project.toArray() });
   }
 }

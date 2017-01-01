@@ -54,6 +54,11 @@ Group.prototype.addKid = function(task){
 	if(!task || task.parent || task.hasDependency(this) || task.hasDependency(task))
 		return false;
 	task.parent = this;
+	let nextId = 1;
+	if(this.subTasks.length > 0){
+		nextId = this.subTasks[this.subTasks.length-1].id+1;
+	}
+	task.id = nextId;
 	this.subTasks.push(task);
 	return true;
 };
@@ -70,18 +75,7 @@ Group.prototype.removeKid = function(task){
 		return false;
 	task.parent = null;
 	subTasks[pos] = null; //Soft delete.
-
-	//Hard delete:
-	if(subTasks.length === 1) //To avoid infinite loop bug.
-		this.subTasks = [];
-	else if(pos === subTasks.length-1){
-		var sz = 0;
-		do{
-			--pos;
-			++sz;
-		}while(subTasks[pos] == null);
-		subTasks.splice(pos+1, sz);
-	}
+	subTasks.splice(pos, 1);
 	return true;
 };
 

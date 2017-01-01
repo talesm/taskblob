@@ -21,7 +21,7 @@ export default class extends React.Component {
   render() {
     const item = this.state.item;
     const itemInfo = item.name?{
-      start:        item.start(),
+      start:        item.start && item.start(),
       duration:     item.duration,
       spent:        item.spent,
       dependencies: (item.dependencies||[]).slice(0),
@@ -41,6 +41,7 @@ export default class extends React.Component {
         editSpent={this.editSpent}
         editClosed={this.editClosed}
         editDependencies={this.editDependencies}
+        erase={this.erase}
         onReset={this.reset}
         scale="2"
       >
@@ -81,6 +82,13 @@ export default class extends React.Component {
       .map(op=>items[op.value])
       .filter(obj => obj !== item && !obj.hasDependency(item));
     this.setState({item});
+  }
+
+  erase = (ev) => {
+    if (this.props.onErase) {
+      this.props.onErase(this.state.item);
+      ev.stopPropagation();
+    }
   }
 
   submit = (ev) => {

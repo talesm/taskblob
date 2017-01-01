@@ -40,6 +40,10 @@ export default function (props) {
           </select>
         </td>
       </tr>
+      <tr>
+        <td></td>
+        <td><button onClick={props.erase}>&times; Erase</button></td>
+      </tr>
     </tbody></table>
   );
 }

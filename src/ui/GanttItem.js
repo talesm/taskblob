@@ -24,7 +24,7 @@ export default function(props) {
       >
         {props.children}
       </ItemName>
-      {props.selected && <Detail {...props}/>}
+      {props.selected && Array.isArray(props.dependencies) && <Detail {...props}/>}
       {meters}
     </div>
   );

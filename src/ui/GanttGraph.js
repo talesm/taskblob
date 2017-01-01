@@ -18,14 +18,15 @@ export default class extends React.Component{
     const items = (this.props.items||[]).map((item, index) => (
       <ItemController
         template={GanttItem}
-        key={index}
+        key={item.id}
         item={item}
         selected={this.state.selected === index && this.state.showSelected}
         onSubmit={this.props.onEditItem}
+        onErase={this.onEraseItem}
         onClick={this.onClickItem.bind(this, index)}
         items={this.props.items}
       >
-        {item.name}
+        {index}. {item.name}
       </ItemController>
     ));
     const length = this.props.items.length;
@@ -71,5 +72,10 @@ export default class extends React.Component{
       default:
         break;
     }
+  }
+
+  onEraseItem = (item) => {
+    this.setState({showSelected: false});
+    this.props.onEraseItem(item);
   }
 }
