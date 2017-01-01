@@ -26,7 +26,7 @@ export default class extends React.Component{
         onClick={this.onClickItem.bind(this, index)}
         items={this.props.items}
       >
-        {index}. {item.name}
+        {index+1}. {item.name}
       </ItemController>
     ));
     const length = this.props.items.length;

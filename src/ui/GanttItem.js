@@ -21,6 +21,7 @@ export default function(props) {
         onSubmit={props.onSubmit}
         selected={props.selected}
         placeholder={props.placeholder}
+        name={props.name}
       >
         {props.children}
       </ItemName>

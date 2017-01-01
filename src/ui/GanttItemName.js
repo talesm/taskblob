@@ -31,7 +31,7 @@ export default function(props) {
     name = (
       <input autoFocus
         className="name"
-        value={props.children}
+        value={props.name}
         onChange={props.onChange}
         onKeyDown={keydown}
         onReset={props.onReset}
@@ -39,7 +39,7 @@ export default function(props) {
       />
     );
   } else {
-    name = <span className="name">{(props.id||'*')+' '}{props.children||props.placeholder}</span>;
+    name = <span className="name">{props.children||props.placeholder}</span>;
   }
   const classes = ['taskName'];
   if(props.selected){

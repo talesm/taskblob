@@ -34,7 +34,7 @@ export default function (props) {
                 value={index}
                 disabled={props.item === item || item.hasDependency(props.item)}
               >
-                {item.id + ". " + item.name}
+                {(index+1) + ". " + item.name}
               </option>
             ))}
           </select>

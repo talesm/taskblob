@@ -21,6 +21,7 @@ export default class extends React.Component {
   render() {
     const item = this.state.item;
     const itemInfo = item.name?{
+      name:         item.name,
       start:        item.start && item.start(),
       duration:     item.duration,
       spent:        item.spent,
@@ -45,7 +46,7 @@ export default class extends React.Component {
         onReset={this.reset}
         scale="2"
       >
-        {this.state.item.name}
+        {this.props.children}
       </this.props.template>
     );
   }
