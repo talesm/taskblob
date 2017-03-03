@@ -11,7 +11,6 @@ export default function(props) {
   ].map(
     type => <Meter closed={props.closed} key={type} type={type} width={(props[type]||0)*scale+"em"}/>
   );
-
   return (
     <div className={'item '+(props.className||'')} onClick={props.onClick}>
       <ItemName
@@ -25,7 +24,7 @@ export default function(props) {
       >
         {props.children}
       </ItemName>
-      {props.selected && Array.isArray(props.dependencies) && <Detail {...props}/>}
+      {props.selected && <Detail {...props}/>}
       {meters}
     </div>
   );
