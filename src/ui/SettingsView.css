@@ -1,0 +1,41 @@
+#cogButton {
+  position: fixed;
+  z-index: 20;
+  bottom: 0;
+  right: 0;
+  background-color: lightgray;
+  width: 2em;
+  height: 2em;
+  font-size: 20pt;
+  margin-top: 0;
+  border-radius: 1em;
+  border: none;
+}
+
+#cogButton:hover, .open {
+  box-shadow: 0 0 .25em .25em lightgray;
+}
+
+.settingsTable {
+  display: table;
+}
+
+.settingsTable > div {
+  display: table-row;
+}
+
+.settingsTable > div > * {
+  display: table-cell;
+  margin-bottom: 1em;
+  vertical-align: text-top;
+}
+
+.settingsTable > div > *:nth-child(1){
+  padding-right: .5em;
+}
+
+.settingsTable > div > *:nth-child(1n +2){
+  width: 300px;
+  padding:  0;
+  box-sizing: border-box;
+}

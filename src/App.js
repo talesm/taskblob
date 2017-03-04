@@ -1,6 +1,8 @@
 import React from 'react';
 import MainView from './ui/MainView';
+import SettingsView from './ui/SettingsView';
 import ProjectController from './control/ProjectController';
+import SettingsController from './control/SettingsController';
 import './App.css';
 import Project from './model/Project';
 
@@ -19,7 +21,10 @@ class App extends React.Component {
   componentWillUnmount() { }
 
   render() {
-    return <ProjectController template={MainView} project={this.state.project}/>;
+    return (<div>
+      <ProjectController template={MainView} project={this.state.project}/>
+      <SettingsController template={SettingsView} project={this.state.project}/>
+    </div>);
   }
 
   persist = () => {
