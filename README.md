@@ -1,6 +1,8 @@
 Taskblob
 ========
 
+![Taskblob screenshot](taskblob.png)
+
 A quick and easy task manager for hobby projects. 
 You don't want to have strict deadlines to a hobby, but is fun complete 
 something and launch once in a while and just doing something in a "go horse" 
